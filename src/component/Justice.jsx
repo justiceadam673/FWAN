@@ -17,8 +17,13 @@ const Justice = () => {
         labore nisi minima nulla adipisci soluta, in ullam aperiam voluptatem
         facilis possimus iusto laudantium officia?
       </p>
+      <h1>hhj,kjh1kjjkjkj</h1>
+
     </div>
   );
 };
 
+
+
 export default Justice;
+
