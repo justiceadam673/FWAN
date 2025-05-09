@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../assets/img/fwan.png";
+import Logo from "../../../assets/img/fwan.png";
 
 // import Logo from "./fwan.svg";
 
