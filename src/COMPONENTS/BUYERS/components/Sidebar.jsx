@@ -23,7 +23,7 @@ const Sidebar = () => {
         className='h-[58px] w-[124px] mb-[45px]  '
       />
       <nav className='flex flex-col gap-[23px]'>
-        <NavLink to='/' className={linkClass}>
+        <NavLink to='/dashboard' className={linkClass}>
           <FaHome size={30} /> Dashboard
         </NavLink>
         <NavLink to='/listings' className={linkClass}>

@@ -29,7 +29,7 @@ const Listing = () => {
         <h3 className='text-black/70 font-inter text-base  mb-[38px] font-normal leading-none'>
           General Listings
         </h3>
-        <div className='grid grid-cols-2 gap-[69px]'>
+        <div className='grid grid-cols-2  xl:grid-cols-3 gap-[69px]'>
           {farmData.map((product) => (
             <Cards
               key={product.id}
