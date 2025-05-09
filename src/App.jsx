@@ -9,7 +9,7 @@ import Profile from "./COMPONENTS/BUYERS/pages/Profile";
 function App() {
   return (
     <Router>
-      <div className='flex h-screen bg-[#EAEAEA]'>
+      <div className='flex h-screen font-[Inter] bg-[#EAEAEA]'>
         <Sidebar />
         <div className='flex-1 p-4 overflow-y-auto'>
           <Routes>

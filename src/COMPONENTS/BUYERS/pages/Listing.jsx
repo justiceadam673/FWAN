@@ -1,10 +1,11 @@
 import React from "react";
+import Cards from "../util/Cards";
 // import Border from "../util/Border";
 // import Cart from "../../../assets/img/overviewcart.png";
 // import Clock from "../../../assets/img/overviewclock.png";
 // import Mark from "../../../assets/img/overviewmark.png";
 // import Plus from "../../../assets/img/+.png";
-// import FarmProduces from "../data/FarmData";
+import { farmData } from "../data/FarmData";
 
 const Listing = () => {
   return (
@@ -28,6 +29,19 @@ const Listing = () => {
         <h3 className='text-black/70 font-inter text-base  mb-[38px] font-normal leading-none'>
           General Listings
         </h3>
+        <div className='grid grid-cols-2 gap-[69px]'>
+          {farmData.map((product) => (
+            <Cards
+              key={product.id}
+              img={product.image}
+              name={product.name}
+              farmer={product.farmer}
+              ratings={product.rating}
+              quantity={product.quantity}
+              price={product.price}
+            />
+          ))}
+        </div>
       </section>
     </div>
   );

@@ -16,7 +16,7 @@ const Sidebar = () => {
     }`;
 
   return (
-    <div className='w-64  border-r-4 border-black/25 space-y-[100px]  p-[30px] hidden md:block'>
+    <div className='w-64 border-r-4 border-black/25 space-y-[100px]  p-[30px] hidden md:block'>
       <img
         src={logo}
         alt='FWAN Logo'

@@ -11,6 +11,9 @@ export const farmData = [
     availableUntil: "15-05-2025",
     quantity: "76 kg",
     price: "N10,00 per kg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Tomatoes.jpg",
+
+    farmer: "Ov Yee",
     description:
       "Fresh organic tomatoes, harvested yesterday. These tomatoes are grown without pesticides or chemical fertilizers. They are perfect for salads, sauces, or cooking. Our farm has been certified organic for over 10 years, and we take pride in our sustainable farming practices.",
     reviews: [
@@ -38,6 +41,10 @@ export const farmData = [
     availableUntil: "18-05-2025",
     quantity: "120 kg",
     price: "N8,50 per kg",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/3/32/Carrots_of_many_colors.jpg",
+    farmer: "Joshua Mike",
+
     description:
       "Sweet and crunchy organic carrots, rich in beta-carotene. Grown in nutrient-rich soil without synthetic chemicals. Perfect for juicing, snacking, or cooking.",
     reviews: [
@@ -59,6 +66,10 @@ export const farmData = [
     availableUntil: "20-05-2025",
     quantity: "65 kg",
     price: "N15,00 per kg",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/d/da/Red_capsicum_and_cross_section.jpg",
+    farmer: "Toyin Dare",
+
     description:
       "Colorful bell peppers in red, yellow and green. Grown with natural compost and organic pest control methods. High in vitamin C and antioxidants.",
     reviews: [],
@@ -75,6 +86,10 @@ export const farmData = [
     availableUntil: "16-05-2025",
     quantity: "90 kg",
     price: "N12,00 per kg",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/f/fe/Spinach_leaves.jpg",
+    farmer: "Alex",
+
     description:
       "Tender organic spinach leaves, packed with iron and vitamins. Harvested at peak freshness for optimal nutrition and flavor.",
     reviews: [
@@ -96,6 +111,10 @@ export const farmData = [
     availableUntil: "14-05-2025",
     quantity: "45 kg",
     price: "N25,00 per kg",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/e/e1/Strawberries.jpg",
+    farmer: "Emmanuel Aderemi",
+
     description:
       "Juicy, sweet organic strawberries. Grown without synthetic pesticides and hand-picked at perfect ripeness. Perfect for desserts or eating fresh.",
     reviews: [
