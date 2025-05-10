@@ -21,14 +21,11 @@ const NavBar = () => {
           <li>FAQs</li>
         </ul>
         <button
-          className='bg-[#3D8236] text-[#FFFFFF] xl:flex lg:flex hidden px-[32px] py-[16px] text-[20px] rounded-[8px]'
+          className='bg-[#3D8236] text-[#FFFFFF] xl:flex lg:flex flex py-[10px] px-[8px] justify-center items-center  md:px-[32px] md:py-[16px] text-[20px] rounded-[8px]'
           onClick={handleSignUpClick} // Add onClick handler for navigation
         >
           Sign Up
         </button>
-        <div className='hidden text-[50px] max-sm:flex max-sm:text-[30px]'>
-          =
-        </div>
       </nav>
     </main>
   );
