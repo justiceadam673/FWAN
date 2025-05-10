@@ -23,7 +23,7 @@ function AppContent() {
           <Route path='/' element={<LandingPage />} />
         </Routes>
       ) : (
-        <div className='flex h-screen font-[Inter] '>
+        <div className='lg:flex xl:flex 2xl:flex md:flex h-screen font-[Inter] '>
           <Sidebar />
           <div className='flex-1 p-4 overflow-y-auto'>
             <Routes>
