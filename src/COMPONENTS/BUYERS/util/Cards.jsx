@@ -3,7 +3,7 @@ import Star from "../../../assets/img/star.png";
 
 const Cards = ({ img, name, farmer, ratings, price, quantity }) => {
   return (
-    <main className='w-[452px] p-7 bg-white rounded-xl   outline-1 outline-offset-[-1px] outline-black/50 flex justify-center items-center gap-[10px] overflow-hidden'>
+    <main className='max-w-[452px] w-full p-7 bg-white rounded-xl   outline-1 outline-offset-[-1px] outline-black/50 flex justify-center items-center gap-[10px] overflow-hidden'>
       <section className='w-96 inline-flex  flex-col justify-start items-start'>
         <div className='w-full h-fit relative mb-[20px] rounded-xl '>
           <img
@@ -41,12 +41,12 @@ const Cards = ({ img, name, farmer, ratings, price, quantity }) => {
             </p>
           </div>
         </div>
-        <div className='w-full flex justify-between'>
-          <button className='max-w-[180px] w-full max-h-[56px] p-[10px] border-[1px]  rounded-[12px]  font-normal  text-[20px] flex justify-center items-center'>
+        <div className='w-full flex gap-[15px] justify-between'>
+          <button className='max-w-[180px] w-full max-h-[56px] p-[10px]  border-[1px]  rounded-[12px]  font-normal md:text-[15px] max-sm:text-[15px]  text-[20px] flex justify-center items-center'>
             {" "}
             View Details{" "}
           </button>
-          <button className='max-w-[180px] w-full max-h-[56px] p-[10px] bg-[#095C32] rounded-[12px] text-[#FFFFFF] font-normal  text-[20px] flex justify-center items-center'>
+          <button className='max-w-[180px] w-full max-h-[56px] p-[10px]  bg-[#095C32] rounded-[12px] text-[#FFFFFF] font-normal md:text-[15px] max-sm:text-[15px] text-[20px] flex justify-center items-center'>
             Make an Offer
           </button>
         </div>

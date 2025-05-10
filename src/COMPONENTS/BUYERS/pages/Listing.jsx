@@ -10,7 +10,7 @@ import { farmData } from "../data/FarmData";
 const Listing = () => {
   return (
     <div>
-      <section className='flex items-center justify-between mt-[23px]'>
+      <section className='flex h-full items-center justify-between mt-[23px]'>
         <div className='space-y-[20px]'>
           <h1 className='text-black font-inter text-6xl font-bold leading-none'>
             General Listings
@@ -29,7 +29,7 @@ const Listing = () => {
         <h3 className='text-black/70 font-inter text-base  mb-[38px] font-normal leading-none'>
           General Listings
         </h3>
-        <div className='grid grid-cols-2  xl:grid-cols-3 gap-[69px]'>
+        <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-[69px]'>
           {farmData.map((product) => (
             <Cards
               key={product.id}

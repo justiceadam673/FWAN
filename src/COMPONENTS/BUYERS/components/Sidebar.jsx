@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import {
-  FaHome,
+  // FaHome,
   FaListAlt,
   FaTags,
   FaHistory,
   FaUser,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { Icon } from "@iconify/react";
 import logo from "../../../assets/img/fwan.png";
 
 const Sidebar = () => {
@@ -16,7 +17,7 @@ const Sidebar = () => {
     }`;
 
   return (
-    <div className='w-64 border-r-4 border-black/25 space-y-[100px]  p-[30px] hidden md:block'>
+    <div className='w-64 h-full border-r-4 border-black/25 space-y-[80px] p-[30px] hidden md:block'>
       <img
         src={logo}
         alt='FWAN Logo'
@@ -24,24 +25,26 @@ const Sidebar = () => {
       />
       <nav className='flex flex-col gap-[23px]'>
         <NavLink to='/dashboard' className={linkClass}>
-          <FaHome size={30} /> Dashboard
+          {/* <FaHome size={30} /> Dashboard */}
+          <Icon icon='fluent:home-28-regular' width='50' height='50' />{" "}
+          Dashboard
         </NavLink>
         <NavLink to='/listings' className={linkClass}>
-          <FaListAlt size={30} /> All Listings
+          <Icon icon='el:list-alt' width='50' height='50' /> All Listings
         </NavLink>
         <NavLink to='/offers' className={linkClass}>
-          <FaTags size={30} /> My Offers
+          <Icon icon='jam:messages' width='50' height='50' /> My Offers
         </NavLink>
         <NavLink to='/history' className={linkClass}>
-          <FaHistory size={30} /> History
+          <Icon icon='ep:bell' width='50' height='50' /> History
         </NavLink>
         <NavLink to='/profile' className={linkClass}>
-          <FaUser size={30} /> Profile
+          <Icon icon='gg:profile' width='50' height='50' /> Profile
         </NavLink>
       </nav>
-      <div className='mt-auto pt-10'>
+      <div className='flex flex-col '>
         <button className='flex items-center text-black/90 gap-2 p-3 -600 hover:bg-red-100 w-full rounded'>
-          <FaSignOutAlt size={30} /> Log Out
+          <Icon icon='material-symbols:logout' width='50' height='50' /> Log Out
         </button>
       </div>
     </div>
