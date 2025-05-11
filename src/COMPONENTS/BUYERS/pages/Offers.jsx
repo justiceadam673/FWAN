@@ -1,6 +1,8 @@
+// Test.js
 import React, { useState } from "react";
 import Select from "react-select";
 import TableData from "../util/TableData";
+import { farmData } from "../data/FarmData"; // Update path as needed
 
 const Test = () => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -32,11 +34,13 @@ const Test = () => {
           </p>
         </div>
       </section>
+
       <section>
         <h3 className='text-black/70 font-inter text-[22px] mb-[38px] font-normal leading-none'>
           Offers
         </h3>
       </section>
+
       <section className='outline flex flex-col gap-[46px] rounded-[12px] outline-black/50 lg:mt-[80px] mt-[68px] md:mt-[68px] p-[30px]'>
         <div className='lg:flex justify-between'>
           <div className='mb-[10px] lg:mb-[0px]'>
@@ -52,13 +56,13 @@ const Test = () => {
                 onChange={handleChange}
                 options={options}
                 placeholder='Select Status'
-                className='max-w-[200px] w-full md:w-[200px]    text-black font-medium py-2 px-4 rounded-[12px]  '
+                className='max-w-[200px] w-full md:w-[200px] text-black font-medium py-2 px-4 rounded-[12px]'
               />
             </section>
           </div>
         </div>
         <div>
-          <TableData />
+          <TableData data={farmData} />
         </div>
       </section>
     </div>

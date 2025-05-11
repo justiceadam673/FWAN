@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Icon } from "@iconify/react";
+import MakeOffer from "../modals/MakeOffer";
 
-const TableData = () => {
+const TableData = ({ product, data }) => {
+  // Generate random initial statuses only once
+  const generateInitialStatuses = () => {
+    const options = ["Accepted", "Pending", "Rejected"];
+    return data.reduce((acc, item) => {
+      const randomStatus = options[Math.floor(Math.random() * options.length)];
+      acc[item.id] = randomStatus;
+      return acc;
+    }, {});
+  };
+
+  const [statusMap, setStatusMap] = useState({});
+
+  useEffect(() => {
+    setStatusMap(generateInitialStatuses());
+  }, [data]);
+
+  const handleStatusChange = (id, newStatus) => {
+    setStatusMap((prev) => ({
+      ...prev,
+      [id]: newStatus,
+    }));
+  };
+
+  const [makeOffer, setMakeOffer] = useState(false);
+
   return (
     <div>
       <section className='overflow-x-auto'>
@@ -34,47 +61,101 @@ const TableData = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className='bg-gray-50'>
-              <td className='py-3 px-6 text-left text-gray-700'>Dove Lilia</td>
-              <td className='py-3 px-6 text-left text-gray-700'>Avocados</td>
-              <td className='py-3 px-6 text-left text-gray-700'>2 kg</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦17,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦34,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>2025-05-10</td>
-              <td className='py-3 px-6 text-left text-green-600'>Accepted</td>
-              <td className='py-3 px-6 text-left text-gray-700'>
-                buttons here
-              </td>
-            </tr>
-            <tr className='bg-gray-50'>
-              <td className='py-3 px-6 text-left text-gray-700'>Nice Cave</td>
-              <td className='py-3 px-6 text-left text-gray-700'>Tomatoes</td>
-              <td className='py-3 px-6 text-left text-gray-700'>4 kg</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦19,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦76,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>10-0 5-25</td>
-              <td className='py-3 px-6 text-left text-yellow-600'>Pending</td>
-              <td className='py-3 px-6 text-left text-gray-700'>
-                buttons here
-              </td>
-            </tr>
-            <tr className='bg-gray-50'>
-              <td className='py-3 px-6 text-left text-gray-700'>Josh Dave</td>
-              <td className='py-3 px-6 text-left text-gray-700'>
-                Bell Peppers
-              </td>
-              <td className='py-3 px-6 text-left text-gray-700'>3 kg</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦18,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>₦54,000</td>
-              <td className='py-3 px-6 text-left text-gray-700'>09-0 5-25</td>
-              <td className='py-3 px-6 text-left text-red-600'>Rejected</td>
-              <td className='py-3 px-6 text-left text-gray-700'>
-                buttons here
-              </td>
-            </tr>
+            {data.map((item) => {
+              const numericPrice = parseInt(item.price.replace(/[^0-9]/g, ""));
+              const numericQuantity = parseInt(
+                item.quantity.replace(/[^0-9]/g, "")
+              );
+              const totalValue = numericPrice * numericQuantity;
+
+              const currentStatus = statusMap[item.id];
+
+              return (
+                <tr key={item.id} className='bg-gray-50'>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {item.farmer}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {item.name}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {item.quantity}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {item.price}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    ₦{totalValue.toLocaleString()}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {item.harvestDate}
+                  </td>
+                  <td
+                    className={`py-3 px-6 text-left font-semibold ${
+                      currentStatus === "Accepted"
+                        ? "text-green-600"
+                        : currentStatus === "Rejected"
+                        ? "text-red-600"
+                        : "text-yellow-600"
+                    }`}
+                  >
+                    {currentStatus}
+                  </td>
+                  <td className='py-3 px-6 text-left text-gray-700'>
+                    {currentStatus === "Accepted" ? (
+                      <div className='  bg-[#168B2B] text-white w-fit px-3 py-1 rounded'>
+                        <p>Completed Offer</p>
+                      </div>
+                    ) : currentStatus === "Rejected" ? (
+                      <button
+                        onClick={() => setMakeOffer(true)}
+                        className='border border-black flex justify-center items-center gap-[10px] text-black w-fit px-3 py-1 rounded'
+                      >
+                        Make More Offer
+                      </button>
+                    ) : (
+                      <div className='flex gap-2 items-center'>
+                        <button
+                          onClick={() =>
+                            handleStatusChange(item.id, "Accepted")
+                          }
+                          className='border flex justify-center items-center gap-[10px] border-[#168B2B] text-[#168B2B] w-fit px-3 py-1 rounded'
+                        >
+                          <Icon
+                            icon='fluent-mdl2:accept'
+                            width='16'
+                            height='16'
+                            className='text-[#1D8338]'
+                          />
+                          Accept
+                        </button>
+                        <span className='text-gray-500'>or</span>
+                        <button
+                          onClick={() =>
+                            handleStatusChange(item.id, "Rejected")
+                          }
+                          className='border border-[#C71313] flex justify-center items-center gap-[10px] text-[#C71313] w-fit px-3 py-1 rounded'
+                        >
+                          <Icon
+                            icon='iconamoon:trash'
+                            width='16'
+                            height='16'
+                            className='text-[#C71313]'
+                          />
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </section>
+      {makeOffer && (
+        <MakeOffer product={product} onOff={() => setMakeOffer(false)} />
+      )}{" "}
     </div>
   );
 };
