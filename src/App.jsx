@@ -25,7 +25,7 @@ function AppContent() {
       ) : (
         <div className='lg:flex xl:flex 2xl:flex md:flex h-screen font-[Inter] '>
           <Sidebar />
-          <div className='flex-1 p-4 overflow-y-auto'>
+          <div className='flex-1 p-4 h-auto overflow-y-auto'>
             <Routes>
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/listings' element={<Listings />} />

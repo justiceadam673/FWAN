@@ -45,7 +45,7 @@ const Listing = () => {
               <input
                 type='text'
                 placeholder='Search listings'
-                className='border rounded-[12px] placeholder:text-[20px] placeholder:text-black pl-[60px] w-full h-[40px] lg:h-[56px] pr-4 text-sm focus:outline-none'
+                className='border rounded-[12px] placeholder:text-[20px] placeholder:text-black pl-[60px] w-full h-[40px] lg:h-[56px] text-[25px] focus:outline-none'
               />
             </div>
           </div>
@@ -59,6 +59,11 @@ const Listing = () => {
                 ratings={product.rating}
                 quantity={product.quantity}
                 price={product.price}
+                location={product.location}
+                harvestDate={product.harvestDate}
+                availableUntil={product.availableUntil}
+                description={product.description}
+                reviews={product.reviews}
               />
             ))}
           </div>

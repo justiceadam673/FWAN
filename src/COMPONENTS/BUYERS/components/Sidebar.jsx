@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Top Navbar */}
-      <div className='flex justify-between items-center border-b border-gray-300 px-4 py-3 md:hidden'>
+      <div className='flex justify-between items-center border-b border-gray-300  px-4 py-3 md:hidden'>
         <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
         <button onClick={toggleSidebar} className='text-black'>
           <Icon
@@ -32,7 +32,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white border-l-4 border-black/25 p-[30px] transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-64  border-r-2 border-black/25 bg-[#EAEAEA]  p-[30px] transition-transform duration-300 ease-in-out z-50 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         } md:relative md:translate-x-0 md:block`}
       >
@@ -41,7 +41,7 @@ const Sidebar = () => {
           <img src={logo} alt='FWAN Logo' className='h-[58px] w-[124px]' />
         </div>
 
-        <nav className='flex flex-col  md:gap-[23px] gap-[10px]'>
+        <nav className='flex flex-col  md:gap-0 xl:gap-[23px] gap-[10px]'>
           <button
             onClick={toggleSidebar}
             className='text-black md:hidden w-full flex justify-end '
@@ -74,7 +74,7 @@ const Sidebar = () => {
           </NavLink>
         </nav>
 
-        <div className='flex flex-col mt-10'>
+        <div className='flex flex-col mt-10  xl:mt-16 2xl:mt-30'>
           <button className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'>
             <Icon icon='material-symbols:logout' width='50' height='50' />
             Log Out
