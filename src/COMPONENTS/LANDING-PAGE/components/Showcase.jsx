@@ -33,44 +33,10 @@ export default function Frame() {
   };
 
   return (
-    <section className='flex flex-col md:flex-row items-center justify-center gap-[60px] px-8 md:px-20 py-6 bg-[#eaeaea] w-full max-w-[1441px] mx-auto'>
-      {/* Image gallery */}
-      <div className='flex items-center gap-3'>
-        {images.map((image, index) => (
-          <Card
-            key={index}
-            className='rounded-[20px] overflow-hidden border-none shadow-none'
-          >
-            <CardContent className='p-0'>
-              <div className={`relative ${image.className}`}>
-                <img
-                  className='w-full h-full object-cover'
-                  alt={image.alt}
-                  src={image.src}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+    <div className='w-[620px] h-[1099px] p-2.5 bg-white shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)]'>
+      <div className='w-[521px] inline-flex flex-col justify-start items-start gap-7'>
+      <img src={} className="w-36 h-12 bg-green-700" />
       </div>
-
-      {/* About content */}
-      <div className='flex flex-col items-start justify-center gap-[15px] max-w-[441px]'>
-        <h2 className="w-fit [font-family:'Inter-Bold',Helvetica] font-bold text-black text-5xl">
-          {aboutContent.title}
-        </h2>
-
-        <div className='flex items-center p-2.5 w-full'>
-          <div className="[font-family:'Inter-Regular',Helvetica] font-normal text-black text-2xl">
-            {aboutContent.paragraphs.map((paragraph, index) => (
-              <React.Fragment key={index}>
-                {paragraph}
-                {index < aboutContent.paragraphs.length - 1 && <br />}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   );
 }

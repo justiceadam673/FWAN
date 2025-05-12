@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
-.py1 {
-  padding: 20px 0px;
+body {
+  @apply bg-[#EAEAEA];
 }
