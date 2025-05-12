@@ -5,6 +5,7 @@ import Listings from "./COMPONENTS/BUYERS/pages/Listing";
 import Offers from "./COMPONENTS/BUYERS/pages/Offers";
 import History from "./COMPONENTS/BUYERS/pages/History";
 import Profile from "./COMPONENTS/BUYERS/pages/Profile";
+import SignUp from "./COMPONENTS/ACCESS-INPUTS/signup";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <div className='flex-1 p-4 overflow-y-auto'>
           <Routes>
             <Route path='/' element={<Dashboard />} />
+            <Route path='/signup' element={<SignUp />} />
             <Route path='/listings' element={<Listings />} />
             <Route path='/offers' element={<Offers />} />
             <Route path='/history' element={<History />} />
