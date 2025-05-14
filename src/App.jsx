@@ -1,53 +1,40 @@
 import {
-  BrowserRouter as Router,
-  Routes,
+  createBrowserRouter,
+  RouterProvider,
   Route,
-  useLocation,
+  createRoutesFromElements,
 } from "react-router-dom";
-import Sidebar from "./COMPONENTS/BUYERS/components/Sidebar";
+
+import SidebarLayout from "./layouts/SidebarLayout"; // layout with Sidebar
+import LandingPage from "./COMPONENTS/LANDING-PAGE/components/LandingPage";
+import SignUp from "./COMPONENTS/ACCESS-INPUTS/signup";
 import Dashboard from "./COMPONENTS/BUYERS/pages/Dashboard";
 import Listings from "./COMPONENTS/BUYERS/pages/Listing";
 import Offers from "./COMPONENTS/BUYERS/pages/Offers";
 import History from "./COMPONENTS/BUYERS/pages/History";
 import Profile from "./COMPONENTS/BUYERS/pages/Profile";
 
-import LandingPage from "./COMPONENTS/LANDING-PAGE/components/LandingPage";
-
-function AppContent() {
-  const location = useLocation();
-  const isShow = location.pathname === "/";
-
-  return (
+const router = createBrowserRouter(
+  createRoutesFromElements(
     <>
-      {isShow ? (
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-        </Routes>
-      ) : (
-        <div className='lg:flex xl:flex 2xl:flex md:flex h-screen font-[Inter] '>
-          <Sidebar />
-          <div className='flex-1 p-4 h-auto overflow-y-auto'>
-            <Routes>
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/listings' element={<Listings />} />
-              <Route path='/offers' element={<Offers />} />
-              <Route path='/history' element={<History />} />
-              <Route path='/profile' element={<Profile />} />
-            </Routes>
-          </div>
-        </div>
-      )}
+      {/* Routes without layout */}
+      <Route path='/' element={<LandingPage />} />
+      <Route path='/signup' element={<SignUp />} />
+
+      {/* Routes with Sidebar layout */}
+      <Route element={<SidebarLayout />}>
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/listings' element={<Listings />} />
+        <Route path='/offers' element={<Offers />} />
+        <Route path='/history' element={<History />} />
+        <Route path='/profile' element={<Profile />} />
+      </Route>
     </>
-  );
-}
+  )
+);
 
 function App() {
-  return (
-    <Router>
-
-      <AppContent />
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

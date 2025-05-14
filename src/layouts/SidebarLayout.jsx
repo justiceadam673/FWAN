@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import logo from "../../../assets/img/fwan.png";
+import logo from "../assets/img/fwan.png";
 
-const Sidebar = () => {
+const SidebarLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-
   const closeSidebar = () => setIsSidebarOpen(false);
 
   const linkClass = ({ isActive }) =>
@@ -16,42 +15,30 @@ const Sidebar = () => {
     }`;
 
   return (
-    <>
-      {/* Top Navbar */}
-      <div className='flex justify-between items-center border-b border-gray-300  px-4 py-3 md:hidden'>
-        <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
-        <button onClick={toggleSidebar} className='text-black'>
-          <Icon
-            icon={isSidebarOpen ? undefined : "bi:list"}
-            width='30'
-            height='30'
-            className='-z-50'
-          />
-        </button>
-      </div>
-
+    <div className='flex h-screen font-[Inter]'>
       {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-64  border-r-2 border-black/25 bg-[#EAEAEA]  p-[30px] transition-transform duration-300 ease-in-out z-50 ${
-          isSidebarOpen ? "translate-x-0" : "translate-x-full"
-        } md:relative md:translate-x-0 md:block`}
+        className={`fixed md:relative z-50 top-0 right-0 h-full w-64  border-r border-black/25 p-[30px] transition-transform duration-300 ease-in-out
+        ${
+          isSidebarOpen
+            ? "-translate-x-0 bg-white "
+            : "translate-x-full bg-[#EAEAEA]"
+        } md:translate-x-0`}
       >
+        {/* Top Close Button for Mobile */}
+        <div className='flex justify-between items-center md:hidden mb-4'>
+          <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
+          <button onClick={toggleSidebar} className='text-black'>
+            <Icon icon='mdi:close' width='30' height='30' />
+          </button>
+        </div>
+
         {/* Logo in sidebar for desktop */}
         <div className='hidden md:block mb-[45px]'>
           <img src={logo} alt='FWAN Logo' className='h-[58px] w-[124px]' />
         </div>
 
-        <nav className='flex flex-col  md:gap-0 xl:gap-[23px] gap-[10px]'>
-          <button
-            onClick={toggleSidebar}
-            className='text-black md:hidden w-full flex justify-end '
-          >
-            <Icon
-              icon={isSidebarOpen ? "mdi:close" : undefined}
-              width='30'
-              height='30'
-            />
-          </button>
+        <nav className='flex flex-col gap-3'>
           <NavLink to='/dashboard' className={linkClass} onClick={closeSidebar}>
             <Icon icon='fluent:home-28-regular' width='50' height='50' />
             Dashboard
@@ -74,15 +61,31 @@ const Sidebar = () => {
           </NavLink>
         </nav>
 
-        <div className='flex flex-col mt-10  xl:mt-16 2xl:mt-30'>
+        <div className='mt-auto pt-10'>
           <button className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'>
             <Icon icon='material-symbols:logout' width='50' height='50' />
             Log Out
           </button>
         </div>
       </div>
-    </>
+
+      {/* Main Content Area */}
+      <div className='flex-1 overflow-y-auto'>
+        {/* Mobile Top Navbar */}
+        <div className='md:hidden flex items-center justify-between px-4 py-3 border-b border-gray-300 bg-white sticky top-0 z-40'>
+          <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
+          <button onClick={toggleSidebar} className='text-black'>
+            <Icon icon='bi:list' width='30' height='30' />
+          </button>
+        </div>
+
+        {/* Page Content */}
+        <div className='p-4'>
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Sidebar;
+export default SidebarLayout;

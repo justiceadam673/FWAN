@@ -6,7 +6,7 @@ const NavBar = () => {
   const navigate = useNavigate(); // Initialize navigate
 
   const handleSignUpClick = () => {
-    navigate("/dashboard"); // Navigate to the dashboard
+    navigate("/signup"); // Navigate to the dashboard
   };
 
   return (

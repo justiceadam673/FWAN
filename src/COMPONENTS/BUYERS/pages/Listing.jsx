@@ -14,10 +14,10 @@ const Listing = () => {
       <section className='flex h-full items-center justify-between mt-[23px]'>
         <div className='space-y-[20px]'>
           <h1 className='text-black font-inter text-[24px] md:text-[34px] lg:text-[44px] xl:text-[54px] 2xl:text-[64px]  font-bold leading-none'>
-            General Listings
+            Welcome Grace!
           </h1>
           <h3 className='text-black font-inter text-[14px] lg:text-[16px] font-normal leading-normal'>
-            Get the best listings for you
+            Good to see you again, Grace! Let’s get started
           </h3>
         </div>
         <div className='flex flex-col justify-center items-center gap-[clamp(6px,1.5vw,10px)] p-[clamp(10px,4vw,31px)] rounded-full bg-[#1D8338]'>
