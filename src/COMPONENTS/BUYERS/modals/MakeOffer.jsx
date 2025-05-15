@@ -1,7 +1,7 @@
 import React from "react";
-import Star from "../../../assets/img/star.png";
+// import Star from "../../../assets/img/star.png";
 import { Icon } from "@iconify/react";
-import Logo from "../../../assets/img/fwan.png";
+// import Logo from "../../../assets/img/fwan.png";
 
 const AddListingModal = ({ onOff }) => {
   return (
