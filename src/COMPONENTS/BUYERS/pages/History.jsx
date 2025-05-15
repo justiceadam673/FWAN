@@ -50,28 +50,37 @@ const Listing = () => {
             <p className='text-[14px] lg:text-[20px]'>View your purchase</p>
           </div>
 
-          <table className='min-w-full  text-left text-sm'>
-            <thead className='border-b font-medium text-gray-700'>
-              <tr>
-                <th className='px-4 py-2'>Order ID</th>
-                <th className='px-4 py-2'>Product</th>
-                <th className='px-4 py-2'>Farmer</th>
-                <th className='px-4 py-2'>Quantity</th>
-                <th className='px-4 py-2'>Total Price</th>
-                <th className='px-4 py-2'>Purchase Date</th>
-                <th className='px-4 py-2'>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {simulatedOrders.map((order, index) => (
-                <tr key={index} className='border-t'>
-                  <td className='px-4 py-3'>{order.orderId}</td>
-                  <td className='px-4 py-3'>{order.product}</td>
-                  <td className='px-4 py-3'>{order.farmer}</td>
-                  <td className='px-4 py-3'>{order.quantity}</td>
-                  <td className='px-4 py-3'>{order.totalPrice}</td>
-                  <td className='px-4 py-3'>{order.purchaseDate}</td>
-                  <td className='px-4 py-3'>
+          {/* Mobile Card View */}
+          <div className='block lg:hidden space-y-4'>
+            {simulatedOrders.map((order, index) => (
+              <div key={index} className='border p-4 rounded-md shadow-sm'>
+                <div className='text-sm'>
+                  <p>
+                    <span className='font-semibold'>Order ID:</span>{" "}
+                    {order.orderId}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Product:</span>{" "}
+                    {order.product}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Farmer:</span>{" "}
+                    {order.farmer}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Quantity:</span>{" "}
+                    {order.quantity}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Total Price:</span>{" "}
+                    {order.totalPrice}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Purchase Date:</span>{" "}
+                    {order.purchaseDate}
+                  </p>
+                  <p className='mt-1'>
+                    <span className='font-semibold'>Status:</span>{" "}
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium ${
                         order.status === "Delivered"
@@ -81,11 +90,51 @@ const Listing = () => {
                     >
                       {order.status}
                     </span>
-                  </td>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className='hidden lg:block'>
+            <table className='min-w-full text-left text-sm'>
+              <thead className='border-b font-medium text-gray-700'>
+                <tr>
+                  <th className='px-4 py-2'>Order ID</th>
+                  <th className='px-4 py-2'>Product</th>
+                  <th className='px-4 py-2'>Farmer</th>
+                  <th className='px-4 py-2'>Quantity</th>
+                  <th className='px-4 py-2'>Total Price</th>
+                  <th className='px-4 py-2'>Purchase Date</th>
+                  <th className='px-4 py-2'>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {simulatedOrders.map((order, index) => (
+                  <tr key={index} className='border-t'>
+                    <td className='px-4 py-3'>{order.orderId}</td>
+                    <td className='px-4 py-3'>{order.product}</td>
+                    <td className='px-4 py-3'>{order.farmer}</td>
+                    <td className='px-4 py-3'>{order.quantity}</td>
+                    <td className='px-4 py-3'>{order.totalPrice}</td>
+                    <td className='px-4 py-3'>{order.purchaseDate}</td>
+                    <td className='px-4 py-3'>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          order.status === "Delivered"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>

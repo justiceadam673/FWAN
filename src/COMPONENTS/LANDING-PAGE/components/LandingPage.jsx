@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "./NavBer";
-import HeroSection from "./HeroSection";
+
+import Herosection from "./HeroSection";
 
 const LandingPage = () => {
   return (
     <div>
       <Navbar />
-      <HeroSection />
+      <Herosection />
     </div>
   );
 };
