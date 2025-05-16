@@ -34,35 +34,35 @@ const SidebarLayout = () => {
 
         {/* Logo in sidebar for desktop */}
         <div className='hidden md:block mb-[45px]'>
-          <img src={logo} alt='FWAN Logo' className='h-[48px] w-[124px]' />
+          <img src={logo} alt='FWAN Logo' className='h-[40px] w-[124px]' />
         </div>
 
         <nav className='flex flex-col gap-3'>
           <NavLink to='/dashboard' className={linkClass} onClick={closeSidebar}>
-            <Icon icon='fluent:home-28-regular' width='50' height='50' />
+            <Icon icon='fluent:home-28-regular' width='40' height='40' />
             Dashboard
           </NavLink>
           <NavLink to='/listings' className={linkClass} onClick={closeSidebar}>
-            <Icon icon='el:list-alt' width='50' height='50' />
+            <Icon icon='el:list-alt' width='40' height='40' />
             All Listings
           </NavLink>
           <NavLink to='/offers' className={linkClass} onClick={closeSidebar}>
-            <Icon icon='jam:messages' width='50' height='50' />
-            My Offers
+            <Icon icon='mdi:cart-outline' width='40' height='40' />
+            Carts
           </NavLink>
           <NavLink to='/history' className={linkClass} onClick={closeSidebar}>
-            <Icon icon='ep:bell' width='50' height='50' />
+            <Icon icon='ep:bell' width='40' height='40' />
             History
           </NavLink>
           <NavLink to='/profile' className={linkClass} onClick={closeSidebar}>
-            <Icon icon='gg:profile' width='50' height='50' />
+            <Icon icon='gg:profile' width='40' height='40' />
             Profile
           </NavLink>
         </nav>
 
         <div className='mt-auto pt-10'>
           <button className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'>
-            <Icon icon='material-symbols:logout' width='50' height='50' />
+            <Icon icon='material-symbols:logout' width='40' height='40' />
             <NavLink to={"/"}>Log Out</NavLink>
           </button>
         </div>

@@ -31,25 +31,26 @@ const Dashboard = () => {
       <section className='grid lg:grid-cols-2 gap-[50px] m-[10px]'>
         <Border
           overviewHeader={"Total Purchases"}
-          overviewIcon={Cart}
+          overviewIcon={"mdi-light:cart"}
           overviewDigits={`₦ ${10}`}
           overviewHistory={1.2}
         />
         <Border
           overviewHeader={"Accepted Offers"}
-          overviewIcon={Mark}
+          overviewIcon={"fluent-mdl2:check-mark"}
           overviewDigits={` ${10}`}
           overviewHistory={2}
         />
         <Border
           overviewHeader={"Active Offers"}
-          overviewIcon={Clock}
+          overviewIcon={"iconamoon-clock-thin"}
           overviewDigits={`${6}`}
           overviewHistory={1.2}
         />
         <Border
           overviewHeader={"Farmer Relation"}
-          overviewIcon={Plus}
+          overviewIcon={"ic:sharp-plus"}
+          color={"#1D8338"}
           overviewDigits={`${1}`}
           overviewHistory={0.2}
         />
