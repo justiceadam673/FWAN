@@ -1,11 +1,15 @@
 import React from "react";
+import HeroImg from "../../../assets/img/heroimage.png";
 
 const HeroSection = () => {
   return (
-    <div
-      className='h-screen z-50 bg-cover bg-center flex items-center px-6 md:px-24'
-      style={{ backgroundImage: "url('./src/assets/img/Heroimage.png')" }}
-    >
+    <div className=' h-screen z-50 bg-cover bg-center flex items-center px-6 md:px-24'>
+      <img
+        src={HeroImg}
+        alt='Hero Image'
+        className='absolute inset-0 object-cover bg-center bg-cover w-full h-full'
+      />
+      {/* Overlay */}
       <div className=' relative z-40 text-white max-w-3xl'>
         <h1 className='text-[35px] md:text-6xl font-bold leading-tight mb-4 text-[#FFFFFF]'>
           The Market Place For Farmers And Buyers
