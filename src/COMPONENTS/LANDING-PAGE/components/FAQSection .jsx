@@ -31,7 +31,7 @@ const FAQSection = () => {
 
   return (
     <section className='max-w-3/4 mx-auto py-12 px-4 sm:px-6 lg:px-8'>
-      <h1 className='text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-800'>
+      <h1 className='text-[23px] lg:text-[38px] font-bold text-center mb-10 text-black'>
         Frequently Asked Questions
       </h1>
 
@@ -42,7 +42,7 @@ const FAQSection = () => {
             className='border h-fit border-black rounded-lg overflow-hidden shadow-sm'
           >
             <button
-              className='w-full flex justify-between items-center p-5 text-left font-medium text-gray-700 hover:bg-gray-50 transition-colors'
+              className='w-full flex justify-between items-center p-5 text-left font-medium text-black hover:bg-gray-50 transition-colors'
               onClick={() => toggleAccordion(index)}
               aria-expanded={activeIndex === index}
               aria-controls={`faq-content-${index}`}

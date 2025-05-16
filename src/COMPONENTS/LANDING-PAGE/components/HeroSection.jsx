@@ -3,16 +3,16 @@ import React from "react";
 const HeroSection = () => {
   return (
     <div
-      className='h-screen bg-cover bg-center flex items-center px-6 md:px-24'
+      className='h-screen z-50 bg-cover bg-center flex items-center px-6 md:px-24'
       style={{ backgroundImage: "url('./src/assets/img/Heroimage.png')" }}
     >
-      <div className='text-white max-w-3xl'>
-        <h1 className='text-4xl md:text-6xl font-bold leading-tight mb-4 text-[#FFFFFF]'>
-          The Market Place For <br /> Farmers And Buyers
+      <div className=' relative z-40 text-white max-w-3xl'>
+        <h1 className='text-[35px] md:text-6xl font-bold leading-tight mb-4 text-[#FFFFFF]'>
+          The Market Place For Farmers And Buyers
         </h1>
-        <p className='text-lg md:text-xl mb-8 text-[#FFF] font-inter text-[24px]  '>
-          Connecting farmers and families directly, supporting{" "}
-          <br className='hidden md:block' />
+        <p className='text-lg md:text-xl mb-8 text-[#FFF] font-inter lg:text-[24px] text-[17px]  '>
+          Connecting farmers and families directly, supporting
+          {/* <br className='hidden md:block' /> */}
           local farmers and enjoying healthier food.
         </p>
         <div className='flex flex-wrap gap-4'>
@@ -24,6 +24,7 @@ const HeroSection = () => {
           </button>
         </div>
       </div>
+      <div className='absolute inset-0 bg-black/55'></div>
     </div>
   );
 };

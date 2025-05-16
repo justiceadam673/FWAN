@@ -26,8 +26,7 @@ const SidebarLayout = () => {
         } md:translate-x-0`}
       >
         {/* Top Close Button for Mobile */}
-        <div className='flex justify-between items-center md:hidden mb-4'>
-          <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
+        <div className='flex justify-end items-center md:hidden mb-4'>
           <button onClick={toggleSidebar} className='text-black'>
             <Icon icon='mdi:close' width='30' height='30' />
           </button>
@@ -35,7 +34,7 @@ const SidebarLayout = () => {
 
         {/* Logo in sidebar for desktop */}
         <div className='hidden md:block mb-[45px]'>
-          <img src={logo} alt='FWAN Logo' className='h-[58px] w-[124px]' />
+          <img src={logo} alt='FWAN Logo' className='h-[48px] w-[124px]' />
         </div>
 
         <nav className='flex flex-col gap-3'>
@@ -64,7 +63,7 @@ const SidebarLayout = () => {
         <div className='mt-auto pt-10'>
           <button className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'>
             <Icon icon='material-symbols:logout' width='50' height='50' />
-            Log Out
+            <NavLink to={"/"}>Log Out</NavLink>
           </button>
         </div>
       </div>

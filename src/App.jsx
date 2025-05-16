@@ -7,7 +7,8 @@ import {
 
 import SidebarLayout from "./layouts/SidebarLayout"; // layout with Sidebar
 import LandingPage from "./COMPONENTS/LANDING-PAGE/components/LandingPage";
-import SignUp from "./COMPONENTS/ACCESS-INPUTS/signup";
+import SignUp from "./COMPONENTS/ACCESS-INPUTS/SignUp";
+import SignIn from "./COMPONENTS/ACCESS-INPUTS/SignIn";
 import Dashboard from "./COMPONENTS/BUYERS/pages/Dashboard";
 import Listings from "./COMPONENTS/BUYERS/pages/Listing";
 import Offers from "./COMPONENTS/BUYERS/pages/Offers";
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       {/* Routes without layout */}
       <Route path='/' element={<LandingPage />} />
       <Route path='/signup' element={<SignUp />} />
+      <Route path='/signin' element={<SignIn />} />
 
       {/* Routes with Sidebar layout */}
       <Route element={<SidebarLayout />}>

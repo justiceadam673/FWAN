@@ -1,33 +1,116 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import React, { useState } from "react";
+import { Link as ScrollLink } from "react-scroll";
+import { NavLink } from "react-router-dom";
 import Logo from "../../../assets/img/fwan.png";
+import { HiMenuAlt3, HiX } from "react-icons/hi"; // Hamburger and close icons
 
 const NavBar = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSignUpClick = () => {
-    navigate("/signup"); // Navigate to the dashboard
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
+  const navLinks = [
+    { name: "Home", type: "route", path: "/" },
+    { name: "About Us", type: "scroll", path: "about" },
+    { name: "Collections", type: "scroll", path: "collections" },
+    { name: "Testimonials", type: "scroll", path: "testimonials" },
+    { name: "FAQs", type: "scroll", path: "faqs" },
+  ];
+
   return (
-    <main>
-      <nav className='flex justify-between md:-px-[60px] xl:px-[104px] lg:px[80px] m-auto px-[50px] py-[37px] bg-white items-center p-4'>
-        <img src={Logo} alt='' className='object-center' />
-        <ul className='text-[20px] xl:gap-[37px] lg:gap-[20px] hidden xl:flex lg:flex'>
-          <li>Home</li>
-          <li>About Us</li>
-          <li>Collections</li>
-          <li>Testimonials</li>
-          <li>FAQs</li>
+    <header className='bg-white  lg:p-[15px] shadow-md fixed w-full z-50'>
+      <nav className='flex justify-between items-center h-[80px] px-6 md:px-10'>
+        <img
+          src={Logo}
+          alt='Logo'
+          className='h-[30px] md:h-[50px] w-auto  object-contain'
+        />
+
+        {/* Desktop Nav */}
+        <ul className='hidden lg:flex space-x-10 text-[18px] font-medium'>
+          {navLinks.map((link, idx) => (
+            <li key={idx}>
+              {link.type === "scroll" ? (
+                <ScrollLink
+                  to={link.path}
+                  smooth={true}
+                  duration={500}
+                  offset={-80}
+                  className='cursor-pointer text-[20px] text-black hover:text-[#3D8236] focus:text-[#3D8236]'
+                >
+                  {link.name}
+                </ScrollLink>
+              ) : (
+                <NavLink
+                  to={link.path}
+                  className='text-black text-[20px] cursor-pointer hover:text-[#3D8236] focus:text-[#3D8236] '
+                >
+                  {link.name}
+                </NavLink>
+              )}
+            </li>
+          ))}
         </ul>
-        <button
-          className='bg-[#3D8236] text-[#FFFFFF] xl:flex lg:flex flex py-[10px] px-[8px] justify-center items-center  md:px-[32px] md:py-[16px] text-[20px] rounded-[8px]'
-          onClick={handleSignUpClick} // Add onClick handler for navigation
+
+        {/* Desktop Sign Up */}
+        <NavLink
+          to='/signup'
+          className='hidden lg:block bg-[#3D8236] text-white py-2 px-6 rounded-[8px] text-[16px]'
         >
           Sign Up
+        </NavLink>
+
+        {/* Mobile Hamburger */}
+        <button
+          className='lg:hidden text-3xl text-black'
+          onClick={toggleMenu}
+          aria-label='Toggle Menu'
+        >
+          {menuOpen ? <HiX /> : <HiMenuAlt3 />}
         </button>
       </nav>
-    </main>
+
+      {/* Mobile Dropdown */}
+      {menuOpen && (
+        <div className='lg:hidden bg-white shadow-md py-4 px-6 space-y-4 text-[18px] font-medium'>
+          {navLinks.map((link, idx) => (
+            <div key={idx}>
+              {link.type === "scroll" ? (
+                <ScrollLink
+                  to={link.path}
+                  smooth={true}
+                  duration={500}
+                  offset={-80}
+                  onClick={() => setMenuOpen(false)}
+                  className='block text-black hover:text-[#3D8236] cursor-pointer'
+                >
+                  {link.name}
+                </ScrollLink>
+              ) : (
+                <NavLink
+                  to={link.path}
+                  onClick={() => setMenuOpen(false)}
+                  className='block text-black hover:text-[#3D8236]'
+                >
+                  {link.name}
+                </NavLink>
+              )}
+            </div>
+          ))}
+
+          {/* Mobile Sign Up Button */}
+          <NavLink
+            to='/signup'
+            onClick={() => setMenuOpen(false)}
+            className='block w-full bg-[#3D8236] text-white py-2 text-center rounded-[8px]'
+          >
+            Sign Up
+          </NavLink>
+        </div>
+      )}
+    </header>
   );
 };
 

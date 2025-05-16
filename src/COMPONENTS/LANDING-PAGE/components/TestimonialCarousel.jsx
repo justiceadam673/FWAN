@@ -33,7 +33,7 @@ const TestimonialCarousel = () => {
 
   return (
     <section className='max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8'>
-      <h1 className='text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-800'>
+      <h1 className='text-[23px] lg:text-[38px] font-bold text-center mb-10 text-black'>
         What Our Users Say
       </h1>
 
@@ -58,7 +58,7 @@ const TestimonialCarousel = () => {
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index}>
-            <div className='bg-white p-6 h-full rounded-3xl shadow-lg flex flex-col justify-center space-y-4'>
+            <div className='bg-white p-6 h-60 rounded-3xl shadow-lg flex flex-col justify-center space-y-4'>
               <div className='flex items-center space-x-4'>
                 <img
                   src={testimonial.image}
@@ -69,7 +69,7 @@ const TestimonialCarousel = () => {
                   {testimonial.name}
                 </h3>
               </div>
-              <p className='text-sm text-gray-600 leading-relaxed'>
+              <p className='text-[15px] text-gray-600 leading-relaxed'>
                 {testimonial.quote}
               </p>
             </div>

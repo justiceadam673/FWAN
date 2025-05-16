@@ -46,9 +46,11 @@ const products = [
 
 const ProductGrid = () => {
   return (
-    <div className=' w-3/4 flex flex-col items-center mx-auto p-6'>
-      <h1 className='text-4xl font-bold mb-4'>Latest Produce</h1>
-      <div className='grid grid-cols-1 md:grid-cols-2  2xl:grid-cols-3  gap-6'>
+    <div className=' lg:w-3/4 flex flex-col items-center mx-auto p-6'>
+      <h1 className='text-[23px] lg:text-[38px] font-bold mb-4'>
+        Our Collections
+      </h1>
+      <div className='grid grid-cols-1 md:grid-cols-2    gap-6'>
         {products.map((product, index) => (
           <ProductCard
             key={index}

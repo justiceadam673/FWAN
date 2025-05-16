@@ -5,17 +5,30 @@ import AboutUs from "./Aboutus";
 import ProductGrid from "./ProductGrid";
 import TestimonialCarousel from "./TestimonialCarousel";
 import FAQSection from "./FAQSection ";
+import { Element } from "react-scroll";
+
 const LandingPage = () => {
   return (
     <div>
       <Navbar />
-
       <div className='bg-[#EAEAEA]'>
         <Herosection />
-        <AboutUs />
-        <ProductGrid />
-        <TestimonialCarousel />
-        <FAQSection />
+
+        <Element name='about'>
+          <AboutUs />
+        </Element>
+
+        <Element name='collections'>
+          <ProductGrid />
+        </Element>
+
+        <Element name='testimonials'>
+          <TestimonialCarousel />
+        </Element>
+
+        <Element name='faqs'>
+          <FAQSection />
+        </Element>
       </div>
     </div>
   );
