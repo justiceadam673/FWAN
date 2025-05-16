@@ -5,6 +5,7 @@ import AboutUs from "./Aboutus";
 import ProductGrid from "./ProductGrid";
 import TestimonialCarousel from "./TestimonialCarousel";
 import FAQSection from "./FAQSection ";
+import Footer from "./footer";
 const LandingPage = () => {
   return (
     <div>
@@ -16,6 +17,7 @@ const LandingPage = () => {
         <ProductGrid />
         <TestimonialCarousel />
         <FAQSection />
+        <Footer/>
       </div>
     </div>
   );
