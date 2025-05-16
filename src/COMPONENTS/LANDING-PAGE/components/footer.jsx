@@ -18,15 +18,17 @@ export default function Footer() {
             Connecting farmers and families directly, supporting local farmers and enjoying healthier food.
           </div>
           <div className="flex gap-6">
-            <a href="#" aria-label="Instagram">
-              <FaInstagram className="w-9 h-9 text-pink-500 hover:text-pink-700 cursor-pointer" />
-            </a>
-            <a href="#" aria-label="Twitter">
-              <FaTwitter className="w-9 h-9 text-sky-500 hover:text-sky-600 cursor-pointer" />
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <FaLinkedin className="w-9 h-9 text-blue-600 hover:text-blue-800 cursor-pointer" />
-            </a>
+             <div>
+            <img src="./src/assets/img/instagram.png" alt="" />
+              </div>
+              
+                 <div>
+                    <img src="./src/assets/img/twitter.png" alt="" />
+                 </div>
+        
+                  <div>
+                      <img src="./src/assets/img/twitter.png" alt="" />
+                  </div>
             <a href="#" aria-label="Facebook">
               <FaFacebookF className="w-9 h-9 text-blue-700 hover:text-blue-900 cursor-pointer" />
             </a>
