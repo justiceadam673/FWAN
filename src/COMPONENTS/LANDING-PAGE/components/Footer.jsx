@@ -9,6 +9,7 @@ import Vector from "../../../assets/img/Vector.png"; // Adjust this path based o
 
 export default function Footer() {
   return (
+
     <footer className='w-full bg-[#FFFF] text-gray-700 overflow-hidden'>
       <div className='max-w-[1440px] mx-auto px-4 py-10 md:flex md:justify-between gap-[130px] relative'>
         {/* Logo and Description */}
@@ -18,6 +19,7 @@ export default function Footer() {
             Connecting farmers and families directly, supporting local farmers
             and enjoying healthier food.
           </div>
+
           <div className='flex gap-6'>
             <a href='#' aria-label='Instagram'>
               <FaInstagram className='w-9 h-9 text-pink-500 hover:text-pink-700 cursor-pointer' />
