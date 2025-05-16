@@ -6,6 +6,7 @@ import ProductGrid from "./ProductGrid";
 import TestimonialCarousel from "./TestimonialCarousel";
 import FAQSection from "./FAQSection ";
 import { Element } from "react-scroll";
+import Footer from "./Footer";
 
 const LandingPage = () => {
   return (
@@ -28,6 +29,9 @@ const LandingPage = () => {
 
         <Element name='faqs'>
           <FAQSection />
+        </Element>
+        <Element>
+          <Footer />
         </Element>
       </div>
     </div>
