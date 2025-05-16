@@ -9,7 +9,7 @@ import Vector from "../../../assets/img/Vector.png"; // Adjust this path based o
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#FFFF] text-gray-700 overflow-hidden">
+    <footer className="w-full bg-[#FFF] text-gray-700 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-4 py-10 md:flex md:justify-between gap-[130px] relative">
         {/* Logo and Description */}
         <div className="md:w-[600px] flex flex-col gap-14">
@@ -27,11 +27,14 @@ export default function Footer() {
                  </div>
         
                   <div>
-                      <img src="./src/assets/img/twitter.png" alt="" />
+                      <img src="./src/assets/img/linkedin.png" alt="" />
                   </div>
-            <a href="#" aria-label="Facebook">
-              <FaFacebookF className="w-9 h-9 text-blue-700 hover:text-blue-900 cursor-pointer" />
-            </a>
+                        
+                
+                  <div>
+                      <img src="./src/assets/img/linkedin.png" alt="" />
+                  </div>
+
           </div>
         </div>
 
