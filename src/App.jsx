@@ -14,6 +14,10 @@ import Listings from "./COMPONENTS/BUYERS/pages/Listing";
 import Offers from "./COMPONENTS/BUYERS/pages/Offers";
 import History from "./COMPONENTS/BUYERS/pages/History";
 import Profile from "./COMPONENTS/BUYERS/pages/Profile";
+import HeaderFooter from "./layouts/HeaderFooter"; // layout with Header and Footer
+import Collections from "./COMPONENTS/LANDING-PAGE/pages/Collections";
+import AboutUs from "./COMPONENTS/LANDING-PAGE/pages/AboutUs";
+import ContactUs from "./COMPONENTS/LANDING-PAGE/pages/ContactUs";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +34,11 @@ const router = createBrowserRouter(
         <Route path='/offers' element={<Offers />} />
         <Route path='/history' element={<History />} />
         <Route path='/profile' element={<Profile />} />
+      </Route>
+      <Route element={<HeaderFooter />}>
+        <Route path='/collections' element={<Collections />} />
+        <Route path='/aboutus' element={<AboutUs />} />
+        <Route path='/contactus' element={<ContactUs />} />
       </Route>
     </>
   )

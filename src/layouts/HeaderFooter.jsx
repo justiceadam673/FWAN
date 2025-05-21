@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next"; // ⬅️ Import translation hook
 import NavBar from '../COMPONENTS/LANDING-PAGE/components/NavBer'
+import Footer from '../COMPONENTS/LANDING-PAGE/components/Footer'
 
 const HeaderFooter = () => {
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,10 +17,10 @@ const HeaderFooter = () => {
 //     }`;
 
   return (
-    <div className='flex h-screen font-[Inter]'>
+    <div className='flex h-screen '>
     <NavBar/>
-    <div></div>
-    <footer
+    <div>{Outlet}</div>
+    <Footer/>
 
     
     </div>
