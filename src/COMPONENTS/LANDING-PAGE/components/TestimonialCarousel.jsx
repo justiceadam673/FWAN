@@ -5,6 +5,7 @@ import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "../../../../src/TestimonialCarousel.css"; // Import the custom CSS
 
 const TestimonialCarousel = () => {
   const testimonials = [
@@ -32,7 +33,7 @@ const TestimonialCarousel = () => {
   ];
 
   return (
-    <section className='max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8'>
+    <section className='max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative'>
       <h1 className='text-[23px] lg:text-[38px] font-bold text-center mb-10 text-black'>
         What Our Users Say
       </h1>

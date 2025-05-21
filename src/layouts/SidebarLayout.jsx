@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next"; // ⬅️ Import translation hook
 import logo from "../assets/img/fwan.png";
+import LanguageSwitcher from "../COMPONENTS/GENERAL-UTILITY/LanguageSwitcher";
 
 const SidebarLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation(); // ⬅️ Translation hook
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -40,30 +43,31 @@ const SidebarLayout = () => {
         <nav className='flex flex-col gap-3'>
           <NavLink to='/dashboard' className={linkClass} onClick={closeSidebar}>
             <Icon icon='fluent:home-28-regular' width='40' height='40' />
-            Dashboard
+            {t("dashboard")}
           </NavLink>
           <NavLink to='/listings' className={linkClass} onClick={closeSidebar}>
             <Icon icon='el:list-alt' width='40' height='40' />
-            All Listings
+            {t("all_listings")}
           </NavLink>
           <NavLink to='/offers' className={linkClass} onClick={closeSidebar}>
             <Icon icon='mdi:cart-outline' width='40' height='40' />
-            Carts
+            {t("carts")}
           </NavLink>
           <NavLink to='/history' className={linkClass} onClick={closeSidebar}>
             <Icon icon='ep:bell' width='40' height='40' />
-            History
+            {t("history")}
           </NavLink>
           <NavLink to='/profile' className={linkClass} onClick={closeSidebar}>
             <Icon icon='gg:profile' width='40' height='40' />
-            Profile
+            {t("profile")}
           </NavLink>
         </nav>
 
         <div className='mt-auto pt-10'>
+          <LanguageSwitcher />
           <button className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'>
             <Icon icon='material-symbols:logout' width='40' height='40' />
-            <NavLink to={"/"}>Log Out</NavLink>
+            <NavLink to={"/"}>{t("log_out")}</NavLink>
           </button>
         </div>
       </div>

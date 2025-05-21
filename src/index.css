@@ -13,133 +13,223 @@
   @apply bg-[#EAEAEA];
 } */
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Thin.woff2") format("woff2");
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
   font-weight: 100;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-ThinItalic.woff2") format("woff2");
-  font-weight: 100;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-ExtraLight.woff2") format("woff2");
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
   font-weight: 200;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-ExtraLightItalic.woff2") format("woff2");
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Light.woff2") format("woff2");
+.poppins-light {
+  font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-LightItalic.woff2") format("woff2");
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Regular.woff2") format("woff2");
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Medium.woff2") format("woff2");
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-MediumItalic.woff2") format("woff2");
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-SemiBold.woff2") format("woff2");
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-SemiBoldItalic.woff2") format("woff2");
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Bold.woff2") format("woff2");
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-BoldItalic.woff2") format("woff2");
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-ExtraBold.woff2") format("woff2");
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-ExtraBoldItalic.woff2") format("woff2");
-  font-weight: 800;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Black.woff2") format("woff2");
+.poppins-black {
+  font-family: "Poppins", sans-serif;
   font-weight: 900;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-BlackItalic.woff2") format("woff2");
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.kodchasan-thin {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.kodchasan-extralight {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.kodchasan-light {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.kodchasan-regular {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.kodchasan-medium {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.kodchasan-semibold {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.kodchasan-bold {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.kodchasan-extrabold {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.kodchasan-black {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.kodchasan-thin-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.kodchasan-extralight-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.kodchasan-light-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.kodchasan-regular-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.kodchasan-medium-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.kodchasan-semibold-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.kodchasan-bold-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.kodchasan-extrabold-italic {
+  font-family: "Kodchasan", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.kodchasan-black-italic {
+  font-family: "Kodchasan", sans-serif;
   font-weight: 900;
   font-style: italic;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
   @apply bg-[#EAEAEA];
 }
