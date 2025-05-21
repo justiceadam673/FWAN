@@ -1,0 +1,23 @@
+.swiper-button-prev,
+.swiper-button-next {
+  color: black;
+  top: 45%;
+  width: 35px;
+  height: 35px;
+  z-index: 100;
+}
+
+.swiper-button-prev {
+  left: 25px; /* Adjust to push it outside */
+}
+
+.swiper-button-next {
+  right: 25px; /* Adjust to push it outside */
+}
+
+@media (max-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none; /* Hide arrows on mobile */
+  }
+}

@@ -1,40 +1,41 @@
 import React from "react";
-// import Farms from "../../../assets/img/farms.png";
-import Hero from "../../../assets/img/hero.png"
+
+import AboutUsImage from "../../../assets/img/aboutus.png";
+import { Icon } from "@iconify/react";
+
 const AboutUs = () => {
   return (
-    <section className='px-6 py-12 md:py-20'>
-      <div className='max-w-6xl mx-auto flex flex-col md:flex-row-reverse gap-10 items-center'>
-        {/* Text side */}
-        <div className='w-full'>
-          {/* <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-6  font-[ka]'>
-            About Us
-          </h2> */}
+    <main className='flex flex-col w-[1248px] place-self-center items-center justify-center  '>
+      <h2 className=' text-[#1E1E1E] text-[45px] leading-normal kodchasan-semibold '>
+        About Us
+      </h2>
+      <section className='flex gap-[25px]  px-[95px] place-self-center h-[497px] items-center justify-center '>
+        <img
+          src={AboutUsImage}
+          className=' h-[455px] w-1/2 flex-1 bg-center bg-cover'
+        />
 
-       <div class="self-stretch text-center justify-start text-stone-900 text-5xl font-semibold font-['Kodchasan']">About Us</div>
-
-
-
-
-          <p className='text-gray-700 text-lg leading-relaxed mb-4'>
-               Welcome to Fwan — where technology meets agriculture to create a smarter, fairer, and more efficient way to trade farm produce.
-              We started Fwan with a simple but powerful vision: to empower farmers and streamline the fresh produce supply chain. For too long, small-scale farmers have faced challenges in getting fair prices, reaching the right buyers, and dealing with middlemen who reduce their earnings. At the same time, buyers — from individuals to small businesses — struggle to access fresh, affordable, and traceable produce directly from the source.
-              Fwan is here to change that.... 
+        <div className=''>
+          <p className=' flex-2 text-[#191D23] text-[20px] poppins-regular leading-[150.203%] '>
+            Welcome to Fwan — where technology meets agriculture to create a
+            smarter, fairer, and more efficient way to trade farm produce. We
+            started Fwan with a simple but powerful vision: to empower farmers
+            and streamline the fresh produce supply chain. For too long,
+            small-scale farmers have faced challenges in getting fair prices,
+            reaching the right buyers, and dealing with middlemen who reduce
+            their earnings. At the same time, buyers — from individuals to small
+            businesses — struggle to access fresh, affordable, and traceable
+            produce directly from the source. Fwan is here to change that....{" "}
           </p>
-         
+          <div className='flex justify-end-safe'>
+            <button className='flex w-[185px] hover:border-[#3D8236] hover:text-[#3D8236] transition duration-[0.5s] h-[55px] p-[10px] justify-center items-center gap-[10px] rounded-[20px] border border-[#585252] '>
+              <span>Learn more</span>{" "}
+              <Icon icon={"tabler:arrow-right"} width={24} height={24} />
+            </button>
+          </div>
         </div>
-
-        {/* Image side */}
-        <div className='relative w-full h-[300px] md:h-[400px]'>
-          <img
-            src={Hero}
-            alt='Farm produce'
-            className='object-cover w-full h-full rounded-2xl shadow-lg'
-          />
-          <div className='absolute inset-0 bg-black/10 rounded-2xl'></div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };
 

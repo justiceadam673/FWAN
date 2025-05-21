@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import SidebarLayout from "./layouts/SidebarLayout"; // layout with Sidebar
-import LandingPage from "./COMPONENTS/LANDING-PAGE/components/LandingPage";
+import LandingPage from "./COMPONENTS/LANDING-PAGE/pages/LandingPage";
 import SignUp from "./COMPONENTS/ACCESS-INPUTS/SignUp";
 import SignIn from "./COMPONENTS/ACCESS-INPUTS/SignIn";
 import Dashboard from "./COMPONENTS/BUYERS/pages/Dashboard";

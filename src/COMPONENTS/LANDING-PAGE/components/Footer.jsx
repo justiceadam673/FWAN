@@ -9,13 +9,12 @@ import Vector from "../../../assets/img/Vector.png"; // Adjust this path based o
 
 export default function Footer() {
   return (
-
-    <footer className='w-full bg-[#FFFF] text-gray-700 overflow-hidden'>
-      <div className='max-w-[1440px] mx-auto px-4 py-10 md:flex md:justify-between gap-[130px] relative'>
+    <footer className='w-full font-[poppins] px-[105px] gap-[130px] overflow-hidden bg-[#292626]'>
+      <div className='max-w-[1440px] mx-auto  py-10 md:flex md:justify-between gap-[130px] relative'>
         {/* Logo and Description */}
         <div className='md:w-[600px] flex flex-col lg:gap-14 gap-8'>
           <img src={Vector} alt='Fwan Logo' className='w-[124px] h-[40px]' />
-          <div className='text-black/75 text-[17px] font-normal font-inter'>
+          <div className='text-white/75 text-[20px] font-normal leading-normal font-[Poppins] '>
             Connecting farmers and families directly, supporting local farmers
             and enjoying healthier food.
           </div>
@@ -37,55 +36,66 @@ export default function Footer() {
         </div>
 
         {/* Explore Links */}
-        <div className='w-36 flex flex-col gap-5 mt-10 md:mt-0'>
-          <h3 className='text-black text-2xl font-bold font-inter'>Explore</h3>
+        <div className='w-36 flex flex-col gap-[16px] mt-10 md:mt-0'>
+          <h3 className='text-[#FFF] text-[24px] font-bold '>Explore</h3>
           <a
             href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
+            className='text-[#FFF]  2xl:text-[24px] pop text-[20px] font-normal  hover:underline'
           >
             Home
           </a>
           <a
             href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
+            className='text-[#FFF] 2xl:text-[24px] text-[20px] font-normal  hover:underline'
           >
             About Us
           </a>
           <a
             href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
+            className='text-[#FFF]  2xl:text-[24px] text-[20px] font-normal  hover:underline'
           >
             Collections
           </a>
           <a
             href='#'
-            className='text-black text-2xl font-normal font-[Inter] hover:underline'
+            className='text-[#FFF] 2xl:text-[24px] text-[20px] font-normal  hover:underline'
           >
-            Testimonial
+            Collections
           </a>
         </div>
 
         {/* About Links */}
-        <div className='w-56 flex flex-col gap-5 mt-10 md:mt-0'>
-          <h3 className='text-black text-2xl font-bold font-inter'>About</h3>
+        <div className='w-56 flex flex-col gap-[16px] mt-10 md:mt-0'>
+          <h3 className='text-[#FFF] text-[24px] font-bold '>About</h3>
           <a
             href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
+            className='text-[#FFF]  2xl:text-[24px] text-[20px] font-normal  hover:underline'
           >
             FAQs
           </a>
           <a
             href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
+            className='text-[#FFF]  2xl:text-[24px] text-[20px] font-normal  hover:underline'
           >
             Support
           </a>
-            
+
+          <a
+            href='#'
+            className=' text-[#FFF] 2xl:text-[24px] text-[20px] font-normal  hover:underline'
+          >
+            Subscribe
+          </a>
+          <a
+            href='#'
+            className='text-[#FFF]  2xl:text-[24px] text-[20px] font-normal  hover:underline'
+          >
+            Terms of services
+          </a>
         </div>
       </div>
-
       {/* Bottom bar */}
-      <div className="w-full bg-black text-white text-center py-4 text-[20px] font-['Inter']">
+      <div className='w-full  text-center py-4 text-[24px] font-normal font-[Poppins] text-[#FFF] leading-normal'>
         Copyright @ 2025, Fwan. All rights reserved
       </div>
     </footer>
