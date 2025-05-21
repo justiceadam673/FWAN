@@ -8,7 +8,7 @@ import Potatoes from "../../../assets/img/poat.png";
 const products = [
   {
     image:
-      "https://upload.wikimedia.org/wikipedia/commons/a/ae/Stashed_bell_pepper_ready_for_to_be_transported_03.jpg",
+      "",
     title: "Bell Peppers",
     seller: "Joshua Davis",
     rating: 4.6,
@@ -42,11 +42,31 @@ const products = [
     quantity: "9kg",
     price: "₦21,000",
   },
+
+   {
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pomodorini_sulla_pianta.jpg",
+    title: "Tomatoes",
+    seller: "Joshua Davis",
+    rating: 4.6,
+    quantity: "9kg",
+    price: "₦21,000",
+  },
+
+   {
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pomodorini_sulla_pianta.jpg",
+    title: "Tomatoes",
+    seller: "Joshua Davis",
+    rating: 4.6,
+    quantity: "9kg",
+    price: "₦21,000",
+  },
 ];
 
 const ProductGrid = () => {
   return (
-    <div className=' lg:w-3/4 flex flex-col items-center mx-auto p-6'>
+    <div className=' lg:w-2/4  flex flex-col items-center mx-auto p-6'>
       <h1 className='text-[23px] lg:text-[38px] font-bold mb-4'>
         Our Collections
       </h1>

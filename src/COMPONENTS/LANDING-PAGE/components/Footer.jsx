@@ -80,18 +80,7 @@ export default function Footer() {
           >
             Support
           </a>
-          <a
-            href='#'
-            className="text-black text-2xl font-normal font-['Inter'] hover:underline"
-          >
-            Subscribe
-          </a>
-          <a
-            href='#'
-            className='text-black text-2xl font-normal font-[Inter] hover:underline'
-          >
-            Terms of services
-          </a>
+            
         </div>
       </div>
 

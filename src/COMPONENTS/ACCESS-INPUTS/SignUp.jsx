@@ -29,10 +29,10 @@ export default function SignUp() {
           </div>
 
           {/* <h2 className="text-2xl font-bold text-black-[#000] px-[26px] py-[125] ">Create Account</h2> */}
-          <h2 className='text-[38px] font-bold text-black font-[Inter] leading-none h-[58px]'>
+          <h2 className='justify-start text-black text-5xl font-bold font-[Inter] mb-[10px] '>
             Create Account
           </h2>
-          <p className='text-[18px] text-black mb-[20px] px-[96] py-[97]'>
+          <p className='font-["Inter"] text-[18px] text-black mb-[20px] px-[96] py-[97] '>
             Fill your information below to register
           </p>
 
@@ -114,5 +114,9 @@ export default function SignUp() {
         </div>
       </div>
     </div>
+
+
+
+ 
   );
 }
