@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCard from "./ProductCard";
+import ProductCard from "../utility/ProductCard";
 import Tomatoes from "../../../assets/img/tomatoes.png";
 import Potatoes from "../../../assets/img/potatoes.png";
 import Pepper from "../../../assets/img/peppers.png";
