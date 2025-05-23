@@ -8,11 +8,11 @@ import Pepper from "../../../assets/img/peppers.png";
 
 const ProductGrid = () => {
   return (
-    <div className=' lg:w-3/4 flex flex-col items-center justify-center mx-auto p-6'>
-      <h1 className='text-[45px] text-[#1E1E1E] leading-normal font-[Kodchasan] font-semibold mb-4'>
+    <div className=' md:w-3/4 flex flex-col items-center justify-center mx-auto  lg:p-6'>
+      <h1 className=' text-[20px] lg:text-[45px] text-[#1E1E1E] max-lg:mt-[20px]  leading-normal font-[Kodchasan] font-semibold mb-4'>
         Our Collections
       </h1>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-[1234px]  gap-6 justify-center'>
+      <div className='grid grid-cols-2  lg:grid-cols-3  lg:w-[1234px]  gap-6 justify-center'>
         <ProductCard
           title={"Tomato"}
           image={Tomatoes}

@@ -2,39 +2,41 @@ import React from "react";
 
 const ProductCard = ({ title, seller, rating, image, quantity, price }) => {
   return (
-    <div className=' max-w-[379px] w-full h-[669px] rounded-[30px] border bg-[#FFF] shadow-[0px_4px_2px_0px_rgba(0,0,0,0.25)] p-[20px] border-[#8C8383] '>
+    <div className=' md:max-w-full lg:max-w-[379px] max-w-[162px] w-full h-[256px] md:h-[669px] rounded-[12.823px] md:rounded-[30px] border bg-[#FFF] shadow-[0px_4px_2px_0px_rgba(0,0,0,0.25)] p-[8px] md:p-[20px] border-[#8C8383] '>
       <img
         src={image}
         alt={title}
-        className='h-1/2 w-full  object-cover rounded-xl'
+        className='md:h-1/2 h-[116.54px] w-full rounded-[12.823px] object-cover md:rounded-xl'
       />
-      <div className='mt-[13px]'>
-        <section className='p-4 space-y-2 flex flex-col items-start mb-[16px] justify-between '>
-          <h2 className='text-[28px] poppins-semibold '>{title}</h2>
-          <p className='text-[20px] leading-normal poppins-regular hidden lg:flex '>
+      <div className='md:mt-[13px]'>
+        <section className=' p-[6px] md:p-4 md:space-y-2 flex flex-col items-start mb-[6px] lg:mb-[16px] justify-between '>
+          <h2 className=' text-[14px] md:text-[28px] poppins-semibold '>
+            {title}
+          </h2>
+          <p className=' text-[10px] md:text-[20px] leading-normal poppins-regular flex '>
             {seller} • ⭐ {rating}
           </p>
         </section>
-        <section className='flex mb-[37px] justify-between items-center'>
+        <section className='flex mb-[6px] md:mb-[37px] justify-between items-center'>
           <div>
-            <h2 className='text-[20px] poppins-regular leading-normal text-[#645E5E] '>
+            <h2 className=' text-[12px] md:text-[20px] poppins-regular leading-normal text-[#645E5E] '>
               Quantity
             </h2>
-            <p className='text-[28px] poppins-semibold text-[#1E1E1E] '>
+            <p className=' text-[14px] md:text-[28px] poppins-semibold text-[#1E1E1E] '>
               {quantity}
             </p>
           </div>
           <div>
-            <h2 className='text-[20px] poppins-regular leading-normal text-[#645E5E] '>
+            <h2 className=' text-[12px] md:text-[20px] poppins-regular leading-normal text-[#645E5E] '>
               Price
             </h2>
-            <p className='text-[28px] poppins-semibold text-[#1E1E1E] '>
+            <p className=' text-[14px] md:text-[28px] poppins-semibold text-[#1E1E1E] '>
               {price}
             </p>
           </div>
         </section>
-        <div className='w-full flex justify-center items-center mt-4'>
-          <button className='w-[202px] h-[55px] p-[10px] rounded-[20px] text-center bg-black text-[20px] poppins-regular leading-normal text-white hover:bg-[#3D8236] transition duration-[0.5s]'>
+        <div className='w-full flex justify-center items-center md:mt-4'>
+          <button className=' w-[86.343px] md:w-[202px]  h-[23.509px] md:h-[55px] p-[4.274px] lg:p-[10px] rounded-[20px] text-center bg-black text-[12px] md:text-[20px] poppins-regular leading-normal text-white hover:bg-[#3D8236] transition duration-[0.5s]'>
             Make a Bid
           </button>
         </div>

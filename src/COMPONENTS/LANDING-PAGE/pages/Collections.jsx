@@ -98,9 +98,9 @@ const Collections = () => {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <main className='px-4 lg:px-8 2xl:mx-[150px] xl:mx-[50px] py-6'>
+    <main className='px-4 lg:px-8 2xl:mx-[150px]  xl:mx-[50px] py-6'>
       {/* Search Input */}
-      <section className='flex gap-[20px] mb-[58px] p items-center'>
+      <section className='flex gap-[20px] flex-col md:flex-row mb-[58px] p items-center'>
         <section className='flex  items-center gap-4 '>
           <Icon
             icon='ri:search-line'
@@ -113,17 +113,17 @@ const Collections = () => {
             placeholder='Search'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className=' h-fit 2xl:w-[660px] w-[560px] border border-black rounded-[28px] py-[16px] pl-[48px] '
+            className=' h-fit 2xl:w-[660px] lg:w-[560px] w-full border border-black rounded-[28px] py-[10px] lg:py-[16px] pl-[48px] '
           />
         </section>
-        <section className='flex w-full  gap-[20px]  items-center '>
-          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[135px] p-[10px] border border-black rounded-[15px]  '>
+        <section className='flex w-full gap-[10px] lg:gap-[20px] text-[12px] lg:text-[20px] items-center '>
+          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[135px] py-[10px] p-[5px] lg:p-[10px] border border-black rounded-[15px]  '>
             Rating
           </button>
-          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[135px] p-[10px] border border-black rounded-[15px]  '>
+          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[135px] py-[10px] p-[5px] lg:p-[10px] border border-black rounded-[15px]  '>
             Harvested
           </button>
-          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[169px] p-[10px] border border-black rounded-[15px]  '>
+          <button className='w-full cursor-pointer hover:border-[#3d8236] hover:text-[#3d8236] transition duration-[.5s] h-fit max-w-[169px] py-[10px] p-[5px] lg:p-[10px] border border-black rounded-[15px]  '>
             Not Harvested
           </button>
         </section>
@@ -132,7 +132,7 @@ const Collections = () => {
       {/* Main Content Area with A-Z filter on the right */}
       <section className='flex  justify-center '>
         {/* Product Grid */}
-        <div className='flex-1 grid grid-cols-1 md:grid-cols-2 gap-[55px]   justify-center  lg:grid-cols-3'>
+        <div className='flex-1 grid grid-cols-2  gap-[20px] lg:gap-[55px]   justify-center  xl:grid-cols-3'>
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product, index) => (
               <CollectionsCard key={index} {...product} />
