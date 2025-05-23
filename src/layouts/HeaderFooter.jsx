@@ -7,7 +7,7 @@ const HeaderFooter = () => {
     <div className='flex flex-col min-h-screen'>
       <NavBar />
 
-      <main className='flex-grow mt-30'>
+      <main className='flex-grow mt-20 lg:mt-30'>
         <Outlet />
       </main>
 
@@ -16,4 +16,4 @@ const HeaderFooter = () => {
   );
 };
 
-export default HeaderFooter;
+export default HeaderFooter;
