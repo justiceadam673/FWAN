@@ -19,7 +19,7 @@ const NavBar = () => {
   ];
 
   return (
-    <header className='bg-white h-[64px] md:h-fit place-content-center lg:pt-[28px] lg:pb-[21px] 2xl:px-[95px] shadow-md fixed w-full z-50'>
+    <header className='bg-white  h-[64px] md:h-fit place-content-center lg:pt-[28px] lg:pb-[21px] 2xl:px-[95px] shadow-md fixed w-full z-50'>
       <nav className='flex justify-between items-center max-h-[55px] px-[12px] md:px-[80px]'>
         <img
           src={Logo}
@@ -35,9 +35,9 @@ const NavBar = () => {
                 to={link.path}
                 onClick={() => setActiveLink(link.name)}
                 className={({ isActive }) =>
-                  `cursor-pointer hover:text-[#3D8236] ${
+                  `cursor-pointer hover:text-[#3D8236]  transition duration-[.5s] ${
                     activeLink === link.name || isActive
-                      ? "text-[#3D8236] poppins-semibold underline underline-offset-[7px]"
+                      ? `text-[#3D8236] transition duration-[.5s] poppins-semibold underline underline-offset-[7px] `
                       : "text-black"
                   }`
                 }
@@ -50,7 +50,7 @@ const NavBar = () => {
 
         {/* Desktop Sign Up */}
         <NavLink
-          to='/signup'
+          to='/role'
           onClick={() => setActiveLink("Sign Up")}
           className='hidden p-[10px] w-[187px] h-[55px] text-center lg:flex items-center justify-center rounded-[20px] text-white bg-[#3D8236] text-[20px] hover:bg-[#2c7125]'
         >

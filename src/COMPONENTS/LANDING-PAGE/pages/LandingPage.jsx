@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import OurFeatures from "../components/OurFeatures";
 import TestimonialSlider from "../components/TestimonialSlider";
 import FAQ from "../components/FAQ";
-import ContactUs from "../pages/ContactUs";
+
 
 
 const LandingPage = () => {
@@ -21,7 +21,7 @@ const LandingPage = () => {
 
         <AboutUs />
 
-        <ContactUs/>
+     
 
         <ProductGrid />
 
