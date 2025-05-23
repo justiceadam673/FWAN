@@ -1,8 +1,8 @@
 import React from "react";
 
-const AuthForm = ({ uniqueName, type, placeholder }) => {
+const AuthForm = ({ uniqueName, type, placeholder, onChange }) => {
   return (
-    <main className='font-[poppins] lg:w-full '>
+    <main className='font-[poppins]  lg:w-full '>
       <input
         type={type}
         id={uniqueName}
@@ -10,6 +10,7 @@ const AuthForm = ({ uniqueName, type, placeholder }) => {
         placeholder={placeholder}
         className='lg:h-[70px] h-[49.505px] p-[7.072px] lg:p-[10px] lg:max-w-[485px] w-full  rounded-[15px] border border-[#CFCFCF]  '
         required
+        onChange={onChange}
       />
     </main>
   );

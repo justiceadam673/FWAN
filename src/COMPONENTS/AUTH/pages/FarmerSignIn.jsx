@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signupimg.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthForm from "../components/AuthForm";
 import AuthButton from "../components/AuthButton";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../FireBaseConfig";
+import { toast } from "react-toastify";
 
 const FarmerSignIn = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      toast.success("Logged in successfully!");
+      navigate("/farmerdashboard"); // Change this to wherever the farmer should land
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("Email is already in use. Try signing in another email.");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Please enter a valid email address.");
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Password is too weak. Use at least 6 characters.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    }
+  };
+
   return (
     <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] justify-center '>
       <section className=' mb-[10px] lg:mb-[31px]'>
@@ -27,27 +56,31 @@ const FarmerSignIn = () => {
           <p className='lg:text-[19.353px] text-[14px] mb-[23px] leading-[29.03px] font-normal '>
             Enter your details below
           </p>
-          <form className='flex flex-col gap-[17px]' action=''>
+          <form className='flex flex-col gap-[17px]' onSubmit={handleLogin}>
             <AuthForm
               placeholder={"Email"}
               type={"email"}
               uniqueName={"email"}
+              onChange={handleChange}
             />
-
             <AuthForm
               placeholder={"Password"}
-              type={"Password"}
+              type={"password"}
               uniqueName={"password"}
+              onChange={handleChange}
             />
+
+            <div className=' max-w-[485px] flex my-[28px] justify-end'>
+              <NavLink className='text-[#3D8236] text-[15px] lg:text-[20px] hover:text-[#2c7125] leading-[29.03px] font-normal '>
+                Forget Password?
+              </NavLink>
+            </div>
+
+            <div className='my-[23px]'>
+              <AuthButton buttonText={"Log In"} />
+            </div>
           </form>
-          <div className=' max-w-[485px] flex my-[28px] justify-end'>
-            <NavLink className='text-[#3D8236] text-[15px] lg:text-[20px] hover:text-[#2c7125] leading-[29.03px] font-normal '>
-              Forget Password?
-            </NavLink>
-          </div>
-          <div className='my-[23px]'>
-            <AuthButton buttonText={"Log In"} />
-          </div>
+
           <div className=' lg:max-w-[485px] max-lg:text-[12px] flex justify-center'>
             <p>
               Don’t have account?{" "}
@@ -56,7 +89,7 @@ const FarmerSignIn = () => {
                 className={`text-black/70 underline underline-offset-[10px]`}
               >
                 Sign Up
-              </NavLink>{" "}
+              </NavLink>
             </p>
           </div>
         </div>
