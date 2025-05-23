@@ -5,7 +5,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore"; // ✅
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "fwan-98510.firebaseapp.com",
   projectId: "fwan-98510",
   storageBucket: "fwan-98510.firebasestorage.app",

@@ -1,11 +1,14 @@
+// FarmerSignUp.jsx
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signupimg.png";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; // ✅ Firestore
-import { auth, db } from "../../../FireBaseConfig"; // ✅ Include db
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { toast } from "react-toastify";
+import { auth } from "../../../FireBaseConfig";
 import "react-toastify/dist/ReactToastify.css";
 
 import AuthForm from "../components/AuthForm";
@@ -43,26 +46,24 @@ const FarmerSignUp = () => {
 
       const user = userCredential.user;
 
-      // ✅ Save extra user info in Firestore
-      await setDoc(doc(db, "farmers", user.uid), {
-        uid: user.uid,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        createdAt: new Date(),
-      });
+      // Send email verification
+      await sendEmailVerification(user);
+      toast.info(
+        "A verification email has been sent. Please check your inbox."
+      );
 
-      toast.success("Account created successfully!");
+      toast.success("Account created successfully! Please verify your email.");
       navigate("/farmersignin");
     } catch (error) {
+      console.error("Signup Error:", error);
       if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already in use. Try signing in another email.");
+        toast.error("Email is already in use.");
       } else if (error.code === "auth/invalid-email") {
-        toast.error("Please enter a valid email address.");
+        toast.error("Invalid email address.");
       } else if (error.code === "auth/weak-password") {
-        toast.error("Password is too weak. Use at least 6 characters.");
+        toast.error("Password too weak (min 6 characters).");
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Try again.");
       }
     }
   };
@@ -77,7 +78,6 @@ const FarmerSignUp = () => {
           />
         </NavLink>
       </section>
-
       <section className='flex max-lg:items-center  w-full lg:gap-[43px]'>
         <div>
           <img
@@ -86,7 +86,6 @@ const FarmerSignUp = () => {
             alt='signup'
           />
         </div>
-
         <div>
           <h1 className='lg:text-[43.545px] text-[28px] leading-[47px] mb-[29px] text-black font-medium ml-[13px]'>
             Create an account as a Farmer
@@ -94,7 +93,6 @@ const FarmerSignUp = () => {
           <p className='lg:text-[19.353px] text-[14px] mb-[23px] leading-[29.03px] font-normal'>
             Enter your details below
           </p>
-
           <form className='flex flex-col gap-[17px]' onSubmit={handleSignup}>
             <AuthForm
               placeholder='Name'
@@ -126,12 +124,10 @@ const FarmerSignUp = () => {
               uniqueName='confirmPassword'
               onChange={handleChange}
             />
-
             <div className='my-[23px]'>
               <AuthButton buttonText='Create Account' />
             </div>
           </form>
-
           <div className='lg:max-w-[485px] max-lg:text-[12px] flex justify-center'>
             <p>
               Already have an account?{" "}
