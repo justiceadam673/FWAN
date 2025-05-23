@@ -8,11 +8,10 @@ import FAQSection from "./FAQSection ";
 import { Element } from "react-scroll";
 import Footer from "./Footer";
 
-
 const LandingPage = () => {
   return (
     <div>
-      <Navbar />   
+      <Navbar />
       <div className='bg-[#EAEAEA]'>
         <Herosection />
 
@@ -35,15 +34,9 @@ const LandingPage = () => {
           <Footer />
         </Element>
 
-     
-       
-
-
-           {/* <Element name='collections'>
+        {/* <Element name='collections'>
           <CollectionSection />
         </Element> */}
-      
-       
       </div>
     </div>
   );
