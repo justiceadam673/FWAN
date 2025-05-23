@@ -11,8 +11,9 @@ import FAQ from "../components/FAQ";
 const LandingPage = () => {
   return (
     <div>
-      <Navbar />
       <div className='bg-white'>
+        <Navbar />
+
         <Herosection />
 
         <OurFeatures />

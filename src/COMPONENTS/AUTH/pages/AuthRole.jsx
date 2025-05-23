@@ -94,18 +94,6 @@ const AuthRole = () => {
                 </NavLink>
               </p>
             </div>
-            {/* <div className='flex justify-center mt-4'>
-              <p>
-                By signing up, you agree to our{" "}
-                <a href='/terms' className='text-[#3D8236] underline'>
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a href='/privacy' className='text-[#3D8236] underline'>
-                  Privacy Policy
-                </a>
-              </p>
-            </div> */}
           </section>
         </section>
         <div className='absolute inset-0 bg-black'>

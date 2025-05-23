@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../../assets/img/fwan.png";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { Icon } from "@iconify/react";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,8 +20,8 @@ const NavBar = () => {
   ];
 
   return (
-    <header className='bg-white  h-[64px] md:h-fit place-content-center lg:pt-[28px] lg:pb-[21px] 2xl:px-[95px] shadow-md fixed w-full z-50'>
-      <nav className='flex justify-between items-center max-h-[55px] px-[12px] md:px-[80px]'>
+    <header className='bg-white h-[64px] md:h-fit px-[22px] place-content-center lg:pt-[28px] lg:pb-[21px] 2xl:px-[95px] fixed w-full z-50'>
+      <nav className='flex justify-between lg:flex-row flex-row-reverse md:py-[40px] lg:py-0 items-center max-h-[55px] px-[12px] md:px-[80px]'>
         <img
           src={Logo}
           alt='Logo'
@@ -28,9 +29,9 @@ const NavBar = () => {
         />
 
         {/* Desktop Nav */}
-        <ul className='hidden lg:flex space-x-10 text-[18px] font-medium'>
+        <ul className='hidden lg:flex  space-x-10 text-[18px] font-medium'>
           {navLinks.map((link, idx) => (
-            <li key={idx} className='text-[20px] poppins-regular'>
+            <li key={idx} className='text-[20px] py-[24px] poppins-regular'>
               <NavLink
                 to={link.path}
                 onClick={() => setActiveLink(link.name)}
@@ -63,7 +64,11 @@ const NavBar = () => {
           onClick={toggleMenu}
           aria-label='Toggle Menu'
         >
-          {menuOpen ? <HiX /> : <HiMenuAlt3 />}
+          {menuOpen ? (
+            <Icon icon={"uil:times"} />
+          ) : (
+            <Icon icon='pajamas:hamburger' />
+          )}
         </button>
       </nav>
 

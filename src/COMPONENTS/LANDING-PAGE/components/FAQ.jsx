@@ -40,7 +40,7 @@ const FAQ = () => {
   return (
     <main className='bg-white'>
       <section className='max-w-[770px] mx-auto  mt-12 p-4'>
-        <h2 className='text-center text-[45px]  kodchasan-semibold leading-normal text-[#1E1E1E] mb-8'>
+        <h2 className='text-center text-[20px] lg:text-[45px]  kodchasan-semibold leading-normal text-[#1E1E1E] mb-8'>
           Frequently Asked Questions
         </h2>
         <div className='flex flex-col divide-y divide-gray-300'>
@@ -50,7 +50,7 @@ const FAQ = () => {
                 className='flex justify-between items-center py-4 cursor-pointer'
                 onClick={() => toggleIndex(index)}
               >
-                <h3 className='text-[24px] leading-normal poppins-medium'>
+                <h3 className=' text-[14px] md:text-[18px] lg:text-[24px] leading-normal poppins-medium'>
                   {faq.question}
                 </h3>
                 <Icon
@@ -60,12 +60,12 @@ const FAQ = () => {
                   width={24}
                   height={24}
                   className={`transition-transform duration-300 ${
-                    openIndex === index ? "rotate-95" : ""
+                    openIndex === index ? "rotate-90" : ""
                   }`}
                 />
               </div>
               {openIndex === index && (
-                <p className='text-[20px] leading-normal poppins-regular text-[#1E1E1E] pb-4 transition-all ease-in-out duration-[1s]'>
+                <p className=' text-[12px] md:text-[18px] lg:text-[20px] leading-normal poppins-regular text-[#1E1E1E] pb-4 transition-all ease-in-out duration-[1s]'>
                   {faq.answer}
                 </p>
               )}
