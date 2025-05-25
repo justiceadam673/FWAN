@@ -132,8 +132,26 @@ const FarmersSidebarLayout = () => {
 
       <div className='flex-1 overflow-y-auto'>
         {/* Mobile Top Navbar */}
-        <div className='md:hidden flex items-center justify-between px-4 py-3 border-b border-gray-300 bg-white sticky top-0 z-40'>
-          <img src={logo} alt='FWAN Logo' className='h-10 w-auto' />
+        <div className='md:hidden flex flex-row-reverse items-center justify-between px-4 py-3 border-b border-gray-300 bg-white sticky top-0 z-40'>
+          <div className='flex items-center gap-[30px]'>
+            <div className='flex items-center gap-[20px]'>
+              {/* Search input with icon */}
+              <div className='relative w-full max-w-[660px]'>
+                <Icon
+                  icon='ri:search-line'
+                  className='absolute top-1/2 -translate-y-1/2 left-[18px] text-black'
+                  width='24'
+                  height='24'
+                />
+              </div>
+
+              {/* Notification bell */}
+              <div className='p-[16px] bg-white text-black flex items-center rounded-[12px] shadow-[4px_4px_2.5px_rgba(0,0,0,0.25)] justify-center'>
+                <Icon icon='line-md:bell-loop' width='24' height='24' />
+              </div>
+            </div>
+          </div>
+          <img src={logo} alt='FWAN Logo' className='lg:h-10 h-[24px] w-auto' />
           <button onClick={toggleSidebar} className='text-black'>
             <Icon icon='bi:list' width='30' height='30' />
           </button>

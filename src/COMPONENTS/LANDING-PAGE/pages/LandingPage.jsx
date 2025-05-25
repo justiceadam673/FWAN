@@ -8,8 +8,6 @@ import OurFeatures from "../components/OurFeatures";
 import TestimonialSlider from "../components/TestimonialSlider";
 import FAQ from "../components/FAQ";
 
-
-
 const LandingPage = () => {
   return (
     <div>
@@ -21,8 +19,6 @@ const LandingPage = () => {
         <OurFeatures />
 
         <AboutUs />
-
-     
 
         <ProductGrid />
 

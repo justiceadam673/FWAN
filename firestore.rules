@@ -2,29 +2,25 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Farmers can access only their own document
     match /farmers/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Buyers can access only their own document
     match /buyers/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Collections accessible to everyone (e.g. public content)
     match /collections/{docId} {
-      allow read: if true;
-      allow write: if false;  // only server-side writes
-    }
-
-    // Revenue data can be read by anyone
-    match /revenue/{docId} {
       allow read: if true;
       allow write: if false;
     }
 
-    // Deny all other access by default
+    // ✅ Allow authenticated users to write revenue
+    match /revenue/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

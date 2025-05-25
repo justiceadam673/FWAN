@@ -53,7 +53,7 @@ const FarmerSignUp = () => {
       );
 
       toast.success("Account created successfully! Please verify your email.");
-      navigate("/farmersignin");
+      navigate("/farmerverification");
     } catch (error) {
       console.error("Signup Error:", error);
       if (error.code === "auth/email-already-in-use") {

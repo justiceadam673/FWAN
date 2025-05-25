@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import FarmersDashBoardCard from "../components/FarmersDashBoardCard";
 import RevenueChart from "../data/RevenueChart";
+import RevenueDashboard from "../utils/REvenueDashboard";
 
 const FarmersDashboard = () => {
   return (
@@ -50,6 +51,7 @@ const FarmersDashboard = () => {
       </section>
       <section>
         <RevenueChart />
+        {/* <RevenueDashboard /> */}
       </section>
     </main>
   );

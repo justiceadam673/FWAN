@@ -27,7 +27,8 @@ import FarmersSidebarLayout from "./layouts/FarmersSidebarLayout";
 import FarmersDashboard from "./COMPONENTS/FARMERS/pages/FarmersDashboard";
 import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
 import DashBoardLayout from "./layouts/DashBoardLayout";
-// import FarmersVerification from "./COMPONENTS/FARMERS/";
+
+import FarmersVerification from "./COMPONENTS/FARMERS/pages/FarmersVerification";
 
 // ✅ Only Route elements inside this
 const router = createBrowserRouter(
@@ -57,7 +58,7 @@ const router = createBrowserRouter(
       <Route path='/buyersignin' element={<BuyerSignIn />} />
       <Route path='/buyersignup' element={<BuyerSignUp />} />
       <Route path='/role' element={<AuthRole />} />
-      {/* <Route path='/farmerverification' element={<FarmersVerification />} /> */}
+      <Route path='/farmerverification' element={<FarmersVerification />} />
     </>
   )
 );

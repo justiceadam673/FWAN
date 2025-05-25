@@ -71,7 +71,7 @@ const NavBar = () => {
 
       {/* Mobile Navigation */}
       {menuOpen && (
-        <div className='lg:hidden bg-white w-full shadow-md py-4 px-6 space-y-4 text-[18px] font-medium'>
+        <div className='lg:hidden  bg-white w-full shadow-md py-4 px-6 space-y-4 text-[18px] font-medium'>
           {navLinks.map((link, idx) => (
             <div key={idx}>
               <NavLink
