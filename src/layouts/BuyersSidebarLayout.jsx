@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"; // ⬅️ Import translation hoo
 import logo from "../assets/img/fwan.png";
 import LanguageSwitcher from "../COMPONENTS/GENERAL-UTILITY/LanguageSwitcher";
 
-const SidebarLayout = () => {
+const BuyersSidebarLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { t } = useTranslation(); // ⬅️ Translation hook
 
@@ -91,4 +91,4 @@ const SidebarLayout = () => {
   );
 };
 
-export default SidebarLayout;
+export default BuyersSidebarLayout;

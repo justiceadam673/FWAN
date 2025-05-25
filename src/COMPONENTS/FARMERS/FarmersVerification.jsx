@@ -147,7 +147,7 @@ export default function FarmersVerification() {
             </div>
           </div>
           <div className='w-full flex max-w-[162px] justify-end place-self-center ml-[-20px]  '>
-            <button className='flex bg-[#3D8236] text-white px-[104.364px] py-[13.687px] rounded-[8px] w-[221px] gap-[8.554px] items-center justify-center'>
+            <button className='flex bg-[#3D8236] text-white px-[104.364px] py-[13.687px] rounded-[8px] w-[221px] gap-[8.554px] items-center justify-center gap-303px'>
               Submit
             </button>
             .
