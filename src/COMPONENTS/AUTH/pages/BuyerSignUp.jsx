@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signupimg.png";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../../../FireBaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
+import { auth } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import AuthForm from "../components/AuthForm";
 import AuthButton from "../components/AuthButton";
 
@@ -43,25 +45,22 @@ const BuyerSignUp = () => {
 
       const user = userCredential.user;
 
-      await setDoc(doc(db, "buyers", user.uid), {
-        uid: user.uid,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        createdAt: new Date(),
-      });
+      await sendEmailVerification(user);
+      toast.success("Verification email sent! Please check your inbox.");
 
-      toast.success("Buyer account created!");
+      await signOut(auth); // Sign out user immediately
+
       navigate("/buyersignin");
     } catch (error) {
+      console.error("Signup Error:", error);
       if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already in use. Try signing in another email.");
+        toast.error("Email already in use. Try logging in.");
       } else if (error.code === "auth/invalid-email") {
-        toast.error("Please enter a valid email address.");
+        toast.error("Invalid email address.");
       } else if (error.code === "auth/weak-password") {
-        toast.error("Password is too weak. Use at least 6 characters.");
+        toast.error("Password should be at least 6 characters.");
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Try again.");
       }
     }
   };
@@ -122,7 +121,6 @@ const BuyerSignUp = () => {
               uniqueName='confirmPassword'
               onChange={handleChange}
             />
-
             <div className='my-[23px]'>
               <AuthButton buttonText='Create Account' />
             </div>

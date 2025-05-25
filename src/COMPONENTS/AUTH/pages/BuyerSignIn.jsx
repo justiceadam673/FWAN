@@ -3,17 +3,14 @@ import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signupimg.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../FireBaseConfig";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
 import AuthForm from "../components/AuthForm";
 import AuthButton from "../components/AuthButton";
 
 const BuyerSignIn = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,18 +21,43 @@ const BuyerSignIn = () => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      await user.reload();
+
+      if (!user.emailVerified) {
+        toast.error("Please verify your email before logging in.");
+        return;
+      }
+
+      // Check if buyer already exists in Firestore
+      const userRef = doc(db, "buyers", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        // Save data if not already in Firestore
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          createdAt: new Date(),
+        });
+      }
+
       toast.success("Logged in successfully!");
-      navigate("/buyersdashboard"); // Update this path to your actual dashboard
+      navigate("/buyersdashboard");
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already in use. Try signing in another email.");
-      } else if (error.code === "auth/invalid-email") {
-        toast.error("Please enter a valid email address.");
-      } else if (error.code === "auth/weak-password") {
-        toast.error("Password is too weak. Use at least 6 characters.");
+      console.error("Login Error:", error);
+      if (error.code === "auth/user-not-found") {
+        toast.error("No account found with this email.");
+      } else if (error.code === "auth/wrong-password") {
+        toast.error("Incorrect password.");
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Try again.");
       }
     }
   };
@@ -78,15 +100,15 @@ const BuyerSignIn = () => {
               uniqueName='password'
               onChange={handleChange}
             />
+            <div className='max-w-[485px] flex justify-end my-[28px]'>
+              <NavLink className='text-[#3D8236] text-[15px] lg:text-[20px] hover:text-[#2c7125]'>
+                Forget Password?
+              </NavLink>
+            </div>
             <div className='my-[23px]'>
               <AuthButton buttonText='Log In' />
             </div>
           </form>
-          <div className='max-w-[485px] flex justify-end my-[28px]'>
-            <NavLink className='text-[#3D8236] text-[15px] lg:text-[20px] hover:text-[#2c7125]'>
-              Forget Password?
-            </NavLink>
-          </div>
           <div className='lg:max-w-[485px] max-lg:text-[12px] flex justify-center'>
             <p>
               Don’t have an account?{" "}
@@ -105,3 +127,4 @@ const BuyerSignIn = () => {
 };
 
 export default BuyerSignIn;
+//             type='password'
