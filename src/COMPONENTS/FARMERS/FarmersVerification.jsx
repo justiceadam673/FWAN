@@ -1,11 +1,14 @@
 import React from "react";
-import { ArrowLeft } from "lucide-react";
 
+import { Icon } from "@iconify/react";
 export default function FarmersVerification() {
   return (
     <div className=' flex flex-row bg-[#FFF] p-4 md:p-10 gap-[16px]  w-full h-full'>
-      <div className='flex  items-start mb-6'>
-        <ArrowLeft className='' />
+      <div className=' bg-[#FFF]'>
+        <Icon
+          icon='ic:round-arrow-back'
+          className=' w-[56px] h-[56px] mr-[99px]'
+        />
       </div>
       <section className='flex justify-between gap-[89px] '>
         <div className='w-full   mx-auto'>
@@ -110,50 +113,64 @@ export default function FarmersVerification() {
             {/* Right side: Uploads */}
           </div>
         </div>
-        <div className='flex w-full justify-center  flex-col gap-[41px]'>
-          <div className=''>
-            {/* <label className='block mb-1 text-sm text-[#000]  text-[18px] font-normal leading-[29.03px] pl-[84px]'>
-            Passport Photo
-            <div className=' border border-dashed '>
-              {" "}
-              <input type='file' className='flex' id='passport' />
-            </div>
-          </label> */}
-            Passport Photo
-            <div className='border border-dashed border-[#888] rounded-md h-[256px] aspect-[1/1] flex items-center justify-center gap-[13px]'>
-              <label
-                htmlFor='passport'
-                className='cursor-pointer text-gray-600'
-              >
-                <div className='text-center'>
-                  <div className='text-2xl mb-1'>📁</div>
-                  Choose a file
-                </div>
+        <div className='flex w-full justify-between  flex-col '>
+          <section className='flex flex-col'>
+            <div className=''>
+              <label className='text-sm text-[#000] fonts-[Poppins] text-[18px] font-normal leading-[29.03px] self-stretch w-[252px] h-[30px]'>
+                Passport Photo
               </label>
+
+              <div className='border border-dashed border-[#888] rounded-md h-[256px] aspect-[1/1] flex items-center justify-center gap-[13px]'>
+                <label
+                  htmlFor='passport'
+                  className='cursor-pointer text-gray-600'
+                >
+                  <div className='flex  justify-center items-center gap-[8px]  text-[#888] font-[Poppins] text-[20px] font-normal leading-[29.03]  '>
+                    <Icon
+                      icon='solar:upload-linear'
+                      className='   w-[24px] h-[24px]  aspect-square'
+                    />
+                    Choose a file
+                  </div>
+                </label>
+              </div>
             </div>
-          </div>
-          <div>
-            <label className='  text-sm text-[#000] fonts-[Poppins] text-[18px] font-normal leading-[29.03px] self-stretch'>
-              Farm Photo
-            </label>
-            <div className='border border-dashed border-gray-400 rounded-md h-[256px] aspect-[1/1] flex items-center justify-center'>
-              <input type='file' className='hidden' id='farm' />
-              <label htmlFor='farm' className='cursor-pointer text-gray-600'>
-                <div className='text-center'>
-                  <div className='text-2xl mb-1'>📁</div>
-                  Choose a file
-                </div>
+
+            <div className='mt-[41px] '>
+              <label className='  text-sm text-[#000] fonts-[Poppins] text-[18px] font-normal leading-[29.03px] self-stretch w-[252px] h-[30px]'>
+                Farm Photo
               </label>
+              <div className='border border-dashed border-gray-400 rounded-md h-[256px] aspect-[1/1] flex items-center justify-center '>
+                <input type='file' className='hidden' id='farm' />
+                <label htmlFor='farm' className='cursor-pointer text-gray-600'>
+                  <div className='flex  justify-center items-center gap-[8px] text-[#888] font-[Poppins] text-[20px] font-normal leading-[29.03] '>
+                    <Icon
+                      icon='solar:upload-linear'
+                      className='   w-[24px] h-[24px]  aspect-square '
+                    />
+                    Choose a file
+                  </div>
+                </label>
+              </div>
             </div>
-          </div>
-          <div className='w-full flex max-w-[162px] justify-end place-self-center ml-[-20px]  '>
-            <button className='flex bg-[#3D8236] text-white px-[104.364px] py-[13.687px] rounded-[8px] w-[221px] gap-[8.554px] items-center justify-center gap-303px'>
-              Submit
-            </button>
-            .
-          </div>
+          </section>
+
+          <section>
+            <div className='w-full flex max-w-[162px] justify-end place-self-center ml-[-20px] '>
+              <button className='flex bg-[#3D8236] text-white px-[104.364px] py-[13.687px] rounded-[8px] w-[221px] gap-[8.554px] items-center justify-center '>
+                Submit
+              </button>
+              .
+            </div>
+          </section>
         </div>
       </section>
     </div>
   );
 }
+
+//  <div className='flex  items-start mb-6'>
+//         <ArrowLeft className='' />
+//       </div>
+//       <section className='flex justify-between gap-[89px] '>
+//         <div className='w-full   mx-auto'></div>
