@@ -27,32 +27,84 @@ import FarmersSidebarLayout from "./layouts/FarmersSidebarLayout";
 import FarmersDashboard from "./COMPONENTS/FARMERS/pages/FarmersDashboard";
 import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
 import DashBoardLayout from "./layouts/DashBoardLayout";
-
 import FarmersVerification from "./COMPONENTS/FARMERS/pages/FarmersVerification";
+import ProtectedRoute from "./COMPONENTS/AUTH/util/ProtectedRoute";
 
-// ✅ Only Route elements inside this
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path='/' element={<LandingPage />} />
+
       <Route element={<BuyersSidebarLayout />}>
-        <Route path='/buyersdashboard' element={<BuyersDashboard />} />
-        <Route path='/buyerslistings' element={<BuyersListing />} />
-        <Route path='/buyersoffers' element={<BuyersOffers />} />
-        <Route path='/buyershistory' element={<BuyersHistory />} />
-        <Route path='/buyersprofile' element={<BuyersProfile />} />
+        <Route
+          path='/buyersdashboard'
+          element={
+            <ProtectedRoute>
+              <BuyersDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/buyerslistings'
+          element={
+            <ProtectedRoute>
+              <BuyersListing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/buyersoffers'
+          element={
+            <ProtectedRoute>
+              <BuyersOffers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/buyershistory'
+          element={
+            <ProtectedRoute>
+              <BuyersHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/buyersprofile'
+          element={
+            <ProtectedRoute>
+              <BuyersProfile />
+            </ProtectedRoute>
+          }
+        />
       </Route>
+
       <Route element={<FarmersSidebarLayout />}>
         <Route element={<DashBoardLayout />}>
-          <Route path='/farmersdashboard' element={<FarmersDashboard />} />
-          <Route path='/farmerslisting' element={<FarmersListings />} />
+          <Route
+            path='/farmersdashboard'
+            element={
+              <ProtectedRoute>
+                <FarmersDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/farmerslisting'
+            element={
+              <ProtectedRoute>
+                <FarmersListings />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Route>
+
       <Route element={<HeaderFooter />}>
         <Route path='/collections' element={<Collections />} />
         <Route path='/aboutus' element={<AboutUs />} />
         <Route path='/contactus' element={<ContactUs />} />
       </Route>
+
       <Route path='/farmersignin' element={<FarmerSignIn />} />
       <Route path='/farmersignup' element={<FarmerSignUp />} />
       <Route path='/buyersignin' element={<BuyerSignIn />} />
