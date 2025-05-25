@@ -16,15 +16,15 @@ const FarmersSidebarLayout = () => {
   return (
     <div className='flex h-screen  font-[poppins]'>
       <div
-        className={`fixed md:relative z-50 top-0 right-0 h-full w-[288px] border-r border-black/25  px-[50px] transition-transform duration-300 ease-in-out
+        className={`fixed md:relative z-50 top-0 right-0 h-full w-[288px] border-r border-black/25   transition-transform duration-300 ease-in-out
         ${
           isSidebarOpen
-            ? "-translate-x-0 bg-[#F4FFEA"
-            : "translate-x-full bg-[#F4FFEA]"
+            ? "translate-x-0 bg-[#F4FFEA] w-full h-full"
+            : "-translate-x-[150%] bg-[#F4FFEA]"
         } md:translate-x-0`}
       >
         {/* Top Close Button for Mobile */}
-        <div className='flex justify-end items-center md:hidden mb-4'>
+        <div className='flex justify-end items-center md:hidden m-4'>
           <button onClick={toggleSidebar} className='text-black'>
             <Icon icon='mdi:close' width='30' height='30' />
           </button>
@@ -35,7 +35,7 @@ const FarmersSidebarLayout = () => {
           <img src={logo} alt='FWAN Logo' className='h-[49px]  w-[150.592px]' />
         </div>
 
-        <nav className='flex  flex-col gap-[16px]'>
+        <nav className='flex justify-start flex-col px-[50px] gap-[16px]'>
           <NavLink
             to='/farmersdashboard'
             className={({ isActive }) =>
@@ -133,20 +133,20 @@ const FarmersSidebarLayout = () => {
       <div className='flex-1 overflow-y-auto'>
         {/* Mobile Top Navbar */}
         <div className='md:hidden flex flex-row-reverse items-center justify-between px-4 py-3 border-b border-gray-300 bg-white sticky top-0 z-40'>
-          <div className='flex items-center gap-[30px]'>
+          <div className='flex items-center gap-[60px]'>
+            <div className='relative  w-full max-w-[660px]'>
+              <Icon
+                icon='ri:search-line'
+                className='absolute top-1/2 -translate-y-1/2 left-[18px] text-black'
+                width='24'
+                height='24'
+              />
+            </div>
             <div className='flex items-center gap-[20px]'>
               {/* Search input with icon */}
-              <div className='relative w-full max-w-[660px]'>
-                <Icon
-                  icon='ri:search-line'
-                  className='absolute top-1/2 -translate-y-1/2 left-[18px] text-black'
-                  width='24'
-                  height='24'
-                />
-              </div>
 
               {/* Notification bell */}
-              <div className='p-[16px] bg-white text-black flex items-center rounded-[12px] shadow-[4px_4px_2.5px_rgba(0,0,0,0.25)] justify-center'>
+              <div className='p-[16px] bg-white text-black flex items-center rounded-[12px]  justify-center'>
                 <Icon icon='line-md:bell-loop' width='24' height='24' />
               </div>
             </div>

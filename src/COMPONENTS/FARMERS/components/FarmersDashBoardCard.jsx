@@ -4,15 +4,20 @@ import React from "react";
 const FarmersDashBoardCard = ({ cardNumber, cardText, icon }) => {
   return (
     <main>
-      <section className=' flex flex-col w-[200px] rounded-[12px] bg-white h-[138px]  shadow-[0px_4px_2.5px_rgba(0,0,0,0.25)] gap-[20px]'>
-        <div className='flex items-center justify-between h-[100px] px-[27px] border-b'>
-          <h1 className='text-[28px] font-[Kodchasan] font-bold text-[#174582] '>
+      <section className=' flex pt-[5px] flex-col w-full  lg:w-[200px] rounded-[12px] bg-white h-[138px]  shadow-[0px_4px_2.5px_rgba(0,0,0,0.25)] gap-[5px]'>
+        <div className='flex justify-between flex-col h-[100px] gap-[20px] px-[27px] border-b'>
+          <div className='w-full flex justify-end-safe'>
+            <Icon
+              icon={icon}
+              className='text-[#69B645] lg:w-[35px] w-[25px] lg:h-[35px] h-[25px] '
+            />
+          </div>
+          <h1 className='lg:text-[28px] text-[18.667px] font-[Kodchasan] font-bold text-[#174582] '>
             {cardNumber}
           </h1>
-          <Icon icon={icon} className='text-[#69B645] w-[35px] h-[35px] ' />
         </div>
-        <div className='h-[38px] text-[#888888] '>
-          <p className='ml-[34px]'>{cardText}</p>
+        <div className='h-[38px]  text-[#888888] '>
+          <p className='ml-[34px] text-[10px] lg:text-[15px]'>{cardText}</p>
         </div>
       </section>
     </main>
