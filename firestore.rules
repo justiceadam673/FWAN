@@ -18,6 +18,12 @@ service cloud.firestore {
       allow write: if false;  // only server-side writes
     }
 
+    // Revenue data can be read by anyone
+    match /revenue/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

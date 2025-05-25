@@ -11,16 +11,16 @@ const FarmersSidebarLayout = () => {
   const closeSidebar = () => setIsSidebarOpen(false);
 
   const linkClass =
-    "flex items-center gap-2 text-black/90 p-3 hover:bg-green-100 rounded";
+    "flex items-center text-[16px] gap-[15px]  px-[10px] py-[15px] text-black/90  hover:text-[#3D8236] rounded-[8px]";
 
   return (
-    <div className='flex h-screen font-[poppins]'>
+    <div className='flex h-screen  font-[poppins]'>
       <div
-        className={`fixed md:relative z-50 top-0 right-0 h-full w-[288px] border-r border-black/25 p-[30px] transition-transform duration-300 ease-in-out
+        className={`fixed md:relative z-50 top-0 right-0 h-full w-[288px] border-r border-black/25  px-[50px] transition-transform duration-300 ease-in-out
         ${
           isSidebarOpen
-            ? "-translate-x-0 bg-white"
-            : "translate-x-full bg-[#EAEAEA]"
+            ? "-translate-x-0 bg-[#F4FFEA"
+            : "translate-x-full bg-[#F4FFEA]"
         } md:translate-x-0`}
       >
         {/* Top Close Button for Mobile */}
@@ -31,71 +31,103 @@ const FarmersSidebarLayout = () => {
         </div>
 
         {/* Logo in sidebar for desktop */}
-        <div className='hidden md:block mb-[45px]'>
-          <img src={logo} alt='FWAN Logo' className='h-[40px] w-[124px]' />
+        <div className='hidden md:block mb-[53px] mt-[32px] '>
+          <img src={logo} alt='FWAN Logo' className='h-[49px]  w-[150.592px]' />
         </div>
 
-        <nav className='flex flex-col gap-3'>
+        <nav className='flex  flex-col gap-[16px]'>
           <NavLink
             to='/farmersdashboard'
-            className={linkClass}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='mage:dashboard-2' width='40' height='40' />
+            <Icon icon='mage:dashboard-2' width='24' height='24' />
             Overview
           </NavLink>
           <NavLink
-            to='/farmerlistings'
-            className={linkClass}
+            to='/farmerslisting'
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='solar:clipboard-outline' width='40' height='40' />
+            <Icon icon='solar:clipboard-outline' width='24' height='24' />
             Listings
           </NavLink>
           <NavLink
             to='/farmeroffers'
-            className={linkClass}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='tabler:message' width='40' height='40' />
+            <Icon icon='tabler:message' width='24' height='24' />
             My Offers
           </NavLink>
           <NavLink
             to='/farmerhistory'
-            className={linkClass}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='icon-park:history' width='40' height='40' />
+            <Icon
+              icon='codicon:history'
+              width='24'
+              height='24'
+              // className='hover:text-[#3D8236]'
+            />
             History
           </NavLink>
           <NavLink
             to='/farmertracking'
-            className={linkClass}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='hugeicons:location-08' width='40' height='40' />
+            <Icon icon='hugeicons:location-08' width='24' height='24' />
             Tracking
           </NavLink>
           <NavLink
             to='/farmerprofile'
-            className={linkClass}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  : `${linkClass}`
+              } `
+            }
             onClick={closeSidebar}
           >
-            <Icon icon='fluent:person-28-regular' width='40' height='40' />
+            <Icon icon='fluent:person-28-regular' width='24' height='24' />
             Profile
           </NavLink>
         </nav>
 
-        <div className='mt-auto pt-10'>
-          <LanguageSwitcher />
-          <NavLink
-            to='/'
-            className='flex items-center text-black/90 gap-2 p-3 hover:bg-red-100 w-full rounded'
-          >
-            <Icon icon='material-symbols:logout' width='40' height='40' />
-            Log Out
-          </NavLink>
-        </div>
+        {/* <div className='mt-auto pt-10'><LanguageSwitcher /></div> */}
       </div>
 
       <div className='flex-1 overflow-y-auto'>
@@ -108,7 +140,7 @@ const FarmersSidebarLayout = () => {
         </div>
 
         {/* Page Content */}
-        <div className='p-4'>
+        <div className=''>
           <Outlet />
         </div>
       </div>

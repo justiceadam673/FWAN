@@ -25,6 +25,8 @@ import BuyerSignUp from "./COMPONENTS/AUTH/pages/BuyerSignUp";
 import AuthRole from "./COMPONENTS/AUTH/pages/AuthRole";
 import FarmersSidebarLayout from "./layouts/FarmersSidebarLayout";
 import FarmersDashboard from "./COMPONENTS/FARMERS/pages/FarmersDashboard";
+import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
+import DashBoardLayout from "./layouts/DashBoardLayout";
 // import FarmersVerification from "./COMPONENTS/FARMERS/";
 
 // ✅ Only Route elements inside this
@@ -40,7 +42,10 @@ const router = createBrowserRouter(
         <Route path='/buyersprofile' element={<BuyersProfile />} />
       </Route>
       <Route element={<FarmersSidebarLayout />}>
-        <Route path='/farmersdashboard' element={<FarmersDashboard />} />
+        <Route element={<DashBoardLayout />}>
+          <Route path='/farmersdashboard' element={<FarmersDashboard />} />
+          <Route path='/farmerslisting' element={<FarmersListings />} />
+        </Route>
       </Route>
       <Route element={<HeaderFooter />}>
         <Route path='/collections' element={<Collections />} />
