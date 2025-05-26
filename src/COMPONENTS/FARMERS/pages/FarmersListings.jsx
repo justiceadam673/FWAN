@@ -127,6 +127,7 @@ const FarmersListings = () => {
           status={"in stock"}
         />
       </section>
+
     </div>
   );
 };

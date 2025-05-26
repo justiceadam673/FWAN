@@ -168,9 +168,3 @@ export default function FarmersVerification() {
     </div>
   );
 }
-
-//  <div className='flex  items-start mb-6'>
-//         <ArrowLeft className='' />
-//       </div>
-//       <section className='flex justify-between gap-[89px] '>
-//         <div className='w-full   mx-auto'></div>

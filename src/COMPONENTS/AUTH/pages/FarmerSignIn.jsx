@@ -35,7 +35,7 @@ const FarmerSignIn = () => {
       }
 
       toast.success("Logged in successfully!");
-      navigate("/farmerdashboard");
+      navigate("/farmersoverview");
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         toast.error("No user found with this email.");
