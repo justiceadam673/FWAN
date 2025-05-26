@@ -2,11 +2,13 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import FarmersDashBoardCard from "../components/FarmersDashBoardCard";
 import RevenueChart from "../data/RevenueChart";
-import { useLocation, navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RevenueDashboard from "../utils/REvenueDashboard";
 
 const FarmersDashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // correct usage
+
   const from = location.state?.from?.pathname || "/farmersdashboard";
 
   navigate(from, { replace: true });
