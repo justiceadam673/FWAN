@@ -2,9 +2,15 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import FarmersDashBoardCard from "../components/FarmersDashBoardCard";
 import RevenueChart from "../data/RevenueChart";
+import { useLocation, navigate } from "react-router-dom";
 import RevenueDashboard from "../utils/REvenueDashboard";
 
 const FarmersDashboard = () => {
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/farmersdashboard";
+
+  navigate(from, { replace: true });
+
   return (
     <main className='lg:ml-[60px] px-[20px] max-w-[880px] bg-[#F3FAF6] '>
       <section className='flex my-[28px]  gap-[33px] '>

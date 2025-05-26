@@ -28,7 +28,7 @@ import FarmersDashboard from "./COMPONENTS/FARMERS/pages/FarmersDashboard";
 import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
 import DashBoardLayout from "./layouts/DashBoardLayout";
 import FarmersVerification from "./COMPONENTS/FARMERS/pages/FarmersVerification";
-import ProtectedRoute from "./COMPONENTS/AUTH/util/ProtectedRoute";
+import ProtectedRoute from "./COMPONENTS/AUTH/ProtectedRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
