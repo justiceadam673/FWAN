@@ -29,6 +29,10 @@ import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
 import DashBoardLayout from "./layouts/DashBoardLayout";
 import FarmersVerification from "./COMPONENTS/FARMERS/pages/FarmersVerification";
 import ProtectedRoute from "./COMPONENTS/AUTH/ProtectedRoute";
+import FarmersOffers from "./COMPONENTS/FARMERS/pages/FarmersOffers";
+import FarmersHistory from "./COMPONENTS/FARMERS/pages/FarmersHistory";
+import FarmersTracking from "./COMPONENTS/FARMERS/pages/FarmersTracking";
+import FarmersProfile from "./COMPONENTS/FARMERS/pages/FarmersProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -81,7 +85,7 @@ const router = createBrowserRouter(
       <Route element={<FarmersSidebarLayout />}>
         <Route element={<DashBoardLayout />}>
           <Route
-            path='/farmersdashboard'
+            path='/farmersoverview'
             element={
               <ProtectedRoute>
                 <FarmersDashboard />
@@ -93,6 +97,38 @@ const router = createBrowserRouter(
             element={
               <ProtectedRoute>
                 <FarmersListings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/farmersoffers'
+            element={
+              <ProtectedRoute>
+                <FarmersOffers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/farmershistory'
+            element={
+              <ProtectedRoute>
+                <FarmersHistory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/farmerstracking'
+            element={
+              <ProtectedRoute>
+                <FarmersTracking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/farmersprofile'
+            element={
+              <ProtectedRoute>
+                <FarmersProfile />
               </ProtectedRoute>
             }
           />

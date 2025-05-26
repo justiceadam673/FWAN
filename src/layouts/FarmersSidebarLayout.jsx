@@ -37,7 +37,7 @@ const FarmersSidebarLayout = () => {
 
         <nav className='flex justify-start flex-col px-[50px] gap-[16px]'>
           <NavLink
-            to='/farmersdashboard'
+            to='/farmersoverview'
             className={({ isActive }) =>
               `${
                 isActive
@@ -65,7 +65,7 @@ const FarmersSidebarLayout = () => {
             Listings
           </NavLink>
           <NavLink
-            to='/farmeroffers'
+            to='/farmersoffers'
             className={({ isActive }) =>
               `${
                 isActive
@@ -79,7 +79,7 @@ const FarmersSidebarLayout = () => {
             My Offers
           </NavLink>
           <NavLink
-            to='/farmerhistory'
+            to='/farmershistory'
             className={({ isActive }) =>
               `${
                 isActive
@@ -98,7 +98,7 @@ const FarmersSidebarLayout = () => {
             History
           </NavLink>
           <NavLink
-            to='/farmertracking'
+            to='/farmerstracking'
             className={({ isActive }) =>
               `${
                 isActive
@@ -112,7 +112,7 @@ const FarmersSidebarLayout = () => {
             Tracking
           </NavLink>
           <NavLink
-            to='/farmerprofile'
+            to='/farmersprofile'
             className={({ isActive }) =>
               `${
                 isActive
