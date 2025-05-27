@@ -1,5 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
+
 const FarmersListingCard = ({
   image,
   prodHeader,
@@ -14,60 +15,54 @@ const FarmersListingCard = ({
   status,
 }) => {
   return (
-    <div className='flex flex-row  ml-[58px] bg-[#FFFFFF]  w-[982px] h-[72px] justify-between mt-[7px]   items-center p-[10px] '>
-      <div>
-        <img src={image} className=' w-[91px] h-[72px] rounded-[12px]' />
+    <div className='flex flex-col lg:flex-row bg-white w-full rounded-md shadow-sm mt-2 p-4 gap-4'>
+      {/* Image */}
+      <div className='flex-shrink-0'>
+        <img
+          src={image}
+          className='w-[91px] h-[72px] rounded-[12px] object-cover'
+        />
       </div>
 
-      <div className=''>
-        <h3 className='text-[#888] font-[Poppins] text-[14px] font-normal leading-normal w-[61px] h-[21px]'>
-          {prodHeader}{" "}
-        </h3>
-        <p className='text-[#174582] font-[Poppins] text-[15px] font-normal leading-normal w-[61px] h-[23px]'>
-          {prod}
-        </p>
+      {/* Info Section */}
+      <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 w-full'>
+        <div>
+          <h3 className='text-gray-500 text-sm font-[Poppins]'>{prodHeader}</h3>
+          <p className='text-[#174582] text-base font-[Poppins]'>{prod}</p>
+        </div>
+        <div>
+          <h3 className='text-gray-500 text-sm font-[Poppins]'>
+            {quantityHeader}
+          </h3>
+          <p className='text-[#174582] text-base font-[Poppins]'>{quantity}</p>
+        </div>
+        <div>
+          <h3 className='text-gray-500 text-sm font-[Poppins]'>
+            {priceHeader}
+          </h3>
+          <p className='text-[#174582] text-base font-[Poppins]'>{price}</p>
+        </div>
+        <div>
+          <h3 className='text-gray-500 text-sm font-[Poppins]'>
+            {offersHeader}
+          </h3>
+          <p className='text-[#174582] text-base font-[Poppins]'>{offers}</p>
+        </div>
+        <div>
+          <h3 className='text-gray-500 text-sm font-[Poppins]'>
+            {statusHeader}
+          </h3>
+          <p className='text-[#69B645] text-base font-[Poppins]'>{status}</p>
+        </div>
       </div>
 
-      <div>
-        <h3 className='text-[#888] font-[Poppins] text-[14px] font-normal leading-normal w-[60px] h-[21px]'>
-          {quantityHeader}
-        </h3>
-        <p className='text-[#174582] font-[Poppins] text-[15px] font-normal leading-normal w-[60px] h-[23px]'>
-          {quantity}
-        </p>
-      </div>
-      <div>
-        <h3 className='text-[#888] font-[Poppins] text-[14px] font-normal leading-normal w-[90px] h-[21px]'>
-          {priceHeader}
-        </h3>
-        <p className='text-[#174582] font-[Poppins] text-[15px] font-normal leading-normal w-[90px] h-[23px]'>
-          {price}
-        </p>
-      </div>
-      <div>
-        <h3 className='text-[#888] font-[Poppins] text-[14px] font-normal leading-normal w-[90px] h-[21px]'>
-          {" "}
-          {offersHeader}
-        </h3>
-        <p className='text-[#174582] font-[Poppins] text-[15px] font-normal leading-normal w-[90px] h-[23px]'>
-          {offers}
-        </p>
-      </div>
-      <div>
-        <h3 className='text-[#888] font-[Poppins] text-[14px] font-normal leading-normal w-[90px] h-[21px]'>
-          {statusHeader}
-        </h3>
-        <p className='text-[#69B645] font-[Poppins] text-[15px] font-normal leading-normal w-[90px] h-[23px] '>
-          {status}
-        </p>
-      </div>
-
-      <div className='mr-[15px] '>
-        <button className='bg-[#B65445] max-w-[125px] max-h-[35px] gap-[10px]  w-full h-full rounded-[8px] text-white flex justify-center items-center p-[20px] pl-[10px]  '>
-          <span className='bg-[#E8E4E4]/20 p-[6px] flex justify-center rounded-[8px] items-center '>
-            <Icon icon='line-md:minus' className='text-[#E8E4E4]    ' />{" "}
+      {/* Remove Button */}
+      <div className='flex justify-end items-center'>
+        <button className='bg-[#B65445] text-white flex items-center gap-2 px-3 py-2 rounded-md'>
+          <span className='bg-[#E8E4E4]/20 p-[6px] rounded-[8px] flex items-center justify-center'>
+            <Icon icon='line-md:minus' className='text-[#E8E4E4]' />
           </span>
-          Remove
+          <span className='hidden lg:inline'>Remove</span>
         </button>
       </div>
     </div>

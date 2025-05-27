@@ -70,7 +70,7 @@ const RevenueChart = () => {
   };
 
   return (
-    <div className='bg-gray-200 rounded-xl p-4 w-full relative'>
+    <div className='bg-gray-200 rounded-xl p-[20px] w-full relative'>
       <div className='flex justify-end mb-2 relative'>
         <button
           className='bg-white px-4 py-1 rounded-md shadow border text-sm'
@@ -100,7 +100,11 @@ const RevenueChart = () => {
         )}
       </div>
 
-      <ResponsiveContainer width='100%' height={300}>
+      <ResponsiveContainer
+        width='100%'
+        height={300}
+        className={"p-[10px] text-[12px] lg:text-md  "}
+      >
         <BarChart data={filteredData}>
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='month' stroke='#cb3f27' />
@@ -115,7 +119,22 @@ const RevenueChart = () => {
             }
           />
           <Legend />
-          <Bar dataKey='amount' fill='#1e1c87' name='Revenue' barSize={30} />
+          <Bar
+            dataKey='amount'
+            fill='green'
+            radius={[8, 8, 0, 0]}
+            isAnimationActive={false}
+            animationDuration={500}
+            animationEasing='ease-in-out'
+            animationBegin={0}
+            animationId={1}
+            data-testid='revenue-bar'
+            stackId='a'
+            cursor='pointer'
+            data-
+            name='Revenue'
+            barSize={30}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

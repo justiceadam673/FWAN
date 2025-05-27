@@ -9,7 +9,7 @@ const FarmersDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate(); // correct usage
 
-  const from = location.state?.from?.pathname || "/farmersdashboard";
+  const from = location.state?.from?.pathname || "/farmersoverview";
 
   navigate(from, { replace: true });
 
@@ -47,12 +47,14 @@ const FarmersDashboard = () => {
           icon={"game-icons:sell-card"}
         />
         <FarmersDashBoardCard
-          cardNumber={`₦20,000`}
+          nairaSIgn={"₦"}
+          cardNumber={`20,000`}
           cardText={"Pending Payment"}
           icon={"uiw:loading"}
         />
         <FarmersDashBoardCard
-          cardNumber={`₦400,000`}
+          nairaSIgn={"₦"}
+          cardNumber={`400,000`}
           cardText={"Revenue"}
           icon={"mingcute:wallet-fill"}
         />
