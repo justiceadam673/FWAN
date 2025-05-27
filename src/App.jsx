@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "leaflet/dist/leaflet.css";
 
 import BuyersSidebarLayout from "./layouts/BuyersSidebarLayout";
 import LandingPage from "./COMPONENTS/LANDING-PAGE/pages/LandingPage";
