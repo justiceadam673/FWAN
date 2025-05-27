@@ -1,42 +1,99 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { UserRound } from "lucide-react";
 
 const FarmersProfile = () => {
   return (
-    <div className='flex items-center justify-center h-screen bg-gradient-to-br from-indigo-100 via-white to-blue-100'>
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className='text-center p-10 bg-white rounded-3xl shadow-2xl border border-blue-200 max-w-lg'
-      >
-        <motion.div
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className='text-blue-600 mb-6'
-        >
-          <UserRound size={72} strokeWidth={1.5} />
-        </motion.div>
+    <div>
+      {/* Main Container */}
+      <div className='flex w-[689px] h-[685px] items-center justify-center pt-[44px] pr-[51px] pb-[78px] pl-[51px] mt-[41px] bg-[#EBE9E9] rounded-[12px] ml-[95px]'>
+        <div className=''>
+          <h2 className='text-[#1E1E1E] font-[Kodchasan] text-[24px] not-italic leading-normal font-semibold w-[587px] h-[31px] mb-[26px]'>
+            Personal Information
+          </h2>
 
-        <motion.h1
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className='text-4xl font-bold text-blue-700 mb-3'
-        >
-          Profile Feature Coming Soon
-        </motion.h1>
+          <div className='grid grid-cols-2 gap-4 mb-4'>
+            <div>
+              <label className='text-[#1E1E1E] font-[Poppins] text-[18px] font-normal leading-[29.03px]'>
+                First Name
+              </label>
+              <input
+                type='text'
+                value='Muhamed'
+                className='flex w-[261px] h-[70px] p-[10px] gap-[10px] self-stretch rounded-[15px] border border-[#CFCFCF] bg-[#FFF]'
+                readOnly
+              />
+            </div>
+            <div>
+              <label className='text-[#1E1E1E] font-[Poppins] text-[18px] font-normal leading-[29.03px]'>
+                Last Name
+              </label>
+              <input
+                type='text'
+                value='Muhamed'
+                className='flex w-[261px] h-[70px] p-[10px] gap-[10px] self-stretch rounded-[15px] border border-[#CFCFCF] bg-[#FFF]'
+                readOnly
+              />
+            </div>
+          </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className='text-gray-600 text-base'
-        >
-          Your personalized space is being built with care 👨‍🌾💼
-        </motion.p>
-      </motion.div>
+          <div className='mb-4'>
+            <div className=''>
+              <label className='text-[#1E1E1E] w-[136px] h-[30px] font-[Poppins] text-[18px] font-normal not-italic leading-[29.03px] shrink-0'>
+                Email Address
+              </label>
+              <button className='text-[#1E1E1E] w-[33px] h-[30px] font-[Poppins] text-[18px] font-normal not-italic leading-[29.03px]'>
+                ✏️ Edit
+              </button>
+            </div>
+            <input
+              type='email'
+              value='Muhamedali@gmail.com'
+              className='flex w-[568px] h-[70px] p-[10px] items-center gap-[10px] self-stretch rounded-[15px] border border-[#CFCFCF] bg-[#FFF]'
+              readOnly
+            />
+          </div>
+
+          <div className='mb-4'>
+            <div className='flex items-center justify-between'>
+              <label className='text-[#1E1E1E] font-[Poppins] text-[18px] font-normal not-italic leading-[29.03px]'>
+                Phone Number
+              </label>
+              <button className='text-[#1E1E1E] text-[18px] leading-[29.03px] font-normal font-[Poppins] not-italic'>
+                ✏️ Edit
+              </button>
+            </div>
+            <input
+              type='text'
+              value='0801233456789'
+              className='flex w-[471px] h-[70px] p-[10px] items-center gap-[10px] rounded-[15px] border border-[#CFCFCF] bg-[#FFF]'
+              readOnly
+            />
+          </div>
+
+          <div className='mb-6'>
+            <div className='flex items-center justify-between'>
+              <label className='text-[#1E1E1E] font-[Poppins] text-[18px] font-normal not-italic leading-[29.03px]'>
+                Residential Address
+              </label>
+              <button className='text-[#1E1E1E] text-[18px] leading-[29.03px] font-normal font-[Poppins] not-italic'>
+                ✏️ Edit
+              </button>
+            </div>
+            <input
+              type='text'
+              value='Opposite shop city, Old airport'
+              className='flex w-[568px] h-[70px] p-[10px] items-center gap-[10px] self-stretch rounded-[15px] border border-[#CFCFCF] bg-[#FFF]'
+              readOnly
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* New Button Section */}
+      <div className='mt-6 ml-[95px]'>
+        <button className='flex w-[194px]  h-full p-[10px] items-center justify-center gap-[10px] rounded-[12px] border border-[#CFCFCF] bg-[#F3FAF6] ml-auto ]'>
+          Save Changes
+        </button>
+      </div>
     </div>
   );
 };
