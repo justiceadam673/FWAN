@@ -41,23 +41,43 @@ const BuyersSidebarLayout = () => {
         </div>
 
         <nav className='flex flex-col gap-3'>
-          <NavLink to='/dashboard' className={linkClass} onClick={closeSidebar}>
+          <NavLink
+            to='/buyersoverview'
+            className={linkClass}
+            onClick={closeSidebar}
+          >
             <Icon icon='fluent:home-28-regular' width='40' height='40' />
             {t("dashboard")}
           </NavLink>
-          <NavLink to='/listings' className={linkClass} onClick={closeSidebar}>
+          <NavLink
+            to='/buyerslistings'
+            className={linkClass}
+            onClick={closeSidebar}
+          >
             <Icon icon='el:list-alt' width='40' height='40' />
             {t("all_listings")}
           </NavLink>
-          <NavLink to='/offers' className={linkClass} onClick={closeSidebar}>
+          <NavLink
+            to='/buyersoffers'
+            className={linkClass}
+            onClick={closeSidebar}
+          >
             <Icon icon='mdi:cart-outline' width='40' height='40' />
             {t("carts")}
           </NavLink>
-          <NavLink to='/history' className={linkClass} onClick={closeSidebar}>
+          <NavLink
+            to='/buyershistory'
+            className={linkClass}
+            onClick={closeSidebar}
+          >
             <Icon icon='ep:bell' width='40' height='40' />
             {t("history")}
           </NavLink>
-          <NavLink to='/profile' className={linkClass} onClick={closeSidebar}>
+          <NavLink
+            to='/buyersprofile'
+            className={linkClass}
+            onClick={closeSidebar}
+          >
             <Icon icon='gg:profile' width='40' height='40' />
             {t("profile")}
           </NavLink>

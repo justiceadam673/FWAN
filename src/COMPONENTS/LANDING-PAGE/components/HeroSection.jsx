@@ -1,5 +1,6 @@
 import React from "react";
 import Heros from "../../../assets/img/heroimage.png";
+import { NavLink } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -25,12 +26,16 @@ const HeroSection = () => {
         </p>
 
         <div className='flex flex-wrap gap-[40px] text-[12px] lg:text-[20px]'>
-          <button className='bg-[#3D8236] text-white w-[135px] lg:w-[240px] h-[31px] md:h-[45px] lg:h-[55px] rounded-[11px] lg:rounded-[20px] hover:bg-green-700 transition'>
-            Join as a Farmer
-          </button>
-          <button className='border border-white text-white w-[135px] lg:w-[240px] h-[31px] md:h-[45px] lg:h-[55px] rounded-[11px] lg:rounded-[20px] hover:text-[#3D8236] hover:border-[#3D8236] transition'>
-            Join as a Buyer
-          </button>
+          <NavLink to={"/farmersignup"}>
+            <button className='bg-[#3D8236] text-white w-[135px] lg:w-[240px] h-[31px] md:h-[45px] lg:h-[55px] rounded-[11px] lg:rounded-[20px] hover:bg-green-700 transition'>
+              Join as a Farmer
+            </button>
+          </NavLink>
+          <NavLink to={"/buyersignup"}>
+            <button className='border border-white text-white w-[135px] lg:w-[240px] h-[31px] md:h-[45px] lg:h-[55px] rounded-[11px] lg:rounded-[20px] hover:text-[#3D8236] hover:border-[#3D8236] transition'>
+              Join as a Buyer
+            </button>
+          </NavLink>
         </div>
       </div>
     </div>

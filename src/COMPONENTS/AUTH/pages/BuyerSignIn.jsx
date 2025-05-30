@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import Img from "../../../assets/img/signupimg.png";
+import Img from "../../../assets/img/signinimg.png";
 import { NavLink, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
@@ -16,6 +16,8 @@ const BuyerSignIn = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  // ...imports same as before...
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,17 +37,21 @@ const BuyerSignIn = () => {
         return;
       }
 
-      // Check if buyer already exists in Firestore
-      const userRef = doc(db, "buyers", user.uid);
+      // Check Firestore role in unified 'users' collection
+      const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
       if (!userSnap.exists()) {
-        // Save data if not already in Firestore
-        await setDoc(userRef, {
-          uid: user.uid,
-          email: user.email,
-          createdAt: new Date(),
-        });
+        toast.error("User record not found. Please sign up again.");
+        await signOut(auth);
+        return;
+      }
+
+      const data = userSnap.data();
+      if (data.role !== "buyer") {
+        toast.error("This email is not registered as a buyer.");
+        await signOut(auth);
+        return;
       }
 
       toast.success("Logged in successfully!");
@@ -63,9 +69,9 @@ const BuyerSignIn = () => {
   };
 
   return (
-    <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] justify-center'>
+    <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] place-self-center justify-center'>
       <section className='mb-[10px] lg:mb-[31px]'>
-        <NavLink to={"/"}>
+        <NavLink to={"/role"}>
           <Icon
             icon='ic:round-arrow-back'
             className='lg:w-[46px] w-[28px] h-[28px] lg:h-[46px]'

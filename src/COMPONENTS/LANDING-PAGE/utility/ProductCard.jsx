@@ -2,7 +2,7 @@ import React from "react";
 
 const ProductCard = ({ title, seller, rating, image, quantity, price }) => {
   return (
-    <div className=' md:max-w-full lg:max-w-[379px] max-w-[162px] w-full h-[256px] md:h-[669px] rounded-[12.823px] md:rounded-[30px] border bg-[#FFF] shadow-[0px_4px_2px_0px_rgba(0,0,0,0.25)] p-[8px] md:p-[20px] border-[#8C8383] '>
+    <div className=' md:max-w-full lg:max-w-[379px] max-w-[162px] w-full h-[256px] md:h-[669px] rounded-[12.823px] md:rounded-[30px] border bg-[#FFF]  p-[8px] md:p-[20px] border-[#8C8383] '>
       <img
         src={image}
         alt={title}

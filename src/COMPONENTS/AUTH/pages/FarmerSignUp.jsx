@@ -1,4 +1,3 @@
-// FarmerSignUp.jsx
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signupimg.png";
@@ -13,6 +12,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import AuthForm from "../components/AuthForm";
 import AuthButton from "../components/AuthButton";
+
+// ✅ Firestore imports
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../../FireBaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const FarmerSignUp = () => {
   const [formData, setFormData] = useState({
@@ -38,6 +42,18 @@ const FarmerSignUp = () => {
     }
 
     try {
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("email", "==", formData.email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const existingUser = querySnapshot.docs[0].data();
+        if (existingUser.role !== "farmer") {
+          toast.error("This email is already registered as a Buyer.");
+          return;
+        }
+      }
+      // ✅ Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
@@ -45,8 +61,20 @@ const FarmerSignUp = () => {
       );
 
       const user = userCredential.user;
+      console.log("User UID:", user.uid);
+      const uid = user.uid;
 
-      // Send email verification
+      // ✅ Create user document in Firestore using uid
+      await setDoc(doc(db, "users", uid), {
+        uid: uid,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        role: "farmer", // used to distinguish between farmer/buyer
+        createdAt: new Date().toISOString(),
+      });
+
+      // ✅ Send verification email
       await sendEmailVerification(user);
       toast.info(
         "A verification email has been sent. Please check your inbox."
@@ -71,7 +99,7 @@ const FarmerSignUp = () => {
   return (
     <div className='flex px-[20px] py-[31px]  lg:w-[1244px]  flex-col  mx-auto justify-center'>
       <section className='mb-[10px] lg:mb-[31px]'>
-        <NavLink to={"/"}>
+        <NavLink to={"/role"}>
           <Icon
             icon={"ic:round-arrow-back"}
             className='lg:w-[46px] w-[28px] h-[28px] lg:h-[46px]'
@@ -82,7 +110,7 @@ const FarmerSignUp = () => {
         <div>
           <img
             src={Img}
-            className='w-full h-full hidden lg:flex'
+            className='w-full h-full  hidden lg:flex'
             alt='signup'
           />
         </div>

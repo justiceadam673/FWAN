@@ -7,7 +7,8 @@ import {
   sendEmailVerification,
   signOut,
 } from "firebase/auth";
-import { auth } from "../../../FireBaseConfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthForm from "../components/AuthForm";
@@ -45,11 +46,31 @@ const BuyerSignUp = () => {
 
       const user = userCredential.user;
 
+      // Check if a user document already exists (possibly as farmer)
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const existingRole = userSnap.data().role;
+        toast.error(`This email is already registered as a ${existingRole}.`);
+        await signOut(auth);
+        return;
+      }
+
+      // Create buyer in unified /users/{uid} collection
+      await setDoc(userRef, {
+        uid: user.uid,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        role: "buyer",
+        createdAt: new Date(),
+      });
+
       await sendEmailVerification(user);
       toast.success("Verification email sent! Please check your inbox.");
 
-      await signOut(auth); // Sign out user immediately
-
+      await signOut(auth); // Force logout until verified
       navigate("/buyersignin");
     } catch (error) {
       console.error("Signup Error:", error);
@@ -66,9 +87,9 @@ const BuyerSignUp = () => {
   };
 
   return (
-    <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] items-center justify-center'>
+    <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] place-self-center justify-center'>
       <section className='mb-[10px] lg:mb-[31px]'>
-        <NavLink to={"/"}>
+        <NavLink to={"/role"}>
           <Icon
             icon='ic:round-arrow-back'
             className='lg:w-[46px] w-[28px] h-[28px] lg:h-[46px]'

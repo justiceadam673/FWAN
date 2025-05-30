@@ -42,7 +42,7 @@ const router = createBrowserRouter(
 
       <Route element={<BuyersSidebarLayout />}>
         <Route
-          path='/buyersdashboard'
+          path='/buyersoverview'
           element={
             <ProtectedRoute>
               <BuyersDashboard />

@@ -3,19 +3,19 @@ import contactimg from "../../../assets/img/contactimg.png";
 
 const ContactUs = () => {
   return (
-    <div className='lg:flex items-center gap-[58px] bg-[#FFF] '>
+    <div className='lg:flex items-center justify-center lg:py-[50px] p-[20px] pb-[50px] gap-[58px] bg-[#FFF] '>
       <h1 className='text-[20px] font-[Kodchasan] lg:hidden place-self-center font-semibold leading-normal '>
         Contact Us
       </h1>
-      <section>
+      <section className='p-[20px]'>
         <img
           src={contactimg}
           alt='Logo'
-          className=' rounded-[30px] max-md:w-full max-lg:w-fit place-self-center max-lg:h-[356px] max-md:h-full lg:width-[614pxpx] lg:h-[682px] lg:mt-[102px]  lg:mb-[159px] lg:ml-[96px]'
+          className=' rounded-[30px]   max-lg:h-[356px] max-md:h-full lg:w-[614px]  lg:h-[682px] '
         />
       </section>
 
-      <div className='lg:w-[589px]  h-full  text-[12px] lg:h-[675px] mx-[50px] mt-[23px] mb-[81px] lg:ml-[58px] lg:pr-[83px]'>
+      <div className='lg:w-[589px]  h-full  text-[12px] lg:h-[675px]'>
         <div className='flex flex-col gap-[40px] leading-[1.5] '>
           <p className='  font-poppins lg:text-[20px] '>
             We’d love to hear from you! Whether you have a question, feedback,

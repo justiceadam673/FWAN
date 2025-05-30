@@ -11,7 +11,7 @@ const AboutUs = () => {
       <img
         src={About}
         alt='Logo'
-        className='w-full h-[217px] lg:h-full rounded-[8.225px] lg:rounded-[30px] mt-[24px]'
+        className='w-full max-w-[300px] lg:max-w-[1250px] h-[217px] lg:h-full rounded-[8.225px] lg:rounded-[30px] mt-[24px]'
       />
 
       <div className='lg:pl-[224px] px-[36px] lg:pr-[192px]  lg:pb-[80px] mt-[36px] lg:mt-[50.59px] '>

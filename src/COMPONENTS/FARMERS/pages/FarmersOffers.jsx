@@ -114,69 +114,74 @@ const FarmersOffers = () => {
   }, [offers, statusMap]);
 
   return (
-    <div className='p-6'>
-      <div className='lg:flex justify-between  bg-[#F1E7E7] py-[15px] px-[20px] rounded-t-[20px] items-center mb-4'>
-        <div className='lg:flex hidden space-y-[20px]  gap-[30px] justify-center items-start'>
-          <p className='flex items-center  gap-1'>
+    <div className='p-4 sm:p-6'>
+      <div className='bg-[#F1E7E7] py-3 px-4 rounded-t-2xl mb-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
+        {/* Badges */}
+        <div className='flex gap-4 overflow-x-auto text-sm font-medium'>
+          <p className='flex items-center gap-1'>
             All
-            <span className='text-white text-sm px-[6px] rounded-full bg-[#b3261e]'>
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-[#b3261e]'>
               {statusCounts.all}
             </span>
           </p>
           <p className='flex items-center gap-1'>
             Accepted
-            <span className='text-white text-sm px-[6px] rounded-full bg-green-600'>
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-green-600'>
               {statusCounts.accepted}
             </span>
           </p>
           <p className='flex items-center gap-1'>
             Rejected
-            <span className='text-white text-sm px-[6px] rounded-full bg-red-600'>
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-red-600'>
               {statusCounts.rejected}
             </span>
           </p>
           <p className='flex items-center gap-1'>
             Pending
-            <span className='text-white text-sm px-[6px] rounded-full bg-yellow-500'>
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-yellow-500'>
               {statusCounts.pending}
             </span>
           </p>
           <p className='flex items-center gap-1'>
             Listings
-            <span className='text-white text-sm px-[6px] rounded-full bg-blue-500'>
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-blue-500'>
               {offers.length}
             </span>
           </p>
         </div>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className='w-[203px] bg-white rounded-[12px] px-4 py-2 text-gray-700'
-        >
-          <option value=''>Sort by</option>
-          <option value='date'>Date</option>
-          <option value='price'>Price Offered</option>
-          <option value='status'>Status</option>
-          <option value='buyer'>Buyer Name</option>
-          <option value='product'>Product</option>
-        </select>
+
+        {/* Sort Dropdown */}
+        <div>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className='w-full sm:w-[203px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-gray-700'
+          >
+            <option value=''>Sort by</option>
+            <option value='date'>Date</option>
+            <option value='price'>Price Offered</option>
+            <option value='status'>Status</option>
+            <option value='buyer'>Buyer Name</option>
+            <option value='product'>Product</option>
+          </select>
+        </div>
       </div>
 
       {/* Desktop Table */}
       {!isMobile && (
-        <div className='overflow-x-auto'>
-          <table className='w-full border border-gray-300'>
-            <thead className='bg-gray-100'>
-              <tr className='text-[#888888] font-[poppins]'>
-                <th className='p-2 font-normal'>N/S</th>
-                <th className='p-2 font-normal'>Buyer</th>
-                <th className='p-2 font-normal'>Product</th>
-                <th className='p-2 font-normal'>Quantity</th>
-                <th className='p-2 font-normal'>Price Offered</th>
-                <th className='p-2 font-normal'>Total Value</th>
-                <th className='p-2 font-normal'>Date</th>
-                <th className='p-2 font-normal'>Status</th>
-                <th className='p-2 font-normal'>Action</th>
+        <div className='overflow-x-auto border rounded-b-xl'>
+          <table className='w-full table-auto text-sm'>
+            <thead className='bg-gray-100 text-left text-[#888888] font-[poppins]'>
+              <tr>
+                <th className='p-3 font-normal'>N/S</th>
+                <th className='p-3 font-normal'>Buyer</th>
+                <th className='p-3 font-normal'>Product</th>
+                <th className='p-3 font-normal'>Quantity</th>
+                <th className='p-3 font-normal'>Price Offered</th>
+                <th className='p-3 font-normal'>Total Value</th>
+                <th className='p-3 font-normal'>Date</th>
+                <th className='p-3 font-normal'>Status</th>
+                <th className='p-3 font-normal'>Action</th>
               </tr>
             </thead>
             <tbody>

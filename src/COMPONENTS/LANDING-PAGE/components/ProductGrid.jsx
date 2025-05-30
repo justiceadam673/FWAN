@@ -5,10 +5,9 @@ import Potatoes from "../../../assets/img/potatoes.png";
 import Pepper from "../../../assets/img/peppers.png";
 // import BellPeppers from "../../../assets/img/bells.png";
 
-
 const ProductGrid = () => {
   return (
-    <div className=' md:w-3/4 flex flex-col items-center justify-center mx-auto  lg:p-6'>
+    <div className='   md:w-3/4 flex flex-col items-center justify-center mx-auto  py-6'>
       <h1 className=' text-[20px] lg:text-[45px] text-[#1E1E1E] max-lg:mt-[20px]  leading-normal font-[Kodchasan] font-semibold mb-4'>
         Our Collections
       </h1>
