@@ -12,7 +12,7 @@ import BuyersSidebarLayout from "./layouts/BuyersSidebarLayout";
 import LandingPage from "./COMPONENTS/LANDING-PAGE/pages/LandingPage";
 import BuyersDashboard from "./COMPONENTS/BUYERS/pages/BuyersDashboard";
 import BuyersListing from "./COMPONENTS/BUYERS/pages/BuyersListing";
-import BuyersOffers from "./COMPONENTS/BUYERS/pages/BuyersOffers";
+import BuyersTracking from "./COMPONENTS/BUYERS/pages/BuyersTracking";
 import BuyersHistory from "./COMPONENTS/BUYERS/pages/BuyersHistory";
 import BuyersProfile from "./COMPONENTS/BUYERS/pages/BuyersProfile";
 import HeaderFooter from "./layouts/HeaderFooter";
@@ -41,46 +41,48 @@ const router = createBrowserRouter(
       <Route path='/' element={<LandingPage />} />
 
       <Route element={<BuyersSidebarLayout />}>
-        <Route
-          path='/buyersoverview'
-          element={
-            <ProtectedRoute>
-              <BuyersDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/buyerslistings'
-          element={
-            <ProtectedRoute>
-              <BuyersListing />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/buyersoffers'
-          element={
-            <ProtectedRoute>
-              <BuyersOffers />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/buyershistory'
-          element={
-            <ProtectedRoute>
-              <BuyersHistory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/buyersprofile'
-          element={
-            <ProtectedRoute>
-              <BuyersProfile />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<DashBoardLayout />}>
+          <Route
+            path='/buyersoverview'
+            element={
+              <ProtectedRoute>
+                <BuyersDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/buyerscart'
+            element={
+              <ProtectedRoute>
+                <BuyersListing />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/buyershistory'
+            element={
+              <ProtectedRoute>
+                <BuyersHistory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/buyerstracking'
+            element={
+              <ProtectedRoute>
+                <BuyersTracking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/buyersprofile'
+            element={
+              <ProtectedRoute>
+                <BuyersProfile />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
       </Route>
 
       <Route element={<FarmersSidebarLayout />}>

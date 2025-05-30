@@ -55,7 +55,7 @@ const BuyerSignIn = () => {
       }
 
       toast.success("Logged in successfully!");
-      navigate("/buyersdashboard");
+      navigate("/buyersoverview");
     } catch (error) {
       console.error("Login Error:", error);
       if (error.code === "auth/user-not-found") {

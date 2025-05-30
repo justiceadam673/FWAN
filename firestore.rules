@@ -2,31 +2,72 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // All user accounts live in the "users" collection
+    // USERS: Single Collection for both Farmers and Buyers
     match /users/{userId} {
       allow create: if request.auth != null && request.auth.uid == userId;
-      allow read, update: if request.auth != null && request.auth.uid == userId;
+
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      allow update: if request.auth != null &&
+                    request.auth.uid == userId &&
+                    // Prevent role escalation
+                    request.resource.data.role == resource.data.role;
+
+      allow delete: if false; // Prevent self-deletion
     }
 
-    // Farmers Listings: only allow users with role == 'farmer' to access their own listings
+    // FARMERS_LISTINGS: Only Farmers can create/manage their own listings
     match /farmers_listings/{listingId} {
       allow create: if request.auth != null &&
                     request.resource.data.userId == request.auth.uid &&
                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "farmer";
 
       allow read, update, delete: if request.auth != null &&
-                                  resource.data.userId == request.auth.uid &&
+                                  request.auth.uid == resource.data.userId &&
                                   get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "farmer";
     }
 
-    // Offers (if needed by both roles)
+    // OFFERS: Only Buyers can create/manage their offers
     match /offers/{offerId} {
-      allow read, write: if request.auth != null &&
-                         resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null &&
+                    request.resource.data.userId == request.auth.uid &&
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "buyer";
+
+      allow read, update, delete: if request.auth != null &&
+                                  request.auth.uid == resource.data.userId &&
+                                  get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "buyer";
     }
 
-    // Add additional rules as needed...
+    // REVENUE: Only Farmers can manage their own revenue
+    match /revenue/{revenueId} {
+      allow create: if request.auth != null &&
+                    request.resource.data.userId == request.auth.uid &&
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "farmer";
 
+      allow read, update, delete: if request.auth != null &&
+                                  request.auth.uid == resource.data.userId &&
+                                  get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "farmer";
+    }
+
+    // COLLECTIONS: Public Read-Only
+    match /collections/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // VEHICLE TRACKING (Admin Controlled Location Updates)
+    match /tracking/{vehicleId} {
+      allow read: if request.auth != null;
+
+      allow write: if false;
+
+      match /locations/{locationId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth.token.admin == true;
+      }
+    }
+
+    // CATCH-ALL DENY
     match /{document=**} {
       allow read, write: if false;
     }

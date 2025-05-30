@@ -18,7 +18,7 @@ const DashBoardLayout = () => {
           />
           <div className='font-[Kodchasan] font-medium leading-normal'>
             <h1 className='flex items-center text-[#1E1E1E] text-[28px] gap-2'>
-              Hello Musa <Icon icon='emojione:waving-hand' />
+              Hello Debbie <Icon icon='emojione:waving-hand' />
             </h1>
             <p className='text-[20px] text-[#A19797]'>Good morning</p>
           </div>

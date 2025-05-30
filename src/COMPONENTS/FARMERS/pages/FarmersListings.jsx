@@ -14,14 +14,6 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 const FarmersListings = () => {
   const [filter, setFilter] = useState("All");
@@ -155,17 +147,6 @@ const FarmersListings = () => {
       ? listings
       : listings.filter((item) => item.status === filter);
 
-  const chartData = Object.values(
-    filteredListings.reduce((acc, item) => {
-      if (!acc[item.prod]) {
-        acc[item.prod] = { name: item.prod, quantity: 0, listings: 0 };
-      }
-      acc[item.prod].quantity += parseInt(item.quantity);
-      acc[item.prod].listings += 1;
-      return acc;
-    }, {})
-  );
-
   return (
     <div className='w-full px-[58px]'>
       <Toaster position='top-right' />
@@ -184,19 +165,6 @@ const FarmersListings = () => {
           New Listing
         </button>
       </section>
-
-      {/* Chart */}
-      <div className='w-full h-[300px] bg-white shadow-md rounded-lg mb-6'>
-        <ResponsiveContainer width='100%' height='100%'>
-          <BarChart data={chartData}>
-            <XAxis dataKey='name' />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey='quantity' fill='#69B645' />
-            <Bar dataKey='listings' fill='#82ca9d' />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
 
       <div className='flex space-x-4 bg-[#F1E7E7] py-[20px] rounded-t-[12px] px-[18px] mb-4 mt-4'>
         {["All", "In Stock", "Sold Out"].map((status) => (
@@ -248,7 +216,7 @@ const FarmersListings = () => {
               </button>
             </div>
 
-            {/* Form */}
+            {/* Form Fields */}
             <div className='w-full flex justify-between items-center'>
               <section className='flex flex-col'>
                 <label htmlFor='product'>Product</label>
@@ -282,27 +250,33 @@ const FarmersListings = () => {
 
             <div className='flex gap-[72px] justify-between'>
               <div className='relative'>
+                <label htmlFor='price'>Product Price</label>
                 <input
-                  className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF] pr-10'
+                  id='price'
+                  placeholder='Product Price'
+                  className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF]'
                   value={newProduct.price}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
                   }
                 />
-                <Icon
-                  icon='mdi:pencil'
-                  className='absolute right-2 top-2 text-gray-400 cursor-pointer'
-                />
               </div>
 
-              <input
-                type='date'
-                className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF]'
-                value={newProduct.harvestDate}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, harvestDate: e.target.value })
-                }
-              />
+              <div className='w-[241px] h-[70px]'>
+                <label htmlFor='date'>Harvest Date</label>
+                <input
+                  type='date'
+                  id='date'
+                  className='border p-[10px] rounded-[15px] w-full h-full border-[#CFCFCF]'
+                  value={newProduct.harvestDate}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      harvestDate: e.target.value,
+                    })
+                  }
+                />
+              </div>
             </div>
             {errors.harvestDate && (
               <p className='text-red-500 text-sm'>{errors.harvestDate}</p>
@@ -333,11 +307,11 @@ const FarmersListings = () => {
                 <option value='Small'>Small</option>
               </select>
 
-              <div className='flex flex-col'>
+              <div className='flex flex-col w-full'>
                 <input
                   type='file'
                   accept='image/*'
-                  className='border p-[10px] rounded-[15px] w-full h-[167px] border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] h-[167px] border-[#CFCFCF]'
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
