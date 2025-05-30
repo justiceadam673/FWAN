@@ -5,18 +5,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signOut,
 } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
-import { auth } from "../../../FireBaseConfig";
 import "react-toastify/dist/ReactToastify.css";
 
 import AuthForm from "../components/AuthForm";
 import AuthButton from "../components/AuthButton";
-
-// ✅ Firestore imports
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../FireBaseConfig";
-import { collection, query, where, getDocs } from "firebase/firestore";
 
 const FarmerSignUp = () => {
   const [formData, setFormData] = useState({
@@ -42,18 +39,6 @@ const FarmerSignUp = () => {
     }
 
     try {
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("email", "==", formData.email));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const existingUser = querySnapshot.docs[0].data();
-        if (existingUser.role !== "farmer") {
-          toast.error("This email is already registered as a Buyer.");
-          return;
-        }
-      }
-      // ✅ Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
@@ -61,35 +46,41 @@ const FarmerSignUp = () => {
       );
 
       const user = userCredential.user;
-      console.log("User UID:", user.uid);
-      const uid = user.uid;
 
-      // ✅ Create user document in Firestore using uid
-      await setDoc(doc(db, "users", uid), {
-        uid: uid,
+      // Check if user document already exists
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const existingRole = userSnap.data().role;
+        toast.error(`This email is already registered as a ${existingRole}.`);
+        await signOut(auth);
+        return;
+      }
+
+      // Create farmer user document in Firestore
+      await setDoc(userRef, {
+        uid: user.uid,
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        role: "farmer", // used to distinguish between farmer/buyer
-        createdAt: new Date().toISOString(),
+        role: "farmer",
+        createdAt: new Date(),
       });
 
-      // ✅ Send verification email
       await sendEmailVerification(user);
-      toast.info(
-        "A verification email has been sent. Please check your inbox."
-      );
+      toast.success("Verification email sent! Please check your inbox.");
 
-      toast.success("Account created successfully! Please verify your email.");
+      await signOut(auth); // Force logout until verified
       navigate("/farmersignin");
     } catch (error) {
       console.error("Signup Error:", error);
       if (error.code === "auth/email-already-in-use") {
-        toast.error("Email is already in use.");
+        toast.error("Email already in use. Try logging in.");
       } else if (error.code === "auth/invalid-email") {
         toast.error("Invalid email address.");
       } else if (error.code === "auth/weak-password") {
-        toast.error("Password too weak (min 6 characters).");
+        toast.error("Password should be at least 6 characters.");
       } else {
         toast.error("Something went wrong. Try again.");
       }
@@ -97,7 +88,7 @@ const FarmerSignUp = () => {
   };
 
   return (
-    <div className='flex px-[20px] py-[31px]  lg:w-[1244px]  flex-col  mx-auto justify-center'>
+    <div className='flex px-[20px] py-[31px] lg:w-[1244px] flex-col mx-auto justify-center'>
       <section className='mb-[10px] lg:mb-[31px]'>
         <NavLink to={"/role"}>
           <Icon
@@ -106,11 +97,11 @@ const FarmerSignUp = () => {
           />
         </NavLink>
       </section>
-      <section className='flex max-lg:items-center  w-full lg:gap-[43px]'>
+      <section className='flex max-lg:items-center w-full lg:gap-[43px]'>
         <div>
           <img
             src={Img}
-            className='w-full h-full  hidden lg:flex'
+            className='w-full h-full hidden lg:flex'
             alt='signup'
           />
         </div>
