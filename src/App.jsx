@@ -11,7 +11,7 @@ import "leaflet/dist/leaflet.css";
 import BuyersSidebarLayout from "./layouts/BuyersSidebarLayout";
 import LandingPage from "./COMPONENTS/LANDING-PAGE/pages/LandingPage";
 import BuyersDashboard from "./COMPONENTS/BUYERS/pages/BuyersDashboard";
-import BuyersListing from "./COMPONENTS/BUYERS/pages/BuyersListing";
+import BuyersCart from "./COMPONENTS/BUYERS/pages/BuyersCart";
 import BuyersTracking from "./COMPONENTS/BUYERS/pages/BuyersTracking";
 import BuyersHistory from "./COMPONENTS/BUYERS/pages/BuyersHistory";
 import BuyersProfile from "./COMPONENTS/BUYERS/pages/BuyersProfile";
@@ -54,7 +54,7 @@ const router = createBrowserRouter(
             path='/buyerscart'
             element={
               <ProtectedRoute>
-                <BuyersListing />
+                <BuyersCart />
               </ProtectedRoute>
             }
           />

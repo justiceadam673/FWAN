@@ -1,64 +1,66 @@
+import { Icon } from "@iconify/react";
 import React from "react";
-import Border from "../util/Border";
-import Cart from "../../../assets/img/overviewcart.png";
-import Clock from "../../../assets/img/overviewclock.png";
-import Mark from "../../../assets/img/overviewmark.png";
-import Plus from "../../../assets/img/+.png";
+import BuyersDashBoardCard from "../components/BuyersDashBoardCard";
+// import RevenueChart from "../data/RevenueChart";
+import { useLocation, useNavigate } from "react-router-dom";
+// import RevenueDashboard from "../utils/REvenueDashboard";
 
-const Dashboard = () => {
+const BuyersDashboard = () => {
+  const location = useLocation();
+  const navigate = useNavigate(); // correct usage
+
+  const from = location.state?.from?.pathname || "/farmersoverview";
+
+  navigate(from, { replace: true });
+
   return (
-    <div>
-      <section className='flex h-full items-center poppins-thin mb-[68px] justify-between mt-[23px]'>
-        <div className='space-y-[20px]'>
-          <h1 className='text-black font-poppins text-[24px] md:text-[34px] lg:text-[44px] xl:text-[54px] 2xl:text-[64px]  font-bold leading-none'>
-            Welcome Grace!
-          </h1>
-          <h3 className='text-black font-poppins text-[14px] lg:text-[16px] font-normal leading-normal'>
-            Good to see you again, Grace! Let’s get started
-          </h3>
-        </div>
-        <div className='flex flex-col justify-center items-center gap-[clamp(6px,1.5vw,10px)] p-[clamp(10px,4vw,31px)] rounded-full bg-[#1D8338]'>
-          <p className='text-black font-inter text-[clamp(24px,4vw,48px)] font-bold leading-normal'>
-            SG
-          </p>
-        </div>
+    <main className='lg:ml-[60px] px-[20px] max-w-[880px] bg-[#F3FAF6] '>
+      {/* <section className='flex my-[28px]  gap-[33px] '>
+        <button className='bg-[#69B645] lg:text-[16px] text-[12px] rounded-[8px] text-white flex justify-center items-center gap-[5px] lg:gap-[19px] py-[8px] pr-[29px] '>
+          <span className='bg-[#E8E4E4]/20 p-[6px] ml-[8px] flex justify-center rounded-[8px] items-center '>
+            <Icon
+              icon='line-md:plus'
+              className='text-[#E8E4E4]  lg:w-[24px] w-[19.836px] lg:h-[24px] h-[19.836px]  '
+            />
+          </span>{" "}
+          New Listing
+        </button>
+        <button className='bg-[#B65445] lg:text-[16px] text-[12px] rounded-[8px] text-white flex justify-center items-center gap-[5px] lg:gap-[19px] py-[8px] pr-[29px] '>
+          <span className='bg-[#E8E4E4]/20 p-[6px] ml-[8px] flex justify-center rounded-[8px] items-center '>
+            <Icon
+              icon='line-md:minus'
+              className='text-[#E8E4E4]  lg:w-[24px] w-[19.836px] lg:h-[24px] h-[19.836px]  '
+            />{" "}
+          </span>
+          Remove Listing
+        </button>
+      </section> */}
+      <section className='grid lg:grid-cols-4 grid-cols-2 my-[28px] ml-[4px] mb-[36.5px] gap-[24px]'>
+        <BuyersDashBoardCard
+          cardNumber={13}
+          cardText={"Active Bids"}
+          icon={"rivet-icons:clipboard"}
+        />
+        <BuyersDashBoardCard
+          cardNumber={`1,043`}
+          cardText={"Pending Deliveries"}
+          icon={"game-icons:sell-card"}
+        />
+        <BuyersDashBoardCard
+          nairaSIgn={"₦"}
+          cardNumber={`20,000`}
+          cardText={"Pending Payment"}
+          icon={"uiw:loading"}
+        />
+        <BuyersDashBoardCard
+          nairaSIgn={"₦"}
+          cardNumber={`400,000`}
+          cardText={"Total Amount spent"}
+          icon={"mingcute:wallet-fill"}
+        />
       </section>
-      <section className='md:place-self-center'>
-        <section>
-          <h3 className='text-black/70 font-inter text-[22px]  mb-[38px] font-normal leading-none'>
-            General Overview
-          </h3>
-        </section>
-        <section className='grid lg:grid-cols-2 gap-[50px]  md:w-[400px] xl:w-[900px] 2xl:w-[1061px] m-[10px]'>
-          <Border
-            overviewHeader={"Total Purchases"}
-            overviewIcon={"mdi-light:cart"}
-            overviewDigits={`₦ ${10}`}
-            overviewHistory={1.2}
-          />
-          <Border
-            overviewHeader={"Accepted Offers"}
-            overviewIcon={"fluent-mdl2:check-mark"}
-            overviewDigits={` ${10}`}
-            overviewHistory={2}
-          />
-          <Border
-            overviewHeader={"Active Offers"}
-            overviewIcon={"iconamoon-clock-thin"}
-            overviewDigits={`${6}`}
-            overviewHistory={1.2}
-          />
-          <Border
-            overviewHeader={"Farmer Relation"}
-            overviewIcon={"ic:sharp-plus"}
-            color={"#1D8338"}
-            overviewDigits={`${1}`}
-            overviewHistory={0.2}
-          />
-        </section>
-      </section>
-    </div>
+    </main>
   );
 };
 
-export default Dashboard;
+export default BuyersDashboard;
