@@ -77,7 +77,7 @@ const FarmersProfile = () => {
 
   return (
     <div className='flex flex-col w-[689px] place-self-center-safe items-center py-[20px]'>
-      <div className='flex w-full h-[685px] items-center justify-center pt-[44px] pr-[51px] pb-[78px] pl-[51px] mt-[41px] bg-[#EBE9E9] rounded-[12px]'>
+      <div className='flex w-full h-[685px] items-center justify-center pt-[44px] pr-[51px] pb-[78px] pl-[51px] mt-[41px] rounded-[12px]'>
         <div className='w-full'>
           <h2 className='text-[#1E1E1E] font-[Kodchasan] text-[24px] not-italic leading-normal font-semibold mb-[26px]'>
             Personal Information

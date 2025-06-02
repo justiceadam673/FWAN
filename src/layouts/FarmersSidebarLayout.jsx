@@ -32,7 +32,11 @@ const FarmersSidebarLayout = () => {
 
         {/* Logo in sidebar for desktop */}
         <div className='hidden md:block mb-[53px] mt-[32px] '>
-          <img src={logo} alt='FWAN Logo' className='h-[49px]  w-[150.592px]' />
+          <img
+            src={logo}
+            alt='FWAN Logo'
+            className='h-[49px] place-self-center w-[150.592px]'
+          />
         </div>
 
         <nav className='flex justify-start flex-col px-[50px] gap-[16px]'>
@@ -41,7 +45,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }
@@ -55,7 +59,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }
@@ -69,7 +73,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }
@@ -83,7 +87,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }
@@ -102,7 +106,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }
@@ -116,7 +120,7 @@ const FarmersSidebarLayout = () => {
             className={({ isActive }) =>
               `${
                 isActive
-                  ? "bg-black text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
+                  ? "bg-[#69B645] text-white flex items-center  gap-[15px]  px-[10px] py-[15px]  rounded-[8px] "
                   : `${linkClass}`
               } `
             }

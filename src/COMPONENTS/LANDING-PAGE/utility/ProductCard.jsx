@@ -37,7 +37,7 @@ const ProductCard = ({ title, seller, rating, image, quantity, price }) => {
         </section>
         <div className='w-full flex justify-center items-center md:mt-4'>
           <button className=' w-[86.343px] md:w-[202px]  h-[23.509px] md:h-[55px] p-[4.274px] lg:p-[10px] rounded-[20px] text-center bg-black text-[12px] md:text-[20px] poppins-regular leading-normal text-white hover:bg-[#3D8236] transition duration-[0.5s]'>
-            Make a Bid
+            Make a Offer
           </button>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { productList } from "../data/productsData";
-import randomImage from "../utils/randomImage";
 import FarmersListingCard from "../components/FarmersListingCard";
 import { db, auth, storage } from "../../../FireBaseConfig";
+import uploadToImgBB from "../utils/uploadToImgBB";
+
 import {
   collection,
   addDoc,
@@ -13,6 +14,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { deleteDoc, doc } from "firebase/firestore";
+
 import toast, { Toaster } from "react-hot-toast";
 
 const FarmersListings = () => {
@@ -22,6 +25,8 @@ const FarmersListings = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const imgbbApiKey = "337c1b7d614d9e354d1aaaf93793d4a8"; // 🔐 move to .env in production
 
   const [newProduct, setNewProduct] = useState({
     product: "",
@@ -90,16 +95,13 @@ const FarmersListings = () => {
       return;
     }
 
-    let imageUrl = randomImage(newProduct.product);
+    setIsLoading(true);
 
     try {
+      let imageUrl = "";
+
       if (imageFile) {
-        const imageRef = ref(
-          storage,
-          `listings/${user.uid}/${Date.now()}_${imageFile.name}`
-        );
-        await uploadBytes(imageRef, imageFile);
-        imageUrl = await getDownloadURL(imageRef);
+        imageUrl = await uploadToImgBB(imageFile, imgbbApiKey);
       }
 
       const listingData = {
@@ -139,6 +141,18 @@ const FarmersListings = () => {
     } catch (error) {
       console.error("Error adding listing:", error);
       toast.error("Error adding listing. Check console.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleRemoveListing = async (listingId) => {
+    try {
+      await deleteDoc(doc(db, "farmers_listings", listingId));
+      setListings((prev) => prev.filter((item) => item.id !== listingId));
+      toast.success("Listing removed successfully!");
+    } catch (error) {
+      console.error("Error removing listing:", error);
+      toast.error("Failed to remove listing.");
     }
   };
 
@@ -195,6 +209,7 @@ const FarmersListings = () => {
             offers={item.offers}
             statusHeader='status'
             status={item.status}
+            onRemove={() => handleRemoveListing(item.id)} // 👈 This enables deletion
           />
         ))}
       </div>
@@ -339,9 +354,15 @@ const FarmersListings = () => {
               </button>
               <button
                 onClick={handleAddListing}
-                className='bg-green-600 text-white py-2 p-[10px] rounded'
+                disabled={isLoading}
+                className={`${
+                  isLoading ? "bg-gray-400" : "bg-green-600"
+                } text-white py-2 px-[20px] rounded flex items-center gap-2`}
               >
-                Add Listing
+                {isLoading && (
+                  <span className='animate-spin rounded-full h-4 w-4 border-t-2 border-white border-solid'></span>
+                )}
+                {isLoading ? "Uploading..." : "Add Listing"}
               </button>
             </div>
           </div>

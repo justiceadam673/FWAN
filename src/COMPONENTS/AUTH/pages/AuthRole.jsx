@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Img from "../../../assets/img/heroimage.png";
+import { Icon } from "@iconify/react";
 
 const AuthRole = () => {
   return (
@@ -59,6 +60,14 @@ const AuthRole = () => {
           </section>
           <hr className='md:w-[1px] md:h-full w-full h-[1px] my-[15px] bg-black/50' />
           <section className='text-[15px] flex-1'>
+            <div className='flex justify-center  '>
+              <NavLink to={"/"}>
+                <Icon
+                  icon={"ic:round-arrow-back"}
+                  className='lg:w-[28px] lg:h-[28px]  '
+                />
+              </NavLink>
+            </div>
             <div className='flex  mt-4'>
               <p>
                 Already have an account?{" "}

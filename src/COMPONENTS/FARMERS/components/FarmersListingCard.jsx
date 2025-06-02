@@ -13,62 +13,62 @@ const FarmersListingCard = ({
   offers,
   statusHeader,
   status,
-  onRemove, // 👈 New prop
+  onRemove, // <- required to pass delete handler
 }) => {
   return (
     <div className='flex flex-col lg:flex-row bg-white w-full rounded-md shadow-sm mt-2 p-4 gap-4'>
       {/* Image */}
-      <div className='flex-shrink-0'>
-        <img
-          src={image || "https://via.placeholder.com/91x72?text=No+Image"}
-          className='w-[91px] h-[72px] rounded-[12px] object-cover'
-        />
+      <div className='flex-shrink-0 w-[100px] h-[100px] overflow-hidden rounded bg-gray-100 flex items-center justify-center'>
+        {image ? (
+          <img
+            src={image}
+            alt={prod}
+            className='w-full h-full object-cover rounded'
+          />
+        ) : (
+          <div className='text-center text-sm text-gray-500'>
+            No image available
+          </div>
+        )}
       </div>
 
-      {/* Info Section */}
-      <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 w-full'>
-        <div>
-          <h3 className='text-gray-500 text-sm font-[Poppins]'>{prodHeader}</h3>
-          <p className='text-[#174582] text-base font-[Poppins]'>{prod}</p>
+      {/* Content */}
+      <div className='flex-1 grid grid-cols-2 md:grid-cols-3 gap-2 text-sm'>
+        <div className='text-green-900/70'>
+          <strong className='text-green-900'>{prodHeader}:</strong> {prod}
         </div>
-        <div>
-          <h3 className='text-gray-500 text-sm font-[Poppins]'>
-            {quantityHeader}
-          </h3>
-          <p className='text-[#174582] text-base font-[Poppins]'>{quantity}</p>
+        <div className='text-green-900/70'>
+          <strong className='text-green-900'>{quantityHeader}:</strong>{" "}
+          {quantity}
         </div>
-        <div>
-          <h3 className='text-gray-500 text-sm font-[Poppins]'>
-            {priceHeader}
-          </h3>
-          <p className='text-[#174582] text-base font-[Poppins]'>{price}</p>
+        <div className='text-green-900/70'>
+          <strong className='text-green-900'>{priceHeader}:</strong> ₦{price}
         </div>
-        <div>
-          <h3 className='text-gray-500 text-sm font-[Poppins]'>
-            {offersHeader}
-          </h3>
-          <p className='text-[#174582] text-base font-[Poppins]'>{offers}</p>
+        <div className='text-green-900/70'>
+          <strong className='text-green-900'>{offersHeader}:</strong> {offers}
         </div>
-        <div>
-          <h3 className='text-gray-500 text-sm font-[Poppins]'>
-            {statusHeader}
-          </h3>
-          <p className='text-[#69B645] text-base font-[Poppins]'>{status}</p>
+        <div className='text-green-900/70'>
+          <strong className='text-green-900'>{statusHeader}:</strong> {status}
         </div>
       </div>
 
       {/* Remove Button */}
-      <div className='flex justify-end items-center'>
-        <button
-          onClick={onRemove} // 👈 Trigger parent callback
-          className='bg-[#B65445] text-white flex items-center gap-2 px-3 py-2 rounded-md'
-        >
-          <span className='bg-[#E8E4E4]/20 p-[6px] rounded-[8px] flex items-center justify-center'>
-            <Icon icon='line-md:minus' className='text-[#E8E4E4]' />
-          </span>
-          <span className='hidden lg:inline'>Remove</span>
-        </button>
-      </div>
+      {onRemove && (
+        <div className='flex items-center justify-end'>
+          <button
+            onClick={() => {
+              if (
+                window.confirm("Are you sure you want to remove this listing?")
+              ) {
+                onRemove();
+              }
+            }}
+            className='text-green-500 border border-green-500 rounded-[20px] px-[20px] py-[5px] hover:text-red-500 hover:border-red-500 transition duration-[.3s] text-sm'
+          >
+            Remove
+          </button>
+        </div>
+      )}
     </div>
   );
 };

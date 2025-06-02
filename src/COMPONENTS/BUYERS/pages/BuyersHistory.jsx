@@ -1,144 +1,162 @@
-import React from "react";
-import { farmData } from "../data/FarmData";
+// BuyersHistory.jsx
+import React, { useEffect, useState } from "react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { db, auth } from "../../../FireBaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
-const Listing = () => {
-  const simulatedOrders = farmData.slice(0, 5).map((item, index) => {
-    const day = new Date(item.harvestDate).getDate();
-    return {
-      orderId: `ORD-${String(day).padStart(2, "0")}-${String(
-        index + 1
-      ).padStart(3, "0")}`,
-      product: item.name,
-      farmer: item.farmer,
-      quantity: item.quantity,
-      totalPrice: calculateTotalPrice(item.price, item.quantity),
-      purchaseDate: item.harvestDate,
-      status: index % 2 === 0 ? "Delivered" : "In transit",
+const BuyersHistory = () => {
+  const [user, setUser] = useState(null);
+  const [offers, setOffers] = useState([]);
+  const [filter, setFilter] = useState("All");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      if (!user) return;
+
+      try {
+        const offersRef = collection(db, "offers");
+        const q = query(
+          offersRef,
+          where("farmerId", "==", user.uid),
+          where("status", "==", "Accepted"),
+          where("deliveryStatus", "in", ["Delivered", "In Transit"])
+        );
+        const querySnapshot = await getDocs(q);
+        const fetchedOffers = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setOffers(fetchedOffers);
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      }
     };
-  });
 
-  function calculateTotalPrice(pricePerKg, quantityStr) {
-    const numericPrice = parseInt(pricePerKg.replace(/\D/g, ""), 10);
-    const numericQuantity = parseInt(quantityStr, 10);
-    return `₦${(numericPrice * numericQuantity).toLocaleString()}`;
-  }
+    fetchOffers();
+  }, [user]);
+
+  const filteredOffers =
+    filter === "All"
+      ? offers
+      : offers.filter((offer) => offer.deliveryStatus === filter);
+
+  const handleMarkInTransit = async (offerId) => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const orderId = `ORD-${day}-${month}`;
+
+    try {
+      await updateDoc(doc(db, "offers", offerId), {
+        deliveryStatus: "In Transit",
+        orderId,
+      });
+      setOffers((prev) =>
+        prev.map((offer) =>
+          offer.id === offerId
+            ? { ...offer, deliveryStatus: "In Transit", orderId }
+            : offer
+        )
+      );
+    } catch (err) {
+      console.error("Failed to update offer status:", err);
+    }
+  };
 
   return (
-    <div>
-      <section className='flex h-full items-center justify-between mt-[23px]'>
-        <div className='space-y-[20px]'>
-          <h1 className='text-black font-inter text-[24px] md:text-[34px] lg:text-[44px] xl:text-[54px] 2xl:text-[64px] font-bold leading-none'>
-            Welcome Grace!
-          </h1>
-          <h3 className='text-black font-inter text-[14px] lg:text-[16px] font-normal leading-normal'>
-            Good to see you again, Grace! Let’s get started
-          </h3>
-        </div>
-        <div className='flex flex-col justify-center items-center gap-[clamp(6px,1.5vw,10px)] p-[clamp(10px,4vw,31px)] rounded-full bg-[#1D8338]'>
-          <p className='text-black font-inter text-[clamp(24px,4vw,48px)] font-bold leading-normal'>
-            SG
-          </p>
-        </div>
-      </section>
+    <div className='p-4 md:p-8'>
+      <h2 className='text-2xl font-semibold mb-6'>Offer History</h2>
 
-      <section className='outline flex flex-col gap-[46px] rounded-[12px] outline-black/50 lg:mt-[80px] mt-[68px] md:mt-[68px] p-[30px]'>
-        <div>
-          <div className='mb-[10px] lg:mb-[0px]'>
-            <h3 className='text-black font-black font-inter text-[20px] lg:text-[42px] md:text-[32px] mb-[20px] leading-none'>
-              Purchase History
-            </h3>
-            <p className='text-[14px] lg:text-[20px]'>View your purchase</p>
-          </div>
+      {/* Filter Buttons */}
+      <div className='flex space-x-4 mb-4'>
+        {["All", "Delivered", "In Transit"].map((status) => (
+          <button
+            key={status}
+            onClick={() => setFilter(status)}
+            className={`px-4 py-2 rounded-lg ${
+              filter === status ? "bg-green-600 text-white" : "bg-gray-200"
+            }`}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
 
-          {/* Mobile Card View */}
-          <div className='block lg:hidden space-y-4'>
-            {simulatedOrders.map((order, index) => (
-              <div key={index} className='border p-4 rounded-md shadow-sm'>
-                <div className='text-sm'>
-                  <p>
-                    <span className='font-semibold'>Order ID:</span>{" "}
-                    {order.orderId}
-                  </p>
-                  <p>
-                    <span className='font-semibold'>Product:</span>{" "}
-                    {order.product}
-                  </p>
-                  <p>
-                    <span className='font-semibold'>Farmer:</span>{" "}
-                    {order.farmer}
-                  </p>
-                  <p>
-                    <span className='font-semibold'>Quantity:</span>{" "}
-                    {order.quantity}
-                  </p>
-                  <p>
-                    <span className='font-semibold'>Total Price:</span>{" "}
-                    {order.totalPrice}
-                  </p>
-                  <p>
-                    <span className='font-semibold'>Purchase Date:</span>{" "}
-                    {order.purchaseDate}
-                  </p>
-                  <p className='mt-1'>
-                    <span className='font-semibold'>Status:</span>{" "}
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-medium ${
-                        order.status === "Delivered"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
+      {/* Table or List */}
+      <div className='overflow-x-auto'>
+        <table className='min-w-full text-left text-sm border rounded-lg'>
+          <thead className='bg-gray-100'>
+            <tr>
+              <th className='px-4 py-2'>Order ID</th>
+              <th className='px-4 py-2'>Product</th>
+              <th className='px-4 py-2'>Buyer</th>
+              <th className='px-4 py-2'>Quantity</th>
+              <th className='px-4 py-2'>Total Price</th>
+              <th className='px-4 py-2'>Date</th>
+              <th className='px-4 py-2'>Status</th>
+              <th className='px-4 py-2'>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOffers.length > 0 ? (
+              filteredOffers.map((offer) => (
+                <tr key={offer.id} className='border-t'>
+                  <td className='px-4 py-2'>
+                    {offer.orderId ||
+                      `ORD-${offer.createdAt?.toDate().getDate()}-${
+                        offer.createdAt?.toDate().getMonth() + 1
                       }`}
-                    >
-                      {order.status}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop Table View */}
-          <div className='hidden lg:block'>
-            <table className='min-w-full text-left text-sm'>
-              <thead className='border-b font-medium text-gray-700'>
-                <tr>
-                  <th className='px-4 py-2'>Order ID</th>
-                  <th className='px-4 py-2'>Product</th>
-                  <th className='px-4 py-2'>Farmer</th>
-                  <th className='px-4 py-2'>Quantity</th>
-                  <th className='px-4 py-2'>Total Price</th>
-                  <th className='px-4 py-2'>Purchase Date</th>
-                  <th className='px-4 py-2'>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {simulatedOrders.map((order, index) => (
-                  <tr key={index} className='border-t'>
-                    <td className='px-4 py-3'>{order.orderId}</td>
-                    <td className='px-4 py-3'>{order.product}</td>
-                    <td className='px-4 py-3'>{order.farmer}</td>
-                    <td className='px-4 py-3'>{order.quantity}</td>
-                    <td className='px-4 py-3'>{order.totalPrice}</td>
-                    <td className='px-4 py-3'>{order.purchaseDate}</td>
-                    <td className='px-4 py-3'>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          order.status === "Delivered"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
-                        }`}
+                  </td>
+                  <td className='px-4 py-2'>{offer.product}</td>
+                  <td className='px-4 py-2'>{offer.buyerName}</td>
+                  <td className='px-4 py-2'>{offer.quantity}</td>
+                  <td className='px-4 py-2'>
+                    ₦{offer.totalValue?.toLocaleString()}
+                  </td>
+                  <td className='px-4 py-2'>
+                    {offer.createdAt?.toDate().toLocaleDateString("en-GB")}
+                  </td>
+                  <td className='px-4 py-2 text-green-600 font-medium'>
+                    {offer.deliveryStatus}
+                  </td>
+                  <td className='px-4 py-2'>
+                    {offer.deliveryStatus !== "In Transit" && (
+                      <button
+                        onClick={() => handleMarkInTransit(offer.id)}
+                        className='bg-blue-500 text-white px-3 py-1 rounded'
                       >
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+                        Mark In Transit
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan='8' className='px-4 py-6 text-center text-gray-400'>
+                  No offers found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default Listing;
+export default BuyersHistory;

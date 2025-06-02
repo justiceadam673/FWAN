@@ -45,7 +45,7 @@ const TestimonialSlider = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const step = isMobile ? 1 : 2;
+  const step = isMobile ? 1 : 1;
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + step) % testimonials.length);

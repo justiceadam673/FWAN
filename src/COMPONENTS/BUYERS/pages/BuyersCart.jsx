@@ -1,76 +1,222 @@
-import React from "react";
-import Cards from "../util/Cards";
-// import Border from "../util/Border";
-// import Cart from "../../../assets/img/overviewcart.png";
-// import Clock from "../../../assets/img/overviewclock.png";
-// import Mark from "../../../assets/img/overviewmark.png";
-// import Plus from "../../../assets/img/+.png";
-import { farmData } from "../data/FarmData";
-import { Icon } from "@iconify/react";
+import React, { useEffect, useState, useMemo } from "react";
+import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { db } from "../../../FireBaseConfig";
+import BuyersOfferTable from "../util/BuyersOfferTable";
 
-const Listing = () => {
+const BuyersOffers = () => {
+  const [offers, setOffers] = useState([]);
+  const [statusMap, setStatusMap] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+  const [sortBy, setSortBy] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "offers"),
+      (querySnapshot) => {
+        const offersData = querySnapshot.docs.map((docSnap, index) => {
+          const data = docSnap.data();
+          let date = data.date;
+
+          if (date?.seconds) {
+            date = new Date(date.seconds * 1000);
+          } else if (typeof date === "string") {
+            date = new Date(date);
+          } else {
+            date = new Date(0);
+          }
+
+          return {
+            docId: docSnap.id,
+            id: index + 1,
+            ...data,
+            date,
+          };
+        });
+
+        setOffers(offersData);
+
+        const newStatusMap = {};
+        offersData.forEach((item) => {
+          newStatusMap[item.id] = item.deliveryStatus || "Pending";
+        });
+        setStatusMap(newStatusMap);
+      }
+    );
+
+    const checkScreen = () => setIsMobile(window.innerWidth < 1280);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => {
+      window.removeEventListener("resize", checkScreen);
+      unsubscribe();
+    };
+  }, []);
+
+  const handleStatusChange = async (id, newStatus) => {
+    const offer = offers.find((offer) => offer.id === id);
+    if (!offer) return;
+
+    const confirmMsg = `Are you sure you want to mark this offer as '${newStatus}'?`;
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      await updateDoc(doc(db, "offers", offer.docId), {
+        deliveryStatus: newStatus,
+      });
+      setStatusMap((prev) => ({
+        ...prev,
+        [id]: newStatus,
+      }));
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const getSortedOffers = () => {
+    const sorted = [...offers].sort((a, b) => {
+      switch (sortBy) {
+        case "date":
+          return b.date - a.date;
+        case "price":
+          return (
+            parseFloat(b.priceOffered || 0) - parseFloat(a.priceOffered || 0)
+          );
+        case "status":
+          return (statusMap[a.id] || "").localeCompare(statusMap[b.id] || "");
+        case "buyer":
+          return (a.buyerName || "").localeCompare(b.buyerName || "");
+        case "product":
+          return (a.product || "")
+            .toLowerCase()
+            .localeCompare((b.product || "").toLowerCase());
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  };
+
+  const statusCounts = useMemo(() => {
+    const counts = {
+      all: offers.length,
+      accepted: 0,
+      rejected: 0,
+      pending: 0,
+    };
+
+    Object.values(statusMap).forEach((status) => {
+      if (status === "Accepted") counts.accepted++;
+      else if (status === "Rejected") counts.rejected++;
+      else counts.pending++;
+    });
+
+    return counts;
+  }, [offers, statusMap]);
+
   return (
-    <div>
-      <section className='flex h-full items-center justify-between mt-[23px]'>
-        <div className='space-y-[20px]'>
-          <h1 className='text-black font-inter text-[24px] md:text-[34px] lg:text-[44px] xl:text-[54px] 2xl:text-[64px]  font-bold leading-none'>
-            Welcome Grace!
-          </h1>
-          <h3 className='text-black font-inter text-[14px] lg:text-[16px] font-normal leading-normal'>
-            Good to see you again, Grace! Let’s get started
-          </h3>
-        </div>
-        <div className='flex flex-col justify-center items-center gap-[clamp(6px,1.5vw,10px)] p-[clamp(10px,4vw,31px)] rounded-full bg-[#1D8338]'>
-          <p className='text-black font-inter text-[clamp(24px,4vw,48px)] font-bold leading-normal'>
-            SG
+    <div className='p-4 sm:p-6'>
+      <div className='bg-[#F1E7E7] py-3 px-4 rounded-t-2xl mb-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
+        {/* Badges */}
+        <div className='flex gap-4 overflow-x-auto text-sm font-medium'>
+          <p className='flex items-center gap-1'>
+            All
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-[#b3261e]'>
+              {statusCounts.all}
+            </span>
+          </p>
+          <p className='flex items-center gap-1'>
+            Accepted
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-green-600'>
+              {statusCounts.accepted}
+            </span>
+          </p>
+          <p className='flex items-center gap-1'>
+            Rejected
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-red-600'>
+              {statusCounts.rejected}
+            </span>
+          </p>
+          <p className='flex items-center gap-1'>
+            Pending
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-yellow-500'>
+              {statusCounts.pending}
+            </span>
+          </p>
+          <p className='flex items-center gap-1'>
+            Listings
+            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-blue-500'>
+              {offers.length}
+            </span>
           </p>
         </div>
-      </section>
-      <section>
-        <section className='outline flex flex-col gap-[46px] rounded-[12px] outline-black/50 lg:mt-[80px] mt-[68px] md:mt-[68px] p-[30px]'>
-          <div className='lg:flex justify-between '>
-            <div className='mb-[10px] lg:mb-[0px]'>
-              <h3 className='text-black font-black font-inter text-[20px] lg:text-[42px] md:text-[32px] mb-[20px]  leading-none'>
-                Browse Listings
-              </h3>
-              <p className='text-[14px] lg:text-[20px] '>View farm produce </p>
-            </div>
-            <div className='relative max-w-[464px] w-full'>
-              {/* Icon positioned inside the input */}
-              <span className='absolute inset-0 top-[18px] left-[10px] lg:top-[40px] lg:left-[20px] -translate-y-1/2 text-black'>
-                <Icon icon='mdi:search' width='28' height='28' />
-              </span>
 
-              {/* Input field with padding to avoid overlapping the icon */}
-              <input
-                type='text'
-                placeholder='Search listings'
-                className='border rounded-[12px] placeholder:text-[20px] placeholder:text-black pl-[60px] w-full h-[40px] lg:h-[56px] text-[25px] focus:outline-none'
-              />
-            </div>
-          </div>
-          <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 mt-[46px] gap-[69px]'>
-            {farmData.map((product) => (
-              <Cards
-                key={product.id}
-                img={product.image}
-                name={product.name}
-                farmer={product.farmer}
-                ratings={product.rating}
-                quantity={product.quantity}
-                price={product.price}
-                location={product.location}
-                harvestDate={product.harvestDate}
-                availableUntil={product.availableUntil}
-                description={product.description}
-                reviews={product.reviews}
-              />
-            ))}
-          </div>
-        </section>
-      </section>
+        {/* Sort Dropdown */}
+        <div>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className='w-full sm:w-[203px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-gray-700'
+          >
+            <option value=''>Sort by</option>
+            <option value='date'>Date</option>
+            <option value='price'>Price Offered</option>
+            <option value='status'>Status</option>
+            <option value='buyer'>Buyer Name</option>
+            <option value='product'>Product</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Desktop Table */}
+      {!isMobile && (
+        <div className='overflow-x-auto border rounded-b-xl'>
+          <table className='w-full table-auto text-sm'>
+            <thead className='bg-gray-100 text-left text-[#888888] font-[poppins]'>
+              <tr>
+                <th className='p-3 font-normal'>N/S</th>
+                <th className='p-3 font-normal'>Buyer</th>
+                <th className='p-3 font-normal'>Product</th>
+                <th className='p-3 font-normal'>Quantity</th>
+                <th className='p-3 font-normal'>Price Offered</th>
+                <th className='p-3 font-normal'>Total Value</th>
+                <th className='p-3 font-normal'>Date</th>
+                <th className='p-3 font-normal'>Status</th>
+                <th className='p-3 font-normal'>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {getSortedOffers().map((offer, index) => (
+                <BuyersOfferTable
+                  key={index}
+                  offer={offer}
+                  status={statusMap[offer.id]}
+                  onStatusChange={handleStatusChange}
+                  isMobile={false}
+                  onMakeOffer={() => alert("Make more offer clicked")}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Mobile View */}
+      {isMobile && (
+        <div className='grid gap-4'>
+          {getSortedOffers().map((offer, index) => (
+            <BuyersOfferTable
+              key={index}
+              offer={offer}
+              status={statusMap[offer.id]}
+              onStatusChange={handleStatusChange}
+              isMobile={true}
+              onMakeOffer={() => alert("Make more offer clicked")}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default Listing;
+export default BuyersOffers;

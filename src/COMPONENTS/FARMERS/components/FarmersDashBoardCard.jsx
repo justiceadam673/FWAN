@@ -12,12 +12,12 @@ const FarmersDashBoardCard = ({ cardNumber, nairaSIgn, cardText, icon }) => {
               className='text-[#69B645] lg:w-[35px] w-[25px] lg:h-[35px] h-[25px] '
             />
           </div>
-          <h1 className='lg:text-[28px] text-[18.667px] font-[Kodchasan] font-bold text-[#174582] '>
+          <h1 className='lg:text-[28px] text-[18.667px] font-[Kodchasan] font-bold text-green-900 '>
             <span className='font-[poppins]'>{nairaSIgn}</span>
             {cardNumber}
           </h1>
         </div>
-        <div className='h-[38px]  text-[#888888] '>
+        <div className='h-[38px]  text-green-900/50 '>
           <p className='ml-[34px] text-[10px] lg:text-[15px]'>{cardText}</p>
         </div>
       </section>

@@ -15,7 +15,7 @@ const FarmersDashboard = () => {
 
   return (
     <main className='lg:ml-[60px] px-[20px] max-w-[880px] bg-[#F3FAF6] '>
-      <section className='flex my-[28px]  gap-[33px] '>
+      {/* <section className='flex my-[28px]  gap-[33px] '>
         <button className='bg-[#69B645] lg:text-[16px] text-[12px] rounded-[8px] text-white flex justify-center items-center gap-[5px] lg:gap-[19px] py-[8px] pr-[29px] '>
           <span className='bg-[#E8E4E4]/20 p-[6px] ml-[8px] flex justify-center rounded-[8px] items-center '>
             <Icon
@@ -34,8 +34,8 @@ const FarmersDashboard = () => {
           </span>
           Remove Listing
         </button>
-      </section>
-      <section className='grid lg:grid-cols-4 grid-cols-2  ml-[4px] mb-[36.5px] gap-[24px]'>
+      </section> */}
+      <section className='grid lg:grid-cols-4 grid-cols-2 mt-[20px] ml-[4px] mb-[36.5px] gap-[24px]'>
         <FarmersDashBoardCard
           cardNumber={13}
           cardText={"Listings"}
