@@ -16,6 +16,7 @@ const FarmerSignIn = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ const FarmerSignIn = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (loading) return; // prevent multiple submissions
+    if (loading) return;
     setLoading(true);
 
     try {
@@ -40,6 +41,7 @@ const FarmerSignIn = () => {
 
       if (!user.emailVerified) {
         toast.error("Please verify your email before logging in.");
+        setLoading(false);
         return;
       }
 
@@ -49,6 +51,7 @@ const FarmerSignIn = () => {
       if (!userSnap.exists()) {
         toast.error("User not found in system.");
         await signOut(auth);
+        setLoading(false);
         return;
       }
 
@@ -56,6 +59,7 @@ const FarmerSignIn = () => {
       if (data.role !== "farmer") {
         toast.error("This email is not registered as a farmer.");
         await signOut(auth);
+        setLoading(false);
         return;
       }
 
@@ -70,6 +74,7 @@ const FarmerSignIn = () => {
       } else {
         toast.error("Something went wrong. Try again.");
       }
+      setLoading(false);
     }
   };
 
@@ -105,17 +110,39 @@ const FarmerSignIn = () => {
               uniqueName='email'
               onChange={handleChange}
             />
-            <AuthForm
-              placeholder='Password'
-              type='password'
-              uniqueName='password'
-              onChange={handleChange}
-            />
+
+            {/* Password field with visibility toggle */}
+            <div className='relative'>
+              <AuthForm
+                placeholder='Password'
+                type={showPassword ? "text" : "password"}
+                uniqueName='password'
+                onChange={handleChange}
+              />
+              <button
+                type='button'
+                onClick={() => setShowPassword((prev) => !prev)}
+                className='absolute hover:cursor-pointer right-4 top-1/2 transform -translate-y-1/2'
+              >
+                <Icon
+                  icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+
+            <div className='max-w-[485px] flex justify-end '>
+              <NavLink className='text-[#3D8236] hover:cursor-pointer text-[15px] lg:text-[20px] hover:text-[#2c7125]'>
+                Forget Password?
+              </NavLink>
+            </div>
+
             <div className='my-[23px]'>
               <button
                 type='submit'
                 disabled={loading}
-                className={`w-full py-3 rounded-md text-white font-medium transition ${
+                className={`w-full py-3 hover:cursor-pointer rounded-md text-white font-medium transition ${
                   loading
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-[#3D8236] hover:bg-[#2f6a2a]"
@@ -156,7 +183,7 @@ const FarmerSignIn = () => {
               Don’t have an account?{" "}
               <NavLink
                 to={"/farmersignup"}
-                className='text-black/70  underline underline-offset-[10px]'
+                className='text-black/70 underline hover:cursor-pointer underline-offset-[10px]'
               >
                 Sign up
               </NavLink>

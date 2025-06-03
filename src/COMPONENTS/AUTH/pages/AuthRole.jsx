@@ -49,9 +49,7 @@ const AuthRole = () => {
                 disabled
                 className='bg-[#F0F0F0] cursor-not-allowed  p-4 rounded-lg'
               >
-                <h2 className='xl:text-[24px] font-semibold '>
-                  Delivery Person
-                </h2>
+                <h2 className='xl:text-[24px] font-semibold '>Logistics</h2>
                 <p className='xl:text-[16px] text-[14px] '>
                   Sign up as a delivery person to deliver products.
                 </p>
