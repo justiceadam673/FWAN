@@ -15,6 +15,7 @@ const FarmerSignIn = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,6 +25,8 @@ const FarmerSignIn = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (loading) return; // prevent multiple submissions
+    setLoading(true);
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -109,7 +112,43 @@ const FarmerSignIn = () => {
               onChange={handleChange}
             />
             <div className='my-[23px]'>
-              <AuthButton buttonText='Login' />
+              <button
+                type='submit'
+                disabled={loading}
+                className={`w-full py-3 rounded-md text-white font-medium transition ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#3D8236] hover:bg-[#2f6a2a]"
+                }`}
+              >
+                {loading ? (
+                  <div className='flex items-center justify-center gap-2'>
+                    <svg
+                      className='animate-spin h-5 w-5 text-white'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                    >
+                      <circle
+                        className='opacity-25'
+                        cx='12'
+                        cy='12'
+                        r='10'
+                        stroke='currentColor'
+                        strokeWidth='4'
+                      ></circle>
+                      <path
+                        className='opacity-75'
+                        fill='currentColor'
+                        d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
+                      ></path>
+                    </svg>
+                    Signing in...
+                  </div>
+                ) : (
+                  "Login"
+                )}
+              </button>
             </div>
           </form>
           <div className='lg:max-w-[485px] max-lg:text-[12px] flex justify-center'>
@@ -117,7 +156,7 @@ const FarmerSignIn = () => {
               Don’t have an account?{" "}
               <NavLink
                 to={"/farmersignup"}
-                className='text-black/70 underline underline-offset-[10px]'
+                className='text-black/70  underline underline-offset-[10px]'
               >
                 Sign up
               </NavLink>

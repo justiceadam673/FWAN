@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../../FireBaseConfig";
-import BuyersOfferTable from "../util/BuyersOfferTable";
+import BuyersCartTable from "../util/BuyersCartTable";
 
-const BuyersOffers = () => {
+const BuyersCart = () => {
   const [offers, setOffers] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [isMobile, setIsMobile] = useState(false);
   const [sortBy, setSortBy] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+  const [offerPrice, setOfferPrice] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -186,13 +197,17 @@ const BuyersOffers = () => {
             </thead>
             <tbody>
               {getSortedOffers().map((offer, index) => (
-                <BuyersOfferTable
+                <BuyersCartTable
                   key={index}
                   offer={offer}
                   status={statusMap[offer.id]}
                   onStatusChange={handleStatusChange}
                   isMobile={false}
-                  onMakeOffer={() => alert("Make more offer clicked")}
+                  onMakeOffer={() => {
+                    setSelectedOffer(offer);
+                    setOfferPrice("");
+                    setShowModal(true);
+                  }}
                 />
               ))}
             </tbody>
@@ -204,19 +219,89 @@ const BuyersOffers = () => {
       {isMobile && (
         <div className='grid gap-4'>
           {getSortedOffers().map((offer, index) => (
-            <BuyersOfferTable
+            <BuyersCartTable
               key={index}
               offer={offer}
               status={statusMap[offer.id]}
               onStatusChange={handleStatusChange}
               isMobile={true}
-              onMakeOffer={() => alert("Make more offer clicked")}
+              onMakeOffer={() => {
+                setSelectedOffer(offer);
+                setOfferPrice("");
+                setShowModal(true);
+              }}
             />
           ))}
+        </div>
+      )}
+
+      {/* Overlay Modal */}
+      {showModal && selectedOffer && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+          <div className='bg-white rounded-xl w-full max-w-md p-6'>
+            <h2 className='text-lg font-semibold mb-4'>Make an Offer</h2>
+            <p className='mb-2'>
+              Product: <strong>{selectedOffer.product}</strong>
+            </p>
+            <p className='mb-2'>
+              Available Quantity: <strong>{selectedOffer.quantity} kg</strong>
+            </p>
+
+            <label className='block text-sm font-medium text-gray-700 mb-1'>
+              Your Offer Price (₦)
+            </label>
+            <input
+              type='number'
+              className='w-full border px-3 py-2 rounded-lg mb-4'
+              value={offerPrice}
+              onChange={(e) => setOfferPrice(e.target.value)}
+              placeholder='Enter price per kg'
+            />
+
+            <div className='flex justify-end gap-2'>
+              <button
+                onClick={() => setShowModal(false)}
+                className='px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  if (!offerPrice) return alert("Please enter a price.");
+
+                  try {
+                    const { product, quantity, docId, userId } = selectedOffer;
+
+                    await addDoc(collection(db, "offers"), {
+                      buyerId: "demoUser123", // replace with actual buyer ID from auth
+                      buyerName: "Demo Buyer", // replace with actual buyer name
+                      product,
+                      quantity,
+                      priceOffered: parseFloat(offerPrice),
+                      totalValue: parseFloat(offerPrice) * quantity,
+                      listingId: docId,
+                      farmerId: userId,
+                      deliveryStatus: "Pending",
+                      date: serverTimestamp(),
+                    });
+
+                    alert("Offer submitted!");
+                    setShowModal(false);
+                  } catch (err) {
+                    console.error("Offer error:", err);
+                    alert("Failed to submit offer.");
+                  }
+                }}
+                className='px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700'
+              >
+                Submit Offer
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default BuyersOffers;
+export default BuyersCart;

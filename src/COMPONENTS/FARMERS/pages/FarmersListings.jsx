@@ -106,6 +106,7 @@ const FarmersListings = () => {
 
       const listingData = {
         userId: user.uid,
+        farmer: user.displayName || user.email,
         prod: newProduct.product,
         quantity: newProduct.quantity,
         price: newProduct.price,
@@ -180,13 +181,15 @@ const FarmersListings = () => {
         </button>
       </section>
 
-      <div className='flex space-x-4 bg-[#F1E7E7] py-[20px] rounded-t-[12px] px-[18px] mb-4 mt-4'>
+      <div className='flex flex-wrap space-y-[10px]  space-x-4 bg-green-100 py-[20px] rounded-t-[12px] px-[18px] mb-4 mt-4'>
         {["All", "In Stock", "Sold Out"].map((status) => (
           <button
             key={status}
             onClick={() => setFilter(status)}
             className={`px-4 py-2 rounded-lg ${
-              filter === status ? "bg-green-600 text-white" : "bg-gray-200"
+              filter === status
+                ? "bg-green-600 text-white"
+                : "bg-gray-200 hover:bg-green-600/40 hover:text-black "
             }`}
           >
             {status}
@@ -215,14 +218,14 @@ const FarmersListings = () => {
       </div>
 
       {showModal && (
-        <div className='fixed inset-0 bg-black/70 flex items-center justify-center z-50'>
-          <div className='bg-white p-[84px] font-[poppins] rounded-lg w-[803px] h-[90%] space-y-4 overflow-auto'>
-            <div className='flex justify-between font-[Kodchasan] items-center'>
+        <div className='fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4'>
+          <div className='bg-white p-[40px] md:p-[60px] lg:p-[84px] font-[poppins] rounded-lg w-full max-w-[803px] h-[90%] space-y-4 overflow-auto'>
+            <div className='flex justify-between font-[Kodchasan] items-center flex-wrap gap-2'>
               <div>
-                <h2 className='text-[24px] font-semibold text-black/70'>
+                <h2 className='text-[20px] md:text-[24px] font-semibold text-black/70'>
                   Add New Produce
                 </h2>
-                <p className='text-[#7C7A7A] text-[20px]'>
+                <p className='text-[#7C7A7A] text-[16px] md:text-[20px]'>
                   Fill in the details of your produce
                 </p>
               </div>
@@ -232,11 +235,11 @@ const FarmersListings = () => {
             </div>
 
             {/* Form Fields */}
-            <div className='w-full flex justify-between items-center'>
-              <section className='flex flex-col'>
+            <div className='w-full flex flex-col md:flex-row md:justify-between md:items-center gap-4'>
+              <section className='flex flex-col w-full md:w-[48%]'>
                 <label htmlFor='product'>Product</label>
                 <select
-                  className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
                   value={newProduct.product}
                   onChange={(e) => handleProductChange(e.target.value)}
                 >
@@ -252,10 +255,10 @@ const FarmersListings = () => {
                 )}
               </section>
 
-              <section className='flex flex-col'>
+              <section className='flex flex-col w-full md:w-[48%]'>
                 <label htmlFor='quantity'>Quantity</label>
                 <input
-                  className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
                   value={newProduct.quantity}
                   readOnly
                   placeholder='Quantity'
@@ -263,13 +266,13 @@ const FarmersListings = () => {
               </section>
             </div>
 
-            <div className='flex gap-[72px] justify-between'>
-              <div className='relative'>
+            <div className='flex flex-col md:flex-row gap-[32px] md:gap-[72px] justify-between'>
+              <div className='relative w-full md:w-[48%]'>
                 <label htmlFor='price'>Product Price</label>
                 <input
                   id='price'
                   placeholder='Product Price'
-                  className='border p-[10px] rounded-[15px] w-[241px] h-[70px] border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
                   value={newProduct.price}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
@@ -277,12 +280,12 @@ const FarmersListings = () => {
                 />
               </div>
 
-              <div className='w-[241px] h-[70px]'>
+              <div className='w-full md:w-[48%]'>
                 <label htmlFor='date'>Harvest Date</label>
                 <input
                   type='date'
                   id='date'
-                  className='border p-[10px] rounded-[15px] w-full h-full border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
                   value={newProduct.harvestDate}
                   onChange={(e) =>
                     setNewProduct({
@@ -299,7 +302,7 @@ const FarmersListings = () => {
 
             <textarea
               placeholder='Produce Description'
-              className='border p-[10px] rounded-[15px] w-full h-[162px] border-[#CFCFCF]'
+              className='border p-[10px] rounded-[15px] w-full h-[150px] md:h-[162px] border-[#CFCFCF]'
               value={newProduct.description}
               onChange={(e) =>
                 setNewProduct({ ...newProduct, description: e.target.value })
@@ -309,9 +312,9 @@ const FarmersListings = () => {
               <p className='text-red-500 text-sm'>{errors.description}</p>
             )}
 
-            <div className='flex justify-self-start gap-[47px]'>
+            <div className='flex flex-col md:flex-row justify-between gap-[20px]'>
               <select
-                className='border p-[10px] rounded-[15px] w-full h-[70px] border-[#CFCFCF]'
+                className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
                 value={newProduct.tier}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, tier: e.target.value })
@@ -326,7 +329,7 @@ const FarmersListings = () => {
                 <input
                   type='file'
                   accept='image/*'
-                  className='border p-[10px] rounded-[15px] h-[167px] border-[#CFCFCF]'
+                  className='border p-[10px] rounded-[15px] h-[140px] md:h-[167px] border-[#CFCFCF]'
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
@@ -345,10 +348,10 @@ const FarmersListings = () => {
               </div>
             </div>
 
-            <div className='w-full flex justify-end gap-[20px]'>
+            <div className='w-full flex flex-col md:flex-row justify-end gap-[10px] md:gap-[20px]'>
               <button
                 onClick={() => setShowModal(false)}
-                className='border border-[#CFCFCF] w-fit text-[#CFCFCF] py-2 p-[10px] rounded'
+                className='border border-[#CFCFCF] text-[#CFCFCF] py-2 px-4 rounded w-full md:w-auto'
               >
                 Cancel
               </button>
@@ -357,7 +360,7 @@ const FarmersListings = () => {
                 disabled={isLoading}
                 className={`${
                   isLoading ? "bg-gray-400" : "bg-green-600"
-                } text-white py-2 px-[20px] rounded flex items-center gap-2`}
+                } text-white py-2 px-4 rounded w-full md:w-auto flex items-center justify-center gap-2`}
               >
                 {isLoading && (
                   <span className='animate-spin rounded-full h-4 w-4 border-t-2 border-white border-solid'></span>

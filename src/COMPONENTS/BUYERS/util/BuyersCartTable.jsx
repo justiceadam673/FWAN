@@ -7,7 +7,7 @@ const formatCurrency = (value) => {
   return `₦${num.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`;
 };
 
-const BuyersOfferTable = ({
+const BuyersCartTable = ({
   offer,
   status,
   onStatusChange,
@@ -131,4 +131,4 @@ const BuyersOfferTable = ({
   );
 };
 
-export default BuyersOfferTable;
+export default BuyersCartTable;

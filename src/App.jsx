@@ -34,6 +34,7 @@ import FarmersOffers from "./COMPONENTS/FARMERS/pages/FarmersOffers";
 import FarmersHistory from "./COMPONENTS/FARMERS/pages/FarmersHistory";
 import FarmersTracking from "./COMPONENTS/FARMERS/pages/FarmersTracking";
 import FarmersProfile from "./COMPONENTS/FARMERS/pages/FarmersProfile";
+import AuthRedirect from "./COMPONENTS/AUTH/AuthRedirect";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -144,10 +145,39 @@ const router = createBrowserRouter(
         <Route path='/contactus' element={<ContactUs />} />
       </Route>
 
-      <Route path='/farmersignin' element={<FarmerSignIn />} />
-      <Route path='/farmersignup' element={<FarmerSignUp />} />
-      <Route path='/buyersignin' element={<BuyerSignIn />} />
-      <Route path='/buyersignup' element={<BuyerSignUp />} />
+      <Route
+        path='/buyersignin'
+        element={
+          <BuyerSignIn />
+          // <AuthRedirect>
+          // </AuthRedirect>
+        }
+      />
+      <Route
+        path='/buyersignup'
+        element={
+          <BuyerSignUp />
+          // <AuthRedirect>
+          // </AuthRedirect>
+        }
+      />
+      <Route
+        path='/farmersignin'
+        element={
+          <FarmerSignIn />
+          // <AuthRedirect>
+          // </AuthRedirect>
+        }
+      />
+      <Route
+        path='/farmersignup'
+        element={
+          <FarmerSignUp />
+          // <AuthRedirect>
+          // </AuthRedirect>
+        }
+      />
+
       <Route path='/role' element={<AuthRole />} />
       <Route path='/farmerverification' element={<FarmersVerification />} />
     </>
