@@ -208,10 +208,9 @@ const BuyersCollections = () => {
         <AddListingModal
           product={selectedProduct}
           onClose={handleCloseModal}
-          onMakeOffer={() => {
-            console.log("Make offer clicked for:", selectedProduct);
-            // Optionally toggle a MakeOffer modal or handle offer here
-          }}
+          onOff={handleCloseModal}
+          onMakeOffer={() => setShowOfferModal(true)}
+          hideContent={showOfferModal}
         />
       )}
       {showOfferModal && <MakeOffer onOff={handleCloseModal} />}

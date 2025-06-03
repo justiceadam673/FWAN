@@ -1,11 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Star from "../../../assets/img/star.png";
 import { Icon } from "@iconify/react";
 import Logo from "../../../assets/img/fwan.png";
 import MakeOffer from "../modals/MakeOffer";
+import { db, auth } from "../../../FireBaseConfig";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const AddListingModal = ({ onClose, onMakeOffer, product }) => {
   const [makeOffer, setMakeOffer] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [user, setUser] = useState(null);
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [allReviews, setAllReviews] = useState(product.reviews || []);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const reviewsRef = collection(
+          db,
+          "farmers_listings",
+          product.id,
+          "reviews"
+        );
+        const q = query(reviewsRef, where("uid", "==", currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          setHasReviewed(true);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [product.id]);
+
+  const handleAddReview = async () => {
+    if (!user) return alert("Please log in to add a review.");
+    if (hasReviewed) return alert("You’ve already submitted a review.");
+
+    const newReview = {
+      reviewer: user.displayName || "Anonymous",
+      uid: user.uid,
+      rating,
+      comment,
+      date: new Date().toLocaleDateString(),
+      timestamp: serverTimestamp(),
+    };
+
+    try {
+      await addDoc(
+        collection(db, "farmers_listings", product.id, "reviews"),
+        newReview
+      );
+      setAllReviews((prev) => [...prev, newReview]);
+      setShowReviewForm(false);
+      setHasReviewed(true);
+      setRating(0);
+      setComment("");
+    } catch (error) {
+      console.error("Error adding review: ", error);
+    }
+  };
 
   return (
     <main className='fixed inset-0 bg-black/70 flex items-center justify-center z-50'>
@@ -13,7 +77,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
         <div className='flex justify-between items-end mb-[20px] border-b-2 md:p-[15px] pb-[5px]'>
           <img src={Logo} />
           <button
-            className=' md:gap-[20px] hover:cursor-pointer hover:bg-gray-100 p-[5px] md:p-[10px] rounded-[10px] flex text-black text-[16px] md:text-[20px] font-bold'
+            className=' md:gap-[20px] hover:md:gap-[5px] transition-all duration-200 hover:cursor-pointer hover:bg-gray-100 p-[5px] md:p-[10px] rounded-[10px] flex text-green-900/70 text-[16px] md:text-[20px] font-bold'
             onClick={onClose}
           >
             <Icon
@@ -25,6 +89,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
             Back to listings
           </button>
         </div>
+
         <section className='xl:flex gap-5'>
           <img
             src={product.image}
@@ -43,6 +108,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                 <span>{product.rating}</span>
               </p>
             </div>
+
             <div className='md:flex max-sm:space-y-[20px] max-sm:my-[16px] gap-[58px]'>
               <p className='flex gap-2 items-center'>
                 <Icon
@@ -55,9 +121,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   <span className='font-semibold'>
                     Location <br />
                   </span>
-                  {product.location
-                    ? product.location
-                    : "Location not available"}
+                  {product.location || "Location not available"}
                 </span>
               </p>
 
@@ -72,11 +136,10 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   <span className='font-semibold'>
                     Harvest Date <br />
                   </span>
-                  {product.harvestDate
-                    ? product.harvestDate
-                    : "Date not available"}
+                  {product.harvestDate || "Date not available"}
                 </span>
               </p>
+
               <p className='flex gap-2 items-center'>
                 <Icon
                   icon='ph:package-light'
@@ -85,15 +148,14 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   className='text-[#1D8338]'
                 />
                 <span className='max-sm:flex max-sm:gap-[20px]'>
-                  <span className='font-semibold '>
+                  <span className='font-semibold'>
                     Available Until <br />
                   </span>
-                  {product.availableUntil
-                    ? product.availableUntil
-                    : "Date not available"}
+                  {product.availableUntil || "Date not available"}
                 </span>
               </p>
             </div>
+
             <div className='flex ml-[10px] gap-21'>
               <p className='flex flex-col gap-2 '>
                 <h2 className='font-bold text-[20px]'>Quantity</h2>
@@ -108,6 +170,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                 </span>
               </p>
             </div>
+
             <div className='space-y-[10px]'>
               <h2 className='text-[20px] font-bold'>Description</h2>
               <p className='2xl:text-[18px] text-[14px'>
@@ -115,57 +178,87 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
               </p>
               <button
                 onClick={onMakeOffer}
-                className=' w-full max-h-[56px] p-[10px] hover:bg-[#084b21] hover:cursor-pointer  bg-[#095C32] rounded-[12px] text-[#FFFFFF] font-normal text-[20px] lg:text-[26px] flex justify-center items-center'
+                className=' w-full max-h-[56px] p-[10px] hover:bg-[#2c7125]  hover:cursor-pointer  bg-[#3D8236] rounded-[12px] text-[#FFFFFF] font-normal text-[20px] lg:text-[26px] flex justify-center items-center'
               >
                 Make an Offer
               </button>
             </div>
           </section>
         </section>
+
         <div className='flex justify-between items-center mt-4'>
           <h2 className='2xl:text-[28px] text-[22px] font-black'>
             Customer Reviews
           </h2>
-          <button className='flex gap-2 2xl:text-[22px] text-[18px] font-normal justify-center items-center border-1  rounded-[8px] px-[10px]'>
+          <button
+            onClick={() => setShowReviewForm(!showReviewForm)}
+            disabled={hasReviewed}
+            className='flex gap-2 2xl:text-[22px] text-[18px] font-normal justify-center items-center border-1  rounded-[8px] px-[10px]'
+          >
             <Icon
               icon='material-symbols-light:add-rounded'
               width='28'
               height='28'
-              className=''
             />
-            Add Review
-            {makeOffer && (
-              <MakeOffer product={product} onOff={() => setMakeOffer(false)} />
-            )}{" "}
+            {hasReviewed ? "Review Submitted" : "Add Review"}
           </button>
         </div>
-        <div>
-          <div className='mt-4 space-y-4'>
-            {product.reviews && product.reviews.length > 0 ? (
-              product.reviews.map((review, index) => (
-                <div key={index} className='border rounded-[12px] p-[10px]'>
-                  <div className='flex justify-between'>
-                    <h3 className='text-lg font-semibold'>{review.reviewer}</h3>
-                    <div className='flex items-center gap-1'>
-                      {Array.from({ length: review.rating }).map((_, i) => (
-                        <img
-                          key={i}
-                          src={Star}
-                          alt='star'
-                          className='w-4 h-4'
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <p className='text-sm text-gray-600'>{review.date}</p>
-                  <p className='mt-1 text-[16px]'>{review.comment}</p>
-                </div>
-              ))
-            ) : (
-              <p className='text-gray-500'>No reviews yet.</p>
-            )}
+
+        {showReviewForm && !hasReviewed && (
+          <div className='my-4 border rounded-xl p-4 space-y-3'>
+            <div className='flex gap-2'>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <img
+                  key={star}
+                  src={Star}
+                  alt={`${star} star`}
+                  className={`w-6 h-6 cursor-pointer ${
+                    star <= rating ? "opacity-100" : "opacity-30"
+                  }`}
+                  onClick={() => setRating(star)}
+                />
+              ))}
+            </div>
+            <textarea
+              placeholder='Write your review...'
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className='w-full border rounded p-2'
+              rows={3}
+            />
+            <button
+              onClick={handleAddReview}
+              className='px-4 py-2 bg-[#3D8236] text-white rounded hover:bg-[#2c7125]'
+            >
+              Submit Review
+            </button>
           </div>
+        )}
+
+        <div className='mt-4 space-y-4'>
+          {allReviews && allReviews.length > 0 ? (
+            allReviews.map((review, index) => (
+              <div key={index} className='border rounded-[12px] p-[10px]'>
+                <div className='flex justify-between'>
+                  <h3 className='text-lg font-semibold'>{review.reviewer}</h3>
+                  <div className='flex items-center gap-1'>
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <img key={i} src={Star} alt='star' className='w-4 h-4' />
+                    ))}
+                  </div>
+                </div>
+                <p className='text-sm text-gray-600'>{review.date}</p>
+                <p className='mt-1 text-[16px]'>{review.comment}</p>
+              </div>
+            ))
+          ) : (
+            <p className='text-gray-500'>No reviews yet.</p>
+          )}
         </div>
+
+        {makeOffer && (
+          <MakeOffer product={product} onOff={() => setMakeOffer(false)} />
+        )}
       </section>
     </main>
   );

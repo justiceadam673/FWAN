@@ -2,6 +2,7 @@ import React from "react";
 
 import AboutUsImage from "../../../assets/img/aboutus.png";
 import { Icon } from "@iconify/react";
+import { NavLink } from "react-router-dom";
 
 const AboutUs = () => {
   return (
@@ -28,15 +29,17 @@ const AboutUs = () => {
             produce directly from the source. Fwan is here to change that....{" "}
           </p>
           <div className='flex place-self-end-safe justify-end lg:justify-end-safe max-lg:pr-[22px] w-full lg:place-self-end  mt-[10px] lg:mt-[16px] '>
-            <button className='flex w-[119.751px] max-lg:text-[12.946px] lg:w-[185px] hover:border-[#3D8236] hover:text-[#3D8236] transition duration-[0.5s] h-[35.602px] max-lg:gap-[6.473px] lg:h-[55px] p-[10px] justify-center items-center rounded-[20px] text-[#585252] border border-[#585252] '>
-              <span>Learn more</span>{" "}
-              <Icon
-                icon={"tabler:arrow-right"}
-                width={24}
-                height={24}
-                className='max-lg:w-[12.946px] lg:w-[24px] max-lg:h-[12.946px] lg:h-[24px] '
-              />
-            </button>
+            <NavLink to={"/aboutus"}>
+              <button className='flex w-[119.751px] max-lg:text-[12.946px] lg:w-[185px] hover:border-[#3D8236] hover:text-[#3D8236] transition duration-[0.5s] h-[35.602px] max-lg:gap-[6.473px] lg:h-[55px] p-[10px] justify-center items-center rounded-[20px] text-[#585252] border border-[#585252] '>
+                <span>Learn more</span>{" "}
+                <Icon
+                  icon={"tabler:arrow-right"}
+                  width={24}
+                  height={24}
+                  className='max-lg:w-[12.946px] lg:w-[24px] max-lg:h-[12.946px] lg:h-[24px] '
+                />
+              </button>
+            </NavLink>
           </div>
         </div>
       </section>

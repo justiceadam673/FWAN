@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const ProductCard = ({ title, seller, rating, image, quantity, price }) => {
   return (
@@ -36,9 +37,11 @@ const ProductCard = ({ title, seller, rating, image, quantity, price }) => {
           </div>
         </section>
         <div className='w-full flex justify-center items-center md:mt-4'>
-          <button className=' w-[86.343px] md:w-[202px]  h-[23.509px] md:h-[55px] p-[4.274px] lg:p-[10px] rounded-[20px] text-center bg-black text-[12px] md:text-[20px] poppins-regular leading-normal text-white hover:bg-[#3D8236] transition duration-[0.5s]'>
-            Make a Offer
-          </button>
+          <NavLink to={"/buyersignup"} className={"w-full"}>
+            <button className=' w-full  h-[23.509px] md:h-[55px] p-[4.274px] lg:p-[10px] rounded-[20px] text-center bg-black text-[12px] md:text-[20px] poppins-regular leading-normal text-white hover:bg-[#3D8236] transition duration-[0.5s]'>
+              Make a Offer
+            </button>
+          </NavLink>
         </div>
       </div>
     </div>

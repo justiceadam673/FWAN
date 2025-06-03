@@ -35,6 +35,7 @@ import FarmersHistory from "./COMPONENTS/FARMERS/pages/FarmersHistory";
 import FarmersTracking from "./COMPONENTS/FARMERS/pages/FarmersTracking";
 import FarmersProfile from "./COMPONENTS/FARMERS/pages/FarmersProfile";
 import AuthRedirect from "./COMPONENTS/AUTH/AuthRedirect";
+import NotificationPage from "./layouts/NotificationPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -88,6 +89,8 @@ const router = createBrowserRouter(
 
       <Route element={<FarmersSidebarLayout />}>
         <Route element={<DashBoardLayout />}>
+          <Route path='/notifications' element={<NotificationPage />} />
+
           <Route
             path='/farmersoverview'
             element={
