@@ -271,9 +271,9 @@ const FarmersListings = () => {
                 <label htmlFor='price'>Product Price</label>
                 <input
                   id='price'
-                  placeholder='Product Price'
+                  placeholder={newProduct.price || "Product Price"}
                   className='border p-[10px] rounded-[15px] w-full h-[60px] md:h-[70px] border-[#CFCFCF]'
-                  value={newProduct.price}
+                  // value={newProduct.price}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
                   }

@@ -1,5 +1,3 @@
-// import React, { useState } from "react";
-
 import React, { useEffect, useState } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../../../FireBaseConfig";
@@ -11,7 +9,7 @@ import Potatoes from "../../../assets/img/potatoes.png";
 import Pepper from "../../../assets/img/peppers.png";
 import { Icon } from "@iconify/react";
 import AddListingModal from "../modals/AddListingModal";
-import MakeOffer from "../modals/MakeOffer"; // adjust path as needed
+import MakeOffer from "../modals/MakeOffer";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -25,15 +23,12 @@ const BuyersCollections = () => {
   const [showModal, setShowModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
 
-  // Optional role-based restriction
-  // if (userData?.role !== "buyer") {
-  //   return <p>Access denied. This section is for buyers only.</p>;
-  // }
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        // ✅ Correct collection name
         const querySnapshot = await getDocs(collection(db, "farmers_listings"));
         const newListings = [];
         querySnapshot.forEach((doc) => {
@@ -51,8 +46,16 @@ const BuyersCollections = () => {
     fetchListings();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedLetter]);
+
   if (!userData || loading) {
-    return <p>Loading...</p>;
+    return (
+      <p className='flex place-self-center text-gray-900/70 text-[30px] animate-bounce '>
+        Loading...
+      </p>
+    );
   }
 
   const filteredProducts = listings.filter((item) => {
@@ -65,10 +68,17 @@ const BuyersCollections = () => {
       : true;
     return matchesSearch && matchesLetter;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const handleViewDetails = (product) => {
     setSelectedProduct({
       ...product,
-      name: product.prod, // Match expected fields
+      name: product.prod,
       farmer: product.farmer,
     });
     setShowModal(true);
@@ -80,18 +90,19 @@ const BuyersCollections = () => {
     setShowOfferModal(false);
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (product) => {
+    setSelectedProduct({
+      ...product,
+      name: product.prod,
+      farmer: product.farmer,
+    });
+    setShowModal(false);
     setShowOfferModal(true);
   };
 
-  // const handleCloseModal = () => {
-
-  // };
-
   return (
-    <main className='px-4 lg:px-8   py-6'>
-      {/* Filters */}
-      <section className='flex flex-col md:flex-row items-center gap-4 mb-10'>
+    <main className='px-4 lg:px-8 py-6'>
+      <section className='flex  flex-col md:flex-row items-center gap-4 mb-10'>
         <div className='relative w-full md:max-w-md'>
           <Icon
             icon='ri:search-line'
@@ -104,27 +115,25 @@ const BuyersCollections = () => {
             placeholder='Search'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className='w-full border border-black rounded-full py-3 pl-12 pr-4 text-sm md:text-base focus:outline-[#3D8236]'
+            className='w-full shadow-[4px_4px_2.5px_rgba(0,0,0,0.100)] bg-white rounded-full py-3 pl-12 pr-4 text-sm md:text-base focus:outline-none '
           />
         </div>
-        <div className='flex flex-wrap justify-center md:justify-start  gap-2 md:text-base'>
-          <button className='filter-button border px-[10px] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]  '>
+        <div className='flex flex-wrap  justify-center md:justify-start gap-2 md:text-base'>
+          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
             Rating
           </button>
-          <button className='filter-button border px-[10px] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a] '>
+          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
             Harvested
           </button>
-          <button className='filter-button border px-[10px] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a] '>
+          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
             Not Harvested
           </button>
         </div>
       </section>
 
-      {/* Content Grid */}
       <section className='flex flex-col lg:flex-row gap-6'>
-        {/* Cards */}
         <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 flex-1'>
-          {filteredProducts.map((item) => (
+          {paginatedProducts.map((item) => (
             <div
               key={item.id}
               className='bg-white border border-gray-300 rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col justify-between h-fit'
@@ -133,7 +142,7 @@ const BuyersCollections = () => {
                 src={
                   item.image ||
                   "https://via.placeholder.com/300x200?text=No+Image"
-                } // fallback image
+                }
                 alt={item.title}
                 className='w-full h-40 md:h-52 object-cover rounded-lg mb-4'
               />
@@ -143,7 +152,8 @@ const BuyersCollections = () => {
                     {item.prod || "No Title"}
                   </h3>
                   <p className='text-sm text-gray-600'>
-                    {item.farmer || "Unknown"} • ⭐ {item.rating || 0}
+                    {(item.farmer || "Unknown").split("@")[0]} • ⭐{" "}
+                    {item.rating || 0}
                   </p>
                 </div>
                 <div className='flex justify-between text-sm text-gray-700'>
@@ -164,10 +174,9 @@ const BuyersCollections = () => {
                 >
                   View Details
                 </button>
-
                 <button
                   className='bg-[#3D8236] hover:bg-[#2c7125] text-white px-4 py-2 rounded-full'
-                  onClick={handleOpenModal}
+                  onClick={() => handleOpenModal(item)}
                 >
                   Make an Offer
                 </button>
@@ -181,7 +190,6 @@ const BuyersCollections = () => {
           )}
         </div>
 
-        {/* A-Z Filter */}
         <aside className='hidden lg:flex flex-col items-center sticky top-24'>
           {alphabet.map((letter) => (
             <button
@@ -204,16 +212,46 @@ const BuyersCollections = () => {
           </button>
         </aside>
       </section>
+
+      {filteredProducts.length > itemsPerPage && (
+        <div className='flex justify-center items-center gap-4 mt-6'>
+          {currentPage > 1 && (
+            <button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className='px-4 py-2 rounded-full bg-[#3D8236] text-white text-sm'
+            >
+              Previous
+            </button>
+          )}
+          <span className='text-sm text-gray-700'>
+            Page {currentPage} of {totalPages}
+          </span>
+          {currentPage < totalPages && (
+            <button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className='px-4 py-2 rounded-full bg-[#3D8236] text-white text-sm'
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
+
       {showModal && selectedProduct && (
         <AddListingModal
-          product={selectedProduct}
+          product={{ ...selectedProduct, id: selectedProduct.id }}
           onClose={handleCloseModal}
           onOff={handleCloseModal}
           onMakeOffer={() => setShowOfferModal(true)}
           hideContent={showOfferModal}
         />
       )}
-      {showOfferModal && <MakeOffer onOff={handleCloseModal} />}
+      {showOfferModal && selectedProduct && (
+        <MakeOffer
+          product={selectedProduct}
+          onOff={() => setShowOfferModal(false)}
+        />
+      )}
     </main>
   );
 };

@@ -39,7 +39,7 @@ const BuyersDashboard = () => {
       <section className='grid lg:grid-cols-4 grid-cols-2 my-[28px]  max-w-[880px] ml-[4px] mb-[36.5px] gap-[24px]'>
         <BuyersDashBoardCard
           cardNumber={13}
-          cardText={"Active Bids"}
+          cardText={"Total Offer"}
           icon={"rivet-icons:clipboard"}
         />
         <BuyersDashBoardCard

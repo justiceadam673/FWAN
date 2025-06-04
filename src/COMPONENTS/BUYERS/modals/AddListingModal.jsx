@@ -11,6 +11,7 @@ import {
   query,
   where,
   serverTimestamp,
+  orderBy,
 } from "firebase/firestore";
 
 const AddListingModal = ({ onClose, onMakeOffer, product }) => {
@@ -20,7 +21,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
   const [comment, setComment] = useState("");
   const [user, setUser] = useState(null);
   const [hasReviewed, setHasReviewed] = useState(false);
-  const [allReviews, setAllReviews] = useState(product.reviews || []);
+  const [allReviews, setAllReviews] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -34,41 +35,97 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
         );
         const q = query(reviewsRef, where("uid", "==", currentUser.uid));
         const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          setHasReviewed(true);
-        }
+        setHasReviewed(!querySnapshot.empty);
       }
     });
 
     return () => unsubscribe();
   }, [product.id]);
 
+  const fetchReviews = async () => {
+    const reviewsRef = collection(
+      db,
+      "farmers_listings",
+      product.id,
+      "reviews"
+    );
+    const q = query(reviewsRef, orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+    const fetchedReviews = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setAllReviews(fetchedReviews);
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [product.id]);
+
   const handleAddReview = async () => {
-    if (!user) return alert("Please log in to add a review.");
-    if (hasReviewed) return alert("You’ve already submitted a review.");
+    if (!user) {
+      alert("Please log in to add a review.");
+      return;
+    }
+
+    if (hasReviewed) {
+      alert("You’ve already submitted a review.");
+      return;
+    }
+
+    if (rating === 0) {
+      alert("Please select a rating.");
+      return;
+    }
+
+    if (!comment.trim()) {
+      alert("Please enter a comment.");
+      return;
+    }
 
     const newReview = {
-      reviewer: user.displayName || "Anonymous",
+      reviewer: user.displayName || user.email || "Anonymous",
       uid: user.uid,
       rating,
       comment,
       date: new Date().toLocaleDateString(),
+
       timestamp: serverTimestamp(),
     };
 
     try {
-      await addDoc(
-        collection(db, "farmers_listings", product.id, "reviews"),
-        newReview
+      const reviewRef = collection(
+        db,
+        "farmers_listings",
+        product.id,
+        "reviews"
       );
-      setAllReviews((prev) => [...prev, newReview]);
+      await addDoc(reviewRef, newReview);
+
+      await fetchReviews();
+
+      // setAllReviews((prev) => [
+      //   {
+      //     ...newReview,
+      //     timestamp: new Date(), // For immediate display
+      //   },
+      //   ...prev,
+      // ]);
+
       setShowReviewForm(false);
       setHasReviewed(true);
       setRating(0);
       setComment("");
     } catch (error) {
-      console.error("Error adding review: ", error);
+      console.error("Error submitting review:", error);
+      alert("Something went wrong while submitting the review.");
     }
+  };
+
+  const getStarColor = (starValue) => {
+    if (starValue <= 2) return "#FF4B4B"; // red
+    if (starValue === 3) return "#FFA500"; // orange
+    return "#4CAF50"; // green
   };
 
   return (
@@ -94,10 +151,10 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
           <img
             src={product.image}
             alt={product.name}
-            className=' xl:w-3/7 max-h-[450px]   object-cover rounded'
+            className=' xl:w-3/7 max-h-[450px] object-cover rounded'
           />
 
-          <section className='mt-4  2xl:space-y-[20px]'>
+          <section className='mt-4 2xl:space-y-[20px]'>
             <div>
               <h2 className='2xl:text-[35px] xl:text-[28px] text-[35px] font-bold'>
                 {product.name}
@@ -124,7 +181,6 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   {product.location || "Location not available"}
                 </span>
               </p>
-
               <p className='flex gap-2 items-center'>
                 <Icon
                   icon='formkit:date'
@@ -139,7 +195,6 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   {product.harvestDate || "Date not available"}
                 </span>
               </p>
-
               <p className='flex gap-2 items-center'>
                 <Icon
                   icon='ph:package-light'
@@ -193,7 +248,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
           <button
             onClick={() => setShowReviewForm(!showReviewForm)}
             disabled={hasReviewed}
-            className='flex gap-2 2xl:text-[22px] text-[18px] font-normal justify-center items-center border-1  rounded-[8px] px-[10px]'
+            className='flex gap-2 2xl:text-[22px] text-[18px] font-normal justify-center items-center border-1 rounded-[8px] px-[10px]'
           >
             <Icon
               icon='material-symbols-light:add-rounded'
@@ -212,9 +267,11 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
                   key={star}
                   src={Star}
                   alt={`${star} star`}
-                  className={`w-6 h-6 cursor-pointer ${
-                    star <= rating ? "opacity-100" : "opacity-30"
-                  }`}
+                  className='w-6 h-6 cursor-pointer'
+                  style={{
+                    opacity: star <= rating ? 1 : 0.3,
+                    filter: `drop-shadow(0 0 2px ${getStarColor(star)})`,
+                  }}
                   onClick={() => setRating(star)}
                 />
               ))}
@@ -236,14 +293,24 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
         )}
 
         <div className='mt-4 space-y-4'>
-          {allReviews && allReviews.length > 0 ? (
+          {allReviews.length > 0 ? (
             allReviews.map((review, index) => (
               <div key={index} className='border rounded-[12px] p-[10px]'>
                 <div className='flex justify-between'>
                   <h3 className='text-lg font-semibold'>{review.reviewer}</h3>
                   <div className='flex items-center gap-1'>
-                    {Array.from({ length: review.rating }).map((_, i) => (
-                      <img key={i} src={Star} alt='star' className='w-4 h-4' />
+                    {[...Array(review.rating)].map((_, i) => (
+                      <img
+                        key={i}
+                        src={Star}
+                        alt='star'
+                        className='w-4 h-4'
+                        style={{
+                          filter: `drop-shadow(0 0 2px ${getStarColor(
+                            review.rating
+                          )})`,
+                        }}
+                      />
                     ))}
                   </div>
                 </div>
