@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { signOut } from "firebase/auth";
+import { auth } from "../FireBaseConfig"; // Adjust path as needed
+
 import logo from "../assets/img/fwan.png";
 import LanguageSwitcher from "../COMPONENTS/GENERAL-UTILITY/LanguageSwitcher";
 
@@ -9,6 +12,16 @@ const FarmersSidebarLayout = () => {
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   const closeSidebar = () => setIsSidebarOpen(false);
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logged out successfully!");
+      navigate("/role");
+    } catch (error) {
+      console.error("Logout Error:", error);
+      toast.error("Error logging out. Try again.");
+    }
+  };
 
   const linkClass =
     "flex items-center text-[16px] gap-[15px]  px-[10px] py-[15px] text-black/90  hover:text-[#3D8236] rounded-[8px]";
@@ -137,19 +150,15 @@ const FarmersSidebarLayout = () => {
       <div className='flex-1 overflow-y-auto'>
         {/* Mobile Top Navbar */}
         <div className='md:hidden flex flex-row-reverse items-center justify-between px-4 py-3 border-b border-gray-300 bg-white sticky top-0 z-40'>
-          <div className='flex items-center gap-[60px]'>
-            <div className='relative  w-full max-w-[660px]'>
-              <Icon
-                icon='ri:search-line'
-                className='absolute top-1/2 -translate-y-1/2 left-[18px] text-black'
-                width='24'
-                height='24'
-              />
-            </div>
-            <div className='flex items-center gap-[20px]'>
-              {/* Search input with icon */}
-
-              {/* Notification bell */}
+          <div className='flex flex-row-reverse items-center'>
+            <button
+              onClick={handleLogout}
+              className='flex gap-[5px] bg-white rounded-[12px] text-black/70 hover:text-[#3D8236]  transition duration-[.5s] px-[15px] py-[16px] justify-center items-center'
+            >
+              {/* <span>Log Out</span> */}
+              <Icon icon='ic:outline-logout' width='24' height='24' />
+            </button>
+            <div className='flex items-center '>
               <div className='p-[16px] bg-white text-black flex items-center rounded-[12px]  justify-center'>
                 <Icon icon='line-md:bell-loop' width='24' height='24' />
               </div>

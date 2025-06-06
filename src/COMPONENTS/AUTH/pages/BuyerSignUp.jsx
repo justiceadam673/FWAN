@@ -24,6 +24,10 @@ const BuyerSignUp = () => {
     confirmPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -33,8 +37,12 @@ const BuyerSignUp = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    if (loading) return;
+    setLoading(true);
+
     if (formData.password !== formData.confirmPassword) {
       toast.warn("Passwords do not match");
+      setLoading(false);
       return;
     }
 
@@ -47,7 +55,6 @@ const BuyerSignUp = () => {
 
       const user = userCredential.user;
 
-      // Check if user document already exists
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
@@ -55,10 +62,10 @@ const BuyerSignUp = () => {
         const existingRole = userSnap.data().role;
         toast.error(`This email is already registered as a ${existingRole}.`);
         await signOut(auth);
+        setLoading(false);
         return;
       }
 
-      // Create buyer user document in Firestore
       await setDoc(userRef, {
         uid: user.uid,
         name: formData.name,
@@ -70,8 +77,7 @@ const BuyerSignUp = () => {
 
       await sendEmailVerification(user);
       toast.success("Verification email sent! Please check your inbox.");
-
-      await signOut(auth); // Force logout until verified
+      await signOut(auth);
       navigate("/buyersignin");
     } catch (error) {
       console.error("Signup Error:", error);
@@ -84,6 +90,8 @@ const BuyerSignUp = () => {
       } else {
         toast.error("Something went wrong. Try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,20 +139,87 @@ const BuyerSignUp = () => {
               uniqueName='phone'
               onChange={handleChange}
             />
-            <AuthForm
-              placeholder='Password'
-              type='password'
-              uniqueName='password'
-              onChange={handleChange}
-            />
-            <AuthForm
-              placeholder='Confirm Password'
-              type='password'
-              uniqueName='confirmPassword'
-              onChange={handleChange}
-            />
+
+            {/* Password with toggle */}
+            <div className='relative'>
+              <AuthForm
+                placeholder='Password'
+                type={showPassword ? "text" : "password"}
+                uniqueName='password'
+                onChange={handleChange}
+              />
+              <button
+                type='button'
+                onClick={() => setShowPassword((prev) => !prev)}
+                className='absolute hover:cursor-pointer right-4 md:right-30 top-1/2 transform -translate-y-1/2'
+              >
+                <Icon
+                  icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+
+            {/* Confirm Password with toggle */}
+            <div className='relative'>
+              <AuthForm
+                placeholder='Confirm Password'
+                type={showConfirmPassword ? "text" : "password"}
+                uniqueName='confirmPassword'
+                onChange={handleChange}
+              />
+              <button
+                type='button'
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className='absolute hover:cursor-pointer right-4 md:right-30 top-1/2 transform -translate-y-1/2'
+              >
+                <Icon
+                  icon={showConfirmPassword ? "mdi:eye-off" : "mdi:eye"}
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </div>
+
             <div className='my-[23px]'>
-              <AuthButton buttonText='Create Account' />
+              <button
+                type='submit'
+                disabled={loading}
+                className={` max-w-[485px] w-full py-3 hover:cursor-pointer rounded-md text-white font-medium transition ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#3D8236] hover:bg-[#2f6a2a]"
+                }`}
+              >
+                {loading ? (
+                  <div className='flex items-center justify-center gap-2'>
+                    <svg
+                      className='animate-spin h-5 w-5 text-white'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                    >
+                      <circle
+                        className='opacity-25'
+                        cx='12'
+                        cy='12'
+                        r='10'
+                        stroke='currentColor'
+                        strokeWidth='4'
+                      ></circle>
+                      <path
+                        className='opacity-75'
+                        fill='currentColor'
+                        d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'
+                      ></path>
+                    </svg>
+                    Creating account...
+                  </div>
+                ) : (
+                  "Create Account"
+                )}
+              </button>
             </div>
           </form>
           <div className='lg:max-w-[485px] max-lg:text-[12px] flex justify-center'>

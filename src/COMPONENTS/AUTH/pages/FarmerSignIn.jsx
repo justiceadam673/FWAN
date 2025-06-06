@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Img from "../../../assets/img/signinimg.png";
 import { NavLink, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../../FireBaseConfig";
 import { toast } from "react-toastify";
@@ -17,6 +21,7 @@ const FarmerSignIn = () => {
   });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -78,8 +83,61 @@ const FarmerSignIn = () => {
     }
   };
 
+  const handlePasswordReset = () => {
+    if (!formData.email) {
+      toast.warn("Please enter your email to reset your password.");
+      return;
+    }
+    setShowResetModal(true);
+  };
+
+  const confirmPasswordReset = async () => {
+    setShowResetModal(false);
+    try {
+      await sendPasswordResetEmail(auth, formData.email);
+      toast.success("Password reset link sent! Check your inbox.");
+    } catch (error) {
+      console.error("Reset Error:", error);
+      if (error.code === "auth/user-not-found") {
+        toast.error("No account found with this email.");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Invalid email address.");
+      } else {
+        toast.error("Could not send reset link. Try again.");
+      }
+    }
+  };
+
   return (
     <div className='flex px-[20px] py-[31px] flex-col lg:w-[1244px] place-self-center justify-center'>
+      {/* Password Reset Confirmation Modal */}
+      {showResetModal && (
+        <div className='fixed inset-0 bg-black/50 z-50 flex items-center justify-center'>
+          <div className='bg-white p-6 rounded-lg shadow-xl max-w-sm w-full'>
+            <h2 className='text-lg font-semibold mb-3'>Reset Password?</h2>
+            <p className='text-sm text-gray-700 mb-4'>
+              A reset link will be sent to:
+              <br />
+              <span className='font-medium text-black'>{formData.email}</span>
+            </p>
+            <div className='flex justify-end gap-3'>
+              <button
+                onClick={() => setShowResetModal(false)}
+                className='px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-sm'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmPasswordReset}
+                className='px-4 py-2 rounded bg-[#3D8236] hover:bg-[#2f6a2a] text-white text-sm'
+              >
+                Send Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className='mb-[10px] lg:mb-[31px]'>
         <NavLink to={"/role"}>
           <Icon
@@ -88,6 +146,7 @@ const FarmerSignIn = () => {
           />
         </NavLink>
       </section>
+
       <section className='flex lg:gap-[43px]'>
         <div>
           <img
@@ -110,8 +169,6 @@ const FarmerSignIn = () => {
               uniqueName='email'
               onChange={handleChange}
             />
-
-            {/* Password field with visibility toggle */}
             <div className='relative'>
               <AuthForm
                 placeholder='Password'
@@ -132,10 +189,14 @@ const FarmerSignIn = () => {
               </button>
             </div>
 
-            <div className='max-w-[485px] flex justify-end '>
-              <NavLink className='text-[#3D8236] hover:cursor-pointer text-[15px] lg:text-[20px] hover:text-[#2c7125]'>
+            <div className='max-w-[485px] flex justify-end'>
+              <button
+                type='button'
+                onClick={handlePasswordReset}
+                className='text-[#3D8236] hover:cursor-pointer text-[15px] lg:text-[20px] hover:text-[#2c7125] underline underline-offset-[4px]'
+              >
                 Forget Password?
-              </NavLink>
+              </button>
             </div>
 
             <div className='my-[23px]'>

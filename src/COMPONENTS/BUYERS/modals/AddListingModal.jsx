@@ -233,7 +233,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
               </p>
               <button
                 onClick={onMakeOffer}
-                className=' w-full max-h-[56px] p-[10px] hover:bg-[#2c7125]  hover:cursor-pointer  bg-[#3D8236] rounded-[12px] text-[#FFFFFF] font-normal text-[20px] lg:text-[26px] flex justify-center items-center'
+                className=' w-full max-h-[56px] p-[10px] hover:bg-[#2c7125]  hover:cursor-pointer  bg-[#3D8236] rounded-[12px] text-[#FFFFFF] font-normal text-[14px] lg:text-[20px] flex justify-center items-center'
               >
                 Make an Offer
               </button>
@@ -242,18 +242,19 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
         </section>
 
         <div className='flex justify-between items-center mt-4'>
-          <h2 className='2xl:text-[28px] text-[22px] font-black'>
+          <h2 className='2xl:text-[28px] text-[22px] text-black/80 font-bold'>
             Customer Reviews
           </h2>
           <button
             onClick={() => setShowReviewForm(!showReviewForm)}
             disabled={hasReviewed}
-            className='flex gap-2 2xl:text-[22px] text-[18px] font-normal justify-center items-center border-1 rounded-[8px] px-[10px]'
+            className='flex gap-2 2xl:text-[20px] text-[15px] font-normal justify-center items-center border-1 rounded-[8px] px-[10px]'
           >
             <Icon
               icon='material-symbols-light:add-rounded'
               width='28'
               height='28'
+              className='transition duration-[.5s] hover:rotate-90 '
             />
             {hasReviewed ? "Review Submitted" : "Add Review"}
           </button>

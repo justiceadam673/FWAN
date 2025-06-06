@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../FireBaseConfig";
 import FarmersOfferTable from "../utils/FarmersOfferTable";
+import { getAuth } from "firebase/auth";
 
 const FarmersOffers = () => {
   const [offers, setOffers] = useState([]);
@@ -9,21 +10,23 @@ const FarmersOffers = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [sortBy, setSortBy] = useState("");
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "offers"),
-      (querySnapshot) => {
-        const offersData = querySnapshot.docs.map((docSnap, index) => {
-          const data = docSnap.data();
-          let date = data.date;
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
 
-          if (date?.seconds) {
-            date = new Date(date.seconds * 1000);
-          } else if (typeof date === "string") {
-            date = new Date(date);
-          } else {
-            date = new Date(0);
-          }
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const unsubscribe = onSnapshot(collection(db, "offers"), (snapshot) => {
+      const offersData = snapshot.docs
+        .map((docSnap, index) => {
+          const data = docSnap.data();
+          if (!data.farmerId || data.farmerId !== currentUser.uid) return null;
+
+          let date = data.date?.seconds
+            ? new Date(data.date.seconds * 1000)
+            : typeof data.date === "string"
+            ? new Date(data.date)
+            : new Date(0);
 
           return {
             docId: docSnap.id,
@@ -31,17 +34,17 @@ const FarmersOffers = () => {
             ...data,
             date,
           };
-        });
+        })
+        .filter(Boolean);
 
-        setOffers(offersData);
+      setOffers(offersData);
 
-        const newStatusMap = {};
-        offersData.forEach((item) => {
-          newStatusMap[item.id] = item.deliveryStatus || "Pending";
-        });
-        setStatusMap(newStatusMap);
-      }
-    );
+      const newStatusMap = {};
+      offersData.forEach((item) => {
+        newStatusMap[item.id] = item.deliveryStatus || "Pending";
+      });
+      setStatusMap(newStatusMap);
+    });
 
     const checkScreen = () => setIsMobile(window.innerWidth < 1280);
     checkScreen();
@@ -50,10 +53,10 @@ const FarmersOffers = () => {
       window.removeEventListener("resize", checkScreen);
       unsubscribe();
     };
-  }, []);
+  }, [currentUser]);
 
   const handleStatusChange = async (id, newStatus) => {
-    const offer = offers.find((offer) => offer.id === id);
+    const offer = offers.find((o) => o.id === id);
     if (!offer) return;
 
     const confirmMsg = `Are you sure you want to mark this offer as '${newStatus}'?`;
@@ -63,17 +66,14 @@ const FarmersOffers = () => {
       await updateDoc(doc(db, "offers", offer.docId), {
         deliveryStatus: newStatus,
       });
-      setStatusMap((prev) => ({
-        ...prev,
-        [id]: newStatus,
-      }));
+      setStatusMap((prev) => ({ ...prev, [id]: newStatus }));
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
   const getSortedOffers = () => {
-    const sorted = [...offers].sort((a, b) => {
+    return [...offers].sort((a, b) => {
       switch (sortBy) {
         case "date":
           return b.date - a.date;
@@ -93,30 +93,21 @@ const FarmersOffers = () => {
           return 0;
       }
     });
-    return sorted;
   };
 
   const statusCounts = useMemo(() => {
-    const counts = {
-      all: offers.length,
-      accepted: 0,
-      rejected: 0,
-      pending: 0,
-    };
-
+    const counts = { all: offers.length, accepted: 0, rejected: 0, pending: 0 };
     Object.values(statusMap).forEach((status) => {
       if (status === "Accepted") counts.accepted++;
       else if (status === "Rejected") counts.rejected++;
       else counts.pending++;
     });
-
     return counts;
   }, [offers, statusMap]);
 
   return (
     <div className='p-4 sm:p-6'>
       <div className='bg-[#F1E7E7] py-3 px-4 rounded-t-2xl mb-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
-        {/* Badges */}
         <div className='flex gap-4 overflow-x-auto text-sm font-medium'>
           <p className='flex items-center gap-1'>
             All
@@ -142,15 +133,8 @@ const FarmersOffers = () => {
               {statusCounts.pending}
             </span>
           </p>
-          <p className='flex items-center gap-1'>
-            Listings
-            <span className='text-white text-xs px-2 py-0.5 rounded-full bg-blue-500'>
-              {offers.length}
-            </span>
-          </p>
         </div>
 
-        {/* Sort Dropdown */}
         <div>
           <select
             value={sortBy}
@@ -167,8 +151,7 @@ const FarmersOffers = () => {
         </div>
       </div>
 
-      {/* Desktop Table */}
-      {!isMobile && (
+      {!isMobile ? (
         <div className='overflow-x-auto border rounded-b-xl'>
           <table className='w-full table-auto text-sm'>
             <thead className='bg-gray-100 text-left text-[#888888] font-[poppins]'>
@@ -192,16 +175,13 @@ const FarmersOffers = () => {
                   status={statusMap[offer.id]}
                   onStatusChange={handleStatusChange}
                   isMobile={false}
-                  onMakeOffer={() => alert("Make more offer clicked")}
+                  onMakeOffer={() => alert("More offers clicked")}
                 />
               ))}
             </tbody>
           </table>
         </div>
-      )}
-
-      {/* Mobile View */}
-      {isMobile && (
+      ) : (
         <div className='grid gap-4'>
           {getSortedOffers().map((offer, index) => (
             <FarmersOfferTable
@@ -210,7 +190,7 @@ const FarmersOffers = () => {
               status={statusMap[offer.id]}
               onStatusChange={handleStatusChange}
               isMobile={true}
-              onMakeOffer={() => alert("Make more offer clicked")}
+              onMakeOffer={() => alert("More offers clicked")}
             />
           ))}
         </div>

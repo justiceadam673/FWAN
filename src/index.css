@@ -234,3 +234,7 @@ body {
   font-family: "Poppins", sans-serif;
   /* @apply bg-[#EAEAEA]; */
 }
+
+* {
+  /* outline: 1px solid red; */
+}
