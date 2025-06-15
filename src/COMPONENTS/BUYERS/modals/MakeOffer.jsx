@@ -6,6 +6,9 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 const MakeOffer = ({ product, onOff }) => {
   // const [offerPrice, setOfferPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryLocation, setDeliveryLocation] = useState("");
+  const [messageToFarmer, setMessageToFarmer] = useState("");
 
   const productPrice = product?.price
     ? parseFloat(product.price.replace(/,/g, ""))
@@ -21,18 +24,30 @@ const MakeOffer = ({ product, onOff }) => {
       return;
     }
 
-    if (!offerPrice || !quantity) {
+    if (!quantity) {
       alert("Please fill in all fields.");
+      return;
+    }
+
+    if (!quantity || !deliveryDate || !deliveryLocation) {
+      alert("Please fill in all required fields.");
       return;
     }
 
     const newOffer = {
       listingId: product.id,
-      farmerId: product.userId, // ensure `userId` is present in listing doc
+      farmerId: product.userId,
       buyerId: user.uid,
-      offerPrice: calculatedPrice,
+      buyerName:
+        user.displayName || user.email.split("@")[0] || "Unknown Buyer",
+      product: product.name,
+      deliveryDate: deliveryDate,
+      deliveryLocation: deliveryLocation,
+      messageToFarmer: messageToFarmer,
+      offerPrice: productPrice,
       quantity: parseInt(quantity),
-      status: "pending",
+      totalValue: calculatedPrice,
+      status: "Pending",
       timestamp: serverTimestamp(),
     };
 
@@ -112,6 +127,8 @@ const MakeOffer = ({ product, onOff }) => {
               <input
                 type='text'
                 id='deliverylocation'
+                value={deliveryLocation}
+                onChange={(e) => setDeliveryLocation(e.target.value)}
                 className='border focus:outline-none rounded-[12px] p-[10px]'
                 placeholder='e.g. Ahmadu Bello way'
               />
@@ -122,6 +139,8 @@ const MakeOffer = ({ product, onOff }) => {
               <input
                 type='date'
                 id='deliverydate'
+                value={deliveryDate}
+                onChange={(e) => setDeliveryDate(e.target.value)}
                 className='border focus:outline-none rounded-[12px] p-[10px]'
               />
             </div>
@@ -131,6 +150,8 @@ const MakeOffer = ({ product, onOff }) => {
               <textarea
                 name='message'
                 id='message'
+                value={messageToFarmer}
+                onChange={(e) => setMessageToFarmer(e.target.value)}
                 className='border focus:outline-none text-black rounded-[12px] h-[70px] p-[10px]'
                 placeholder='Includes delivery preferences, time, etc.'
               ></textarea>
@@ -146,6 +167,7 @@ const MakeOffer = ({ product, onOff }) => {
             </button>
             <button
               type='button'
+              onClick={handleSubmit}
               className='bg-[#095C32] hover:bg-[#1a6d43]/60 hover:cursor-pointer rounded-[12px] p-[10px] text-white'
             >
               Submit Offer

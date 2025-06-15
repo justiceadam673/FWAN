@@ -1,13 +1,13 @@
-// DashBoardLayout.jsx
+// BuyersDashBoardLayout.jsx
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../FireBaseConfig";
 import { toast } from "react-toastify";
-import NotificationBell from "./FarmersNotificationBell";
+// import NotificationBell from "./FarmersNotificationBell";
 
-const DashBoardLayout = () => {
+const BuyersDashBoardLayout = () => {
   const [user, setUser] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState("");
   const navigate = useNavigate();
@@ -84,14 +84,14 @@ const DashBoardLayout = () => {
               Hello {getDisplayName()} <Icon icon='emojione:waving-hand' />
             </h1>
             <p className='text-[20px] text-[#A19797]'>
-              Welcome To Your Dashboard
+              Welcome To Your Dashboard buyer
             </p>
           </div>
         </div>
 
         <div className='flex items-center gap-[20px]'>
           <div className='p-[16px] text-black flex items-center justify-center'>
-            <NotificationBell />
+            {/* <NotificationBell /> */}
           </div>
           <div className='relative w-full'>
             <button
@@ -113,4 +113,4 @@ const DashBoardLayout = () => {
   );
 };
 
-export default DashBoardLayout;
+export default BuyersDashBoardLayout;

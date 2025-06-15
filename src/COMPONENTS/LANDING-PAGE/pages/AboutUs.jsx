@@ -16,24 +16,22 @@ const AboutUs = () => {
 
       <div className='lg:pl-[224px] px-[36px] lg:pr-[192px]  lg:pb-[80px] mt-[36px] lg:mt-[50.59px] '>
         <p className=' text-[12px] lg:text-[20px] lg:mb-[40px] mb-[20px]'>
-          Welcome to Fwan — where technology meets agriculture to create a
-          smarter, fairer, and more efficient way to trade farm produce.
+          Welcome to Fwan — where innovation meets agriculture to build a
+          fresher, smarter, and more equitable food supply chain.
           <br />
           <br></br>
-          We started Fwan with a simple but powerful vision: to empower farmers
-          and streamline the fresh produce supply chain. For too long,
-          small-scale farmers have faced challenges in getting fair prices,
-          reaching the right buyers, and dealing with middlemen who reduce their
-          earnings. At the same time, buyers — from individuals to small
-          businesses — struggle to access fresh, affordable, and traceable
-          produce directly from the source..
+          Fwan was created to solve a long-standing problem: smallholder farmers
+          are often underpaid and under-supported, while buyers struggle to
+          access fresh, traceable produce directly from the source. Our platform
+          bridges this gap — using smart logistics, central hubs, and quality
+          verification to streamline how fresh food moves from farm to fork.
           <br />
           <br></br>
-          We’ve built a digital platform where farmers can list their produce,
-          set a flexible price range, and receive bids from interested buyers in
-          real-time. Buyers, on the other hand, can explore a wide range of
-          farm-fresh goods, place competitive bids, and negotiate directly with
-          sellers — all from the convenience of their device.
+          Farmers list their produce, deliver it to our Central Hubs, and
+          receive payment once quality checks are completed. Buyers — whether
+          individuals, restaurants, markets, or retailers — order and pay
+          through our platform, with full visibility and confidence that what
+          they receive has been properly stored, verified, and tracked.
         </p>
 
         <section className='flex flex-col gap-[20px] mb-[20px] lg:gap-[40px]'>
@@ -42,9 +40,9 @@ const AboutUs = () => {
               Our Mission
             </h2>
             <p className='text-[12px] lg:text-[20px]'>
-              Our mission is to build a trusted, inclusive, and transparent
-              agricultural marketplace that benefits both farmers and buyers. We
-              aim to:
+              To build a trusted, inclusive, and transparent agricultural
+              distribution system that empowers producers and serves buyers
+              better.
             </p>
           </div>
 
@@ -53,8 +51,8 @@ const AboutUs = () => {
               Empower Farmers
             </h3>
             <p className='text-[12px] lg:text-[20px]'>
-              Give producers more control over pricing, visibility, and sales
-              through digital tools.
+              We ensure fairer pay, reduce post-harvest loss, and support
+              farmers with logistics, training, and access to wider markets.
             </p>
           </div>
 
@@ -63,27 +61,27 @@ const AboutUs = () => {
               Enhance Access for Buyers
             </h3>
             <p className='text-[12px] lg:text-[20px]'>
-              Make it easier for individuals, vendors, and retailers to find and
-              buy quality produce at fair prices
+              Buyers receive fresh, verified produce with full tracking and
+              delivery options — from warehouse pickup to doorstep drop-offs.
             </p>
           </div>
           <div className='flex flex-col gap-[5px] lg:gap-[10px]'>
             <h3 className='font-medium text-[12px] lg:text-[20px] '>
-              Promote Fair Trade and Reduce Waste
+              Reducing Waste, Promoting Fair Trade
             </h3>
             <p className='text-[12px] lg:text-[20px]'>
-              Ensure more of the profit goes to the farmer while reducing
-              post-harvest losses through faster sales and better market access.
+              Our cold-chain storage and smart crates keep produce fresh, while
+              verified quality ensures every product has a buyer.
             </p>
           </div>
 
           <div className='flex flex-col gap-[5px] lg:gap-[10px]'>
             <h3 className='text-[12px] font-medium lg:text-[20px]'>
-              Build Stronger Communities{" "}
+              Strengthening Local Economies
             </h3>
             <p className='text-[12px] lg:text-[20px]'>
-              Strengthen local food systems by fostering direct relationships
-              between those who grow food and those who consume it.
+              We foster direct, traceable connections between food growers and
+              food users — building stronger, healthier communities.
             </p>
           </div>
         </section>
@@ -91,22 +89,16 @@ const AboutUs = () => {
           Why Choose Fwan?
         </h2>
         <section className='text-[12px] flex flex-col gap-[20px] lg:gap-[40px] lg:text-[20px]'>
-          <p> Transparent bidding system with no hidden charges</p>
-          <p>Real-time communication between farmers and buyers</p>
+          <p> Transparent pricing — no haggling or hidden charges</p>
+          <p>Real-time logistics tracking via smart crates</p>
+          <p>Centralized quality verification for buyer assurance</p>
+          <p>Clean, mobile-first interface built for rural use</p>
+          <p> Cold storage, secure handling, and scalable logistics</p>
           <p>
-            Easy-to-use dashboards for listing, bidding, and tracking produce
+            At Fwan, we’re not just moving food — we’re rebuilding the food
+            system for fairness, traceability, and better livelihoods
           </p>
-          <p>Mobile-friendly design for rural accessibility</p>
-          <p> Secure and scalable infrastructure</p>
-          <p>
-            At Fwan, we’re not just building a platform — we’re building a
-            movement. A movement toward more inclusive agricultural commerce,
-            stronger farmer livelihoods, and better food for all.
-          </p>
-          <p>
-            Join us in shaping the future of fresh produce trade. Fwan —
-            Freshness, Fairness, and a New Way Forward.
-          </p>
+          <p>Fwan — Fresh. Fast. Fair.</p>
         </section>
       </div>
     </div>

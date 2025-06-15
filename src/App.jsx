@@ -27,15 +27,19 @@ import AuthRole from "./COMPONENTS/AUTH/pages/AuthRole";
 import FarmersSidebarLayout from "./layouts/FarmersSidebarLayout";
 import FarmersDashboard from "./COMPONENTS/FARMERS/pages/FarmersDashboard";
 import FarmersListings from "./COMPONENTS/FARMERS/pages/FarmersListings";
-import DashBoardLayout from "./layouts/DashBoardLayout";
+// import DashBoardLayout from "./layouts/DashBoardLayout";
 import FarmersVerification from "./COMPONENTS/FARMERS/pages/FarmersVerification";
 import ProtectedRoute from "./COMPONENTS/AUTH/ProtectedRoute";
 import FarmersOffers from "./COMPONENTS/FARMERS/pages/FarmersOffers";
 import FarmersHistory from "./COMPONENTS/FARMERS/pages/FarmersHistory";
 import FarmersTracking from "./COMPONENTS/FARMERS/pages/FarmersTracking";
 import FarmersProfile from "./COMPONENTS/FARMERS/pages/FarmersProfile";
-import AuthRedirect from "./COMPONENTS/AUTH/AuthRedirect";
-import NotificationPage from "./layouts/NotificationPage";
+// import AuthRedirect from "./COMPONENTS/AUTH/AuthRedirect";
+import NotificationPage from "./layouts/FarmersNotificationPage";
+import FarmersDashBoardLayout from "./layouts/FarmersDashBoardLayout";
+import BuyersDashBoardLayout from "./layouts/BuyerssDashBoardLayout";
+import BuyersNotificationPage from "./layouts/BuyersNotificationPage";
+import FarmersNotificationPage from "./layouts/FarmersNotificationPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,7 +47,12 @@ const router = createBrowserRouter(
       <Route path='/' element={<LandingPage />} />
 
       <Route element={<BuyersSidebarLayout />}>
-        <Route element={<DashBoardLayout />}>
+        <Route element={<BuyersDashBoardLayout />}>
+          <Route
+            path='/buyersnotifications'
+            element={<BuyersNotificationPage />}
+          />
+
           <Route
             path='/buyersoverview'
             element={
@@ -88,8 +97,11 @@ const router = createBrowserRouter(
       </Route>
 
       <Route element={<FarmersSidebarLayout />}>
-        <Route element={<DashBoardLayout />}>
-          <Route path='/notifications' element={<NotificationPage />} />
+        <Route element={<FarmersDashBoardLayout />}>
+          <Route
+            path='/farmersnotifications'
+            element={<FarmersNotificationPage />}
+          />
 
           <Route
             path='/farmersoverview'

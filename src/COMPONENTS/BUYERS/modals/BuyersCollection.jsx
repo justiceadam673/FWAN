@@ -26,48 +26,103 @@ const BuyersCollections = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  const [activeFilter, setActiveFilter] = useState(""); // rating | harvested | notHarvested
+
   useEffect(() => {
-    const fetchListings = async () => {
+    const fetchListingsAndRatings = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "farmers_listings"));
+        const listingsSnapshot = await getDocs(
+          collection(db, "farmers_listings")
+        );
         const newListings = [];
-        querySnapshot.forEach((doc) => {
+        const ratingsMap = {};
+
+        for (const doc of listingsSnapshot.docs) {
           const listingData = doc.data();
-          newListings.push({ id: doc.id, ...listingData });
-        });
-        setListings(newListings);
+          const listingId = doc.id;
+          const farmer = listingData.farmer;
+
+          newListings.push({ id: listingId, ...listingData });
+
+          const reviewsSnapshot = await getDocs(
+            collection(db, "farmers_listings", listingId, "reviews")
+          );
+          const reviews = reviewsSnapshot.docs.map((r) => r.data());
+
+          if (!ratingsMap[farmer]) {
+            ratingsMap[farmer] = [];
+          }
+
+          reviews.forEach((review) => {
+            if (typeof review.rating === "number") {
+              ratingsMap[farmer].push(review.rating);
+            }
+          });
+        }
+
+        const farmerRatings = {};
+        for (const farmer in ratingsMap) {
+          const ratings = ratingsMap[farmer];
+          if (ratings.length === 0) {
+            farmerRatings[farmer] = 0;
+          } else {
+            const avgRating =
+              ratings.reduce((acc, r) => acc + r, 0) / ratings.length;
+            farmerRatings[farmer] = Math.min(Math.max(avgRating, 1), 5).toFixed(
+              1
+            );
+          }
+        }
+
+        const listingsWithRating = newListings.map((listing) => ({
+          ...listing,
+          rating: farmerRatings[listing.farmer] || 0,
+        }));
+
+        setListings(listingsWithRating);
       } catch (error) {
-        console.error("Error fetching listings:", error);
+        console.error("Error fetching listings or reviews:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchListings();
+    fetchListingsAndRatings();
   }, []);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedLetter]);
+  }, [searchTerm, selectedLetter, activeFilter]);
 
   if (!userData || loading) {
     return (
-      <p className='flex place-self-center text-gray-900/70 text-[30px] animate-bounce '>
+      <p className='flex place-self-center text-gray-900/70 text-[30px] animate-bounce'>
         Loading...
       </p>
     );
   }
 
-  const filteredProducts = listings.filter((item) => {
-    const title = item.title || "";
-    const matchesSearch = title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesLetter = selectedLetter
-      ? title.toLowerCase().startsWith(selectedLetter.toLowerCase())
-      : true;
-    return matchesSearch && matchesLetter;
-  });
+  const filteredProducts = listings
+    .filter((item) => {
+      const title = item.prod || "";
+      const matchesSearch = title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesLetter = selectedLetter
+        ? title.toLowerCase().startsWith(selectedLetter.toLowerCase())
+        : true;
+      return matchesSearch && matchesLetter;
+    })
+    .sort((a, b) => {
+      if (activeFilter === "rating") {
+        return b.rating - a.rating; // High to low rating
+      } else if (activeFilter === "harvested") {
+        return parseFloat(b.price) - parseFloat(a.price); // Low to high price
+      } else if (activeFilter === "notHarvested") {
+        return (a.prod || "").localeCompare(b.prod || ""); // A-Z product title
+      }
+      return 0;
+    });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const paginatedProducts = filteredProducts.slice(
@@ -102,7 +157,7 @@ const BuyersCollections = () => {
 
   return (
     <main className='px-4 lg:px-8 py-6'>
-      <section className='flex  flex-col md:flex-row items-center gap-4 mb-10'>
+      <section className='flex flex-col md:flex-row items-center gap-4 mb-10'>
         <div className='relative w-full md:max-w-md'>
           <Icon
             icon='ri:search-line'
@@ -115,18 +170,33 @@ const BuyersCollections = () => {
             placeholder='Search'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className='w-full shadow-[4px_4px_2.5px_rgba(0,0,0,0.100)] bg-white rounded-full py-3 pl-12 pr-4 text-sm md:text-base focus:outline-none '
+            className='w-full shadow-[4px_4px_2.5px_rgba(0,0,0,0.100)] bg-white rounded-full py-3 pl-12 pr-4 text-sm md:text-base focus:outline-none'
           />
         </div>
-        <div className='flex flex-wrap  justify-center md:justify-start gap-2 md:text-base'>
-          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
+        <div className='flex flex-wrap justify-center md:justify-start gap-2 md:text-base'>
+          <button
+            className={`filter-button border border-gray-900/40 px-[10px] rounded-[8px] transition-all duration-[.5s] hover:text-[#2f6a2a] ${
+              activeFilter === "rating" ? "text-[#2f6a2a]" : ""
+            }`}
+            onClick={() => setActiveFilter("rating")}
+          >
             Rating
           </button>
-          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
-            Harvested
+          <button
+            className={`filter-button border border-gray-900/40 px-[10px] rounded-[8px] transition-all duration-[.5s] hover:text-[#2f6a2a] ${
+              activeFilter === "harvested" ? "text-[#2f6a2a]" : ""
+            }`}
+            onClick={() => setActiveFilter("harvested")}
+          >
+            Price
           </button>
-          <button className='filter-button border border-gray-900/40 px-[10px] transition-all duration-[.5s] rounded-[8px] hover:text-[#2f6a2a] focus:text-[#2f6a2a]'>
-            Not Harvested
+          <button
+            className={`filter-button border border-gray-900/40 px-[10px] rounded-[8px] transition-all duration-[.5s] hover:text-[#2f6a2a] ${
+              activeFilter === "notHarvested" ? "text-[#2f6a2a]" : ""
+            }`}
+            onClick={() => setActiveFilter("notHarvested")}
+          >
+            A to Z
           </button>
         </div>
       </section>

@@ -1,61 +1,84 @@
 import { Icon } from "@iconify/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BuyersDashBoardCard from "../components/BuyersDashBoardCard";
-// import RevenueChart from "../data/RevenueChart";
 import { useLocation, useNavigate } from "react-router-dom";
-// import RevenueDashboard from "../utils/REvenueDashboard";
 import BuyersCollection from "../modals/BuyersCollection";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "../../../FireBaseConfig";
+import { useAuth } from "../../../context/AuthContext";
 
 const BuyersDashboard = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // correct usage
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const [totalOffers, setTotalOffers] = useState(0);
+  const [pendingDeliveries, setPendingDeliveries] = useState(0);
+  const [pendingPayment, setPendingPayment] = useState(0);
+  const [totalAmountSpent, setTotalAmountSpent] = useState(0);
 
-  const from = location.state?.from?.pathname || "/farmersoverview";
+  useEffect(() => {
+    if (!currentUser?.uid) return;
 
-  navigate(from, { replace: true });
+    // Query for offers in cart (assuming cart offers have buyerId and status might be pending)
+    const q = query(
+      collection(db, "offers"),
+      where("buyerId", "==", currentUser.uid)
+    );
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const offersData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Calculate totals
+      const total = offersData.length;
+
+      // Pending Deliveries: Count of paid products (status: "Paid")
+      const pendingDeliveriesCount = offersData.filter(
+        (offer) => offer.status === "Paid"
+      ).length;
+
+      // Pending Payments: Count of accepted offers (status: "Accepted")
+      const pendingPaymentCount = offersData.filter(
+        (offer) => offer.status === "Accepted"
+      ).length;
+
+      // Total Amount Spent: Sum of totalValue for paid products (status: "Paid")
+      const totalSpent = offersData
+        .filter((offer) => offer.status === "Paid")
+        .reduce((sum, offer) => sum + (parseFloat(offer.totalValue) || 0), 0);
+
+      setTotalOffers(total);
+      setPendingDeliveries(pendingDeliveriesCount);
+      setPendingPayment(pendingPaymentCount);
+      setTotalAmountSpent(totalSpent);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser?.uid]);
 
   return (
-    <main className='lg:ml-[60px] px-[20px]  bg-[#F3FAF6] '>
-      {/* <section className='flex my-[28px]  gap-[33px] '>
-        <button className='bg-[#69B645] lg:text-[16px] text-[12px] rounded-[8px] text-white flex justify-center items-center gap-[5px] lg:gap-[19px] py-[8px] pr-[29px] '>
-          <span className='bg-[#E8E4E4]/20 p-[6px] ml-[8px] flex justify-center rounded-[8px] items-center '>
-            <Icon
-              icon='line-md:plus'
-              className='text-[#E8E4E4]  lg:w-[24px] w-[19.836px] lg:h-[24px] h-[19.836px]  '
-            />
-          </span>{" "}
-          New Listing
-        </button>
-        <button className='bg-[#B65445] lg:text-[16px] text-[12px] rounded-[8px] text-white flex justify-center items-center gap-[5px] lg:gap-[19px] py-[8px] pr-[29px] '>
-          <span className='bg-[#E8E4E4]/20 p-[6px] ml-[8px] flex justify-center rounded-[8px] items-center '>
-            <Icon
-              icon='line-md:minus'
-              className='text-[#E8E4E4]  lg:w-[24px] w-[19.836px] lg:h-[24px] h-[19.836px]  '
-            />{" "}
-          </span>
-          Remove Listing
-        </button>
-      </section> */}
-      <section className='grid lg:grid-cols-4 grid-cols-2 my-[28px]  max-w-[880px] ml-[4px] mb-[36.5px] gap-[24px]'>
+    <main className='lg:ml-[60px] px-[20px] bg-[#F3FAF6]'>
+      <section className='grid lg:grid-cols-4 grid-cols-2 my-[28px] max-w-[880px] ml-[4px] mb-[36.5px] gap-[24px]'>
         <BuyersDashBoardCard
-          cardNumber={13}
+          cardNumber={totalOffers}
           cardText={"Total Offer"}
           icon={"rivet-icons:clipboard"}
         />
         <BuyersDashBoardCard
-          cardNumber={`1,043`}
+          cardNumber={pendingDeliveries}
           cardText={"Pending Deliveries"}
           icon={"game-icons:sell-card"}
         />
         <BuyersDashBoardCard
-          nairaSIgn={"₦"}
-          cardNumber={`20,000`}
-          cardText={"Pending Payment"}
+          cardNumber={pendingPayment}
+          cardText={"Pending Payments"}
           icon={"uiw:loading"}
         />
         <BuyersDashBoardCard
           nairaSIgn={"₦"}
-          cardNumber={`400,000`}
+          cardNumber={totalAmountSpent.toLocaleString()}
           cardText={"Total Amount spent"}
           icon={"mingcute:wallet-fill"}
         />

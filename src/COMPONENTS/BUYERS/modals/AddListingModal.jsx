@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Star from "../../../assets/img/star.png";
 import { Icon } from "@iconify/react";
 import Logo from "../../../assets/img/fwan.png";
@@ -22,6 +22,7 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
   const [user, setUser] = useState(null);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [allReviews, setAllReviews] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -42,7 +43,23 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
     return () => unsubscribe();
   }, [product.id]);
 
-  const fetchReviews = async () => {
+  // const fetchReviews = async () => {
+  //   const reviewsRef = collection(
+  //     db,
+  //     "farmers_listings",
+  //     product.id,
+  //     "reviews"
+  //   );
+  //   const q = query(reviewsRef, orderBy("timestamp", "desc"));
+  //   const querySnapshot = await getDocs(q);
+  //   const fetchedReviews = querySnapshot.docs.map((doc) => ({
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   }));
+  //   setAllReviews(fetchedReviews);
+  // };
+
+  const fetchReviews = useCallback(async () => {
     const reviewsRef = collection(
       db,
       "farmers_listings",
@@ -56,7 +73,11 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
       ...doc.data(),
     }));
     setAllReviews(fetchedReviews);
-  };
+  }, [product.id]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   useEffect(() => {
     fetchReviews();
@@ -82,10 +103,12 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
       alert("Please enter a comment.");
       return;
     }
+    if (submitting) return;
+    setSubmitting(true);
 
     const newReview = {
-      reviewer: user.displayName || user.email || "Anonymous",
-      uid: user.uid,
+      reviewer: user.displayName || user.email?.split("@")[0] || "Anonymous",
+      userId: user.uid,
       rating,
       comment,
       date: new Date().toLocaleDateString(),
@@ -104,21 +127,23 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
 
       await fetchReviews();
 
-      // setAllReviews((prev) => [
-      //   {
-      //     ...newReview,
-      //     timestamp: new Date(), // For immediate display
-      //   },
-      //   ...prev,
-      // ]);
+      setAllReviews((prev) => [
+        {
+          ...newReview,
+          timestamp: new Date(), // For immediate display
+        },
+        ...prev,
+      ]);
 
       setShowReviewForm(false);
       setHasReviewed(true);
       setRating(0);
       setComment("");
+      setSubmitting(false);
     } catch (error) {
       console.error("Error submitting review:", error);
       alert("Something went wrong while submitting the review.");
+      setSubmitting(false);
     }
   };
 
@@ -285,10 +310,13 @@ const AddListingModal = ({ onClose, onMakeOffer, product }) => {
               rows={3}
             />
             <button
+              disabled={submitting}
               onClick={handleAddReview}
-              className='px-4 py-2 bg-[#3D8236] text-white rounded hover:bg-[#2c7125]'
+              className={`px-4 py-2 ${
+                submitting ? "bg-gray-400" : "bg-[#3D8236] hover:bg-[#2c7125]"
+              } text-white rounded`}
             >
-              Submit Review
+              {submitting ? "Submitting..." : "Submit Review"}
             </button>
           </div>
         )}

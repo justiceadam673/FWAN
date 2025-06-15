@@ -9,12 +9,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../FireBaseConfig";
 
-const RevenueChart = () => {
-  const [allData, setAllData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+const RevenueChart = ({ farmerId }) => {
+  const [chartData, setChartData] = useState([]);
   const [months, setMonths] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("All Months");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -35,39 +34,86 @@ const RevenueChart = () => {
   ];
 
   useEffect(() => {
-    const fetchRevenue = async () => {
-      const querySnapshot = await getDocs(collection(db, "revenue"));
-      const revenueData = [];
+    if (!farmerId) return;
 
-      querySnapshot.forEach((doc) => {
-        revenueData.push(doc.data());
-      });
-
-      revenueData.sort(
-        (a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
+    const fetchRevenueData = async () => {
+      const offersQuery = query(
+        collection(db, "offers"),
+        where("farmerId", "==", farmerId),
+        where("status", "==", "Paid")
       );
 
-      const uniqueMonths = [...new Set(revenueData.map((r) => r.month))];
+      const querySnapshot = await getDocs(offersQuery);
+      const paidOffers = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        let month = "UNK";
 
-      setAllData(revenueData);
-      setFilteredData(revenueData);
-      setMonths(uniqueMonths);
+        // Check for both possible timestamp formats
+        if (data.paymentDate?.toDate) {
+          month = data.paymentDate
+            .toDate()
+            .toLocaleString("default", { month: "short" })
+            .toUpperCase();
+        } else if (data.timestamp?.toDate) {
+          month = data.timestamp
+            .toDate()
+            .toLocaleString("default", { month: "short" })
+            .toUpperCase();
+        } else if (data.date?.toDate) {
+          month = data.date
+            .toDate()
+            .toLocaleString("default", { month: "short" })
+            .toUpperCase();
+        } else if (typeof data.date === "string") {
+          // Handle string dates if needed
+          const dateObj = new Date(data.date);
+          if (!isNaN(dateObj)) {
+            month = dateObj
+              .toLocaleString("default", { month: "short" })
+              .toUpperCase();
+          }
+        }
+
+        return {
+          id: doc.id,
+          ...data,
+          month,
+          amount: parseFloat(data.totalValue) || 0,
+        };
+      });
+
+      // Group by month and sum amounts
+      const monthlyData = paidOffers.reduce((acc, offer) => {
+        if (!acc[offer.month]) {
+          acc[offer.month] = { month: offer.month, amount: 0 };
+        }
+        acc[offer.month].amount += offer.amount;
+        return acc;
+      }, {});
+
+      // Convert to array, filter out invalid months, and sort
+      const sortedData = Object.values(monthlyData)
+        .filter((item) => monthOrder.includes(item.month))
+        .sort(
+          (a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
+        );
+
+      setChartData(sortedData);
+      setMonths(sortedData.map((item) => item.month));
     };
 
-    fetchRevenue();
-  }, []);
+    fetchRevenueData();
+  }, [farmerId]);
 
   const handleMonthSelect = (month) => {
     setSelectedMonth(month);
     setShowDropdown(false);
-
-    if (month === "All Months") {
-      setFilteredData(allData);
-    } else {
-      const filtered = allData.filter((item) => item.month === month);
-      setFilteredData(filtered);
-    }
   };
+
+  const filteredData =
+    selectedMonth === "All Months"
+      ? chartData
+      : chartData.filter((item) => item.month === selectedMonth);
 
   return (
     <div className='bg-gray-200 rounded-xl p-[20px] w-full relative'>
@@ -103,35 +149,20 @@ const RevenueChart = () => {
       <ResponsiveContainer
         width='100%'
         height={300}
-        className={"p-[10px] text-[12px] lg:text-md  "}
+        className='p-[10px] text-[12px] lg:text-md'
       >
         <BarChart data={filteredData}>
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='month' stroke='#cb3f27' />
-          <YAxis
-            tickFormatter={(value) =>
-              typeof value === "number" ? `₦${value.toLocaleString()}` : value
-            }
-          />
+          <YAxis tickFormatter={(value) => `₦${value.toLocaleString()}`} />
           <Tooltip
-            formatter={(value) =>
-              typeof value === "number" ? `₦${value.toLocaleString()}` : value
-            }
+            formatter={(value) => [`₦${value.toLocaleString()}`, "Revenue"]}
           />
           <Legend />
           <Bar
             dataKey='amount'
             fill='green'
             radius={[8, 8, 0, 0]}
-            isAnimationActive={false}
-            animationDuration={500}
-            animationEasing='ease-in-out'
-            animationBegin={0}
-            animationId={1}
-            data-testid='revenue-bar'
-            stackId='a'
-            cursor='pointer'
-            data-
             name='Revenue'
             barSize={30}
           />

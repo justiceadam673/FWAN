@@ -21,9 +21,9 @@ const OurFeatures = () => {
                   className='max-lg:w-[45px] lg:mt-[30px] mt-[17px] max-lg:h-[45px] '
                 />
               }
-              CardHeader={"Real-Time Bidding"}
+              CardHeader={"Smart Crate Tracking"}
               CardParagraph={
-                "Continuously monitor your animals’ vital signs and movements. Get instant insights into their health status, ensuring ..."
+                "Follow your goods in real time from farm to delivery. Our GPS-enabled crates ensure transparency, safety, and temperature control every step of the way."
               }
             />
             <FeatureCard
@@ -35,9 +35,9 @@ const OurFeatures = () => {
                   className='max-lg:w-[45px] lg:mt-[30px] mt-[17px] max-lg:h-[45px] '
                 />
               }
-              CardHeader={"Smart Filters"}
+              CardHeader={"Secure Payment with QC Assurance"}
               CardParagraph={
-                "Connect with licensed veterinarians directly through the app whenever you need advice or emergency assistance ..."
+                "Buyers make payment immediately upon order, while funds are held safely in our pulling account. Farmers only receive payment after successful quality verification at our Central Hubs."
               }
             />
             <FeatureCard
@@ -49,9 +49,9 @@ const OurFeatures = () => {
                   className='max-lg:w-[45px] lg:mt-[30px] mt-[17px] max-lg:h-[45px] '
                 />
               }
-              CardHeader={"Direct Chat"}
+              CardHeader={"Seamless Farmer-to-Buyer Flow"}
               CardParagraph={
-                "Receive timely notifications for vaccinations, medication schedules, and treatments. Our system ensures you never miss a critical health ..."
+                "Our platform connects farmers directly to bulk buyers, hotels, restaurants, and health-focused markets — with streamlined logistics and verified produce."
               }
             />
           </div>

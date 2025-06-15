@@ -1,9 +1,11 @@
 import React from "react";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
 const formatCurrency = (value) => {
+  if (value == null || isNaN(value)) return "₦0.00";
   const num = parseFloat(value.toString().replace(/[^\d.]/g, ""));
-  if (isNaN(num)) return value;
+  if (isNaN(num)) return "₦0.00";
   return `₦${num.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`;
 };
 
@@ -13,120 +15,136 @@ const BuyersCartTable = ({
   onStatusChange,
   isMobile,
   onMakeOffer,
+  onCompletePayment,
 }) => {
-  const { id, buyerName, product, quantity, priceOffered, totalValue, date } =
-    offer;
+  const navigate = useNavigate();
 
-  const displayDate = date instanceof Date ? date.toLocaleDateString() : "N/A";
+  const {
+    id,
+    image,
+    product,
+    quantity,
+    offerPrice,
+    totalValue,
+    timestamp,
+    paymentStatus,
+  } = offer;
+
+  const displayDate = timestamp?.toDate?.().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   const renderActionButtons = () => {
-    if (status === "Accepted") {
-      return (
-        <div className='bg-[#168B2B] text-white w-fit px-3 py-1 rounded'>
-          Proceed to Payment
-        </div>
-      );
-    } else if (status === "Rejected") {
+    const isPaid = paymentStatus === "Paid" || status === "Paid";
+
+    if (isPaid) {
       return (
         <button
-          onClick={onMakeOffer}
-          className='border border-black flex gap-[8px] items-center justify-center text-black px-3 py-1 rounded'
+          onClick={() =>
+            navigate(`/buyerstracking/
+            ${offer.docId}
+            `)
+          }
+          className='bg-blue-600 hover:bg-blue-700 text-white w-fit px-3 py-1 rounded transition-colors'
         >
-          <span>
-            <Icon icon={"mdi-light:eye"} />
-          </span>{" "}
-          More Offers
+          Track Delivery
         </button>
       );
-    } else {
+    }
+
+    if (status === "Accepted") {
       return (
-        <div className='flex gap-2 items-center flex-wrap'>
-          <button
-            onClick={() => onStatusChange(id, "Accepted")}
-            className='border border-[#168B2B] text-[#168B2B] px-3 py-1 rounded flex gap-2 items-center'
-          >
-            <Icon icon='fluent-mdl2:accept' width='16' height='16' />
-            Accept
-          </button>
-          <span className='text-gray-500'>or</span>
-          <button
-            onClick={() => onStatusChange(id, "Rejected")}
-            className='border border-[#C71313] text-[#C71313] px-3 py-1 rounded flex gap-2 items-center'
-          >
-            <Icon icon='solar:trash-bin-2-linear' width='16' height='16' />
-            Reject
-          </button>
-        </div>
+        <button
+          onClick={onCompletePayment}
+          className='bg-[#168B2B] hover:bg-[#126b22] text-white w-fit px-3 py-1 rounded transition-colors'
+        >
+          Complete Payment
+        </button>
       );
     }
+
+    if (status === "Rejected") {
+      return (
+        <button
+          onClick={() => navigate(`/buyersoverview`)}
+          className='border border-black hover:bg-gray-100 flex gap-2 items-center justify-center text-black px-3 py-1 rounded transition-colors'
+        >
+          <Icon icon='mdi-light:eye' />
+          Make Offers
+        </button>
+      );
+    }
+
+    return (
+      <div className='bg-gray-300 text-gray-500 w-fit px-3 py-1 rounded cursor-not-allowed'>
+        Complete Payment
+      </div>
+    );
+  };
+
+  const getStatusColor = () => {
+    if (status === "Paid") return "text-blue-600";
+    if (status === "Accepted") return "text-green-500";
+    if (status === "Rejected") return "text-red-500";
+    return "text-yellow-500";
   };
 
   if (isMobile) {
     return (
-      <div className='bg-white text-[#888888] p-4 rounded-lg shadow-md border mb-2'>
-        <p>
-          <strong>Buyer:</strong> <span className=''>{buyerName}</span>
-        </p>
-        <p>
-          <strong>Product:</strong>{" "}
-          <span className='text-[#69B645]'>{product}</span>
-        </p>
-        <p>
-          <strong>Quantity:</strong>{" "}
-          <span className='text-[#69B645]'>{quantity} kg</span>
-        </p>
-        <p>
-          <strong>Price Offered:</strong>{" "}
-          <span className='text-[#69B645]'>{formatCurrency(priceOffered)}</span>
-        </p>
-        <p>
-          <strong>Total Value:</strong>{" "}
-          <span className='text-[#69B645]'>{formatCurrency(totalValue)}</span>
-        </p>
-        <p>
-          <strong>Date:</strong>{" "}
-          <span className='text-[#69B645]'>{displayDate}</span>
-        </p>
-        <p
-          className={`font-semibold ${
-            status === "Accepted"
-              ? "text-green-600"
-              : status === "Rejected"
-              ? "text-red-600"
-              : "text-yellow-600"
-          }`}
-        >
-          <strong>Status:</strong>
-          <span> {status}</span>
-        </p>
-        {renderActionButtons()}
+      <div className='rounded-md bg-white px-3 py-4 shadow-md'>
+        <div className='flex justify-between'>
+          <span className='font-semibold text-lg'>{product}</span>
+          <span className='text-gray-600'>{displayDate}</span>
+        </div>
+        <div className='flex gap-2 my-2'>
+          {image && (
+            <img
+              src={image}
+              alt={product}
+              className='w-[70px] h-[70px] rounded-lg object-cover'
+            />
+          )}
+          <div className='flex-1'>
+            <p>
+              Quantity: <strong>{quantity} kg</strong>
+            </p>
+            <p>
+              Price Offered: <strong>{formatCurrency(offerPrice)}</strong>
+            </p>
+            <p>
+              Total Value: <strong>{formatCurrency(totalValue)}</strong>
+            </p>
+            <p>
+              Status: <strong className={getStatusColor()}>{status}</strong>
+            </p>
+          </div>
+        </div>
+        <div className='flex justify-end mt-2'>{renderActionButtons()}</div>
       </div>
     );
   }
 
   return (
-    <tr className='bg-gray-50'>
-      <td className='p-2'>{id}</td>
-      <td className='p-2'>{buyerName}</td>
-      <td className='p-2 text-[#69B645]'>{product}</td>
-      <td className='p-2 text-[#69B645]'>{quantity} kg</td>
-      <td className='p-2 text-[#69B645]'>{formatCurrency(priceOffered)}</td>
-      <td className='p-2 text-[#69B645]'>{formatCurrency(totalValue)}</td>
-      <td className='p-2 text-[#69B645]'>{displayDate}</td>
-      <td className='p-2 text-[#69B645]'>
-        <span
-          className={`font-semibold ${
-            status === "Accepted"
-              ? "text-green-600"
-              : status === "Rejected"
-              ? "text-red-600"
-              : "text-yellow-600"
-          }`}
-        >
-          {status}
-        </span>
+    <tr className='hover:bg-gray-50'>
+      <td className='p-3'>{id}</td>
+      <td className='p-3'>
+        {image && (
+          <img
+            src={image}
+            alt={product}
+            className='w-[70px] h-[70px] rounded-lg object-cover'
+          />
+        )}
       </td>
-      <td className='p-2'>{renderActionButtons()}</td>
+      <td className='p-3'>{product}</td>
+      <td className='p-3'>{quantity} kg</td>
+      <td className='p-3'>{formatCurrency(offerPrice)}</td>
+      <td className='p-3'>{formatCurrency(totalValue)}</td>
+      <td className='p-3'>{displayDate}</td>
+      <td className={`p-3 ${getStatusColor()}`}>{status}</td>
+      <td className='p-3'>{renderActionButtons()}</td>
     </tr>
   );
 };

@@ -26,8 +26,7 @@ const FarmersListings = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const imgbbApiKey = "337c1b7d614d9e354d1aaaf93793d4a8"; // 🔐 move to .env in production
-
+  const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
   const [newProduct, setNewProduct] = useState({
     product: "",
     quantity: "",

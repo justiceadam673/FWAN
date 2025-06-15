@@ -1,134 +1,117 @@
-import React from "react";
-import { Icon } from "@iconify/react";
+import React, { useEffect, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../../FireBaseConfig";
+import { useAuth } from "../../../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 
-const formatCurrency = (value) => {
-  const num = parseFloat(value.toString().replace(/[^\d.]/g, ""));
-  if (isNaN(num)) return value;
-  return `₦${num.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`;
-};
+const FarmersOffersTable = () => {
+  const { user } = useAuth(); // assumes you're using AuthContext
+  const [offers, setOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedRow, setExpandedRow] = useState(null);
 
-const FarmersOfferTable = ({
-  offer,
-  status,
-  onStatusChange,
-  isMobile,
-  onMakeOffer,
-}) => {
-  const { id, buyerName, product, quantity, priceOffered, totalValue, date } =
-    offer;
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        const offersRef = collection(db, "offers");
+        const q = query(offersRef, where("farmerId", "==", user.uid)); // ✅ farmerId here
+        const snapshot = await getDocs(q);
+        const offersData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setOffers(offersData);
+      } catch (error) {
+        console.error("Error fetching offers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const displayDate = date instanceof Date ? date.toLocaleDateString() : "N/A";
-
-  const renderActionButtons = () => {
-    if (status === "Accepted") {
-      return (
-        <div className='bg-[#168B2B] text-white w-fit px-3 py-1 rounded'>
-          Proceed to Payment
-        </div>
-      );
-    } else if (status === "Rejected") {
-      return (
-        <button
-          onClick={onMakeOffer}
-          className='border border-black flex gap-[8px] items-center justify-center text-black px-3 py-1 rounded'
-        >
-          <span>
-            <Icon icon={"mdi-light:eye"} />
-          </span>{" "}
-          More Offers
-        </button>
-      );
-    } else {
-      return (
-        <div className='flex gap-2 items-center flex-wrap'>
-          <button
-            onClick={() => onStatusChange(id, "Accepted")}
-            className='border border-[#168B2B] text-[#168B2B] px-3 py-1 rounded flex gap-2 items-center'
-          >
-            <Icon icon='fluent-mdl2:accept' width='16' height='16' />
-            Accept
-          </button>
-          <span className='text-gray-500'>or</span>
-          <button
-            onClick={() => onStatusChange(id, "Rejected")}
-            className='border border-[#C71313] text-[#C71313] px-3 py-1 rounded flex gap-2 items-center'
-          >
-            <Icon icon='solar:trash-bin-2-linear' width='16' height='16' />
-            Reject
-          </button>
-        </div>
-      );
+    if (user?.uid) {
+      fetchOffers();
     }
+  }, [user?.uid]);
+
+  const toggleRow = (id) => {
+    setExpandedRow((prev) => (prev === id ? null : id));
   };
 
-  if (isMobile) {
+  if (loading) {
     return (
-      <div className='bg-white text-[#888888] p-4 rounded-lg shadow-md border mb-2'>
-        <p>
-          <strong>Buyer:</strong> <span className=''>{buyerName}</span>
-        </p>
-        <p>
-          <strong>Product:</strong>{" "}
-          <span className='text-[#69B645]'>{product}</span>
-        </p>
-        <p>
-          <strong>Quantity:</strong>{" "}
-          <span className='text-[#69B645]'>{quantity} kg</span>
-        </p>
-        <p>
-          <strong>Price Offered:</strong>{" "}
-          <span className='text-[#69B645]'>{formatCurrency(priceOffered)}</span>
-        </p>
-        <p>
-          <strong>Total Value:</strong>{" "}
-          <span className='text-[#69B645]'>{formatCurrency(totalValue)}</span>
-        </p>
-        <p>
-          <strong>Date:</strong>{" "}
-          <span className='text-[#69B645]'>{displayDate}</span>
-        </p>
-        <p
-          className={`font-semibold ${
-            status === "Accepted"
-              ? "text-green-600"
-              : status === "Rejected"
-              ? "text-red-600"
-              : "text-yellow-600"
-          }`}
-        >
-          <strong>Status:</strong>
-          <span> {status}</span>
-        </p>
-        {renderActionButtons()}
+      <div className='flex justify-center items-center h-40'>
+        <div className='animate-spin rounded-full h-10 w-10 border-b-2 border-green-500' />
+      </div>
+    );
+  }
+
+  if (offers.length === 0) {
+    return (
+      <div className='text-center text-gray-500 mt-10 text-lg'>
+        No offers yet.
       </div>
     );
   }
 
   return (
-    <tr className='bg-gray-50'>
-      <td className='p-2'>{id}</td>
-      <td className='p-2'>{buyerName}</td>
-      <td className='p-2 text-[#69B645]'>{product}</td>
-      <td className='p-2 text-[#69B645]'>{quantity} kg</td>
-      <td className='p-2 text-[#69B645]'>{formatCurrency(priceOffered)}</td>
-      <td className='p-2 text-[#69B645]'>{formatCurrency(totalValue)}</td>
-      <td className='p-2 text-[#69B645]'>{displayDate}</td>
-      <td className='p-2 text-[#69B645]'>
-        <span
-          className={`font-semibold ${
-            status === "Accepted"
-              ? "text-green-600"
-              : status === "Rejected"
-              ? "text-red-600"
-              : "text-yellow-600"
-          }`}
-        >
-          {status}
-        </span>
-      </td>
-      <td className='p-2'>{renderActionButtons()}</td>
-    </tr>
+    <div className='overflow-x-auto p-4'>
+      <table className='min-w-full border border-gray-200 shadow rounded-lg bg-white'>
+        <thead className='bg-gray-100'>
+          <tr>
+            <th className='px-4 py-2 text-left'>Product</th>
+            <th className='px-4 py-2 text-left'>Offer Price</th>
+            <th className='px-4 py-2 text-left'>Status</th>
+            <th className='px-4 py-2 text-left'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {offers.map((offer) => (
+            <React.Fragment key={offer.id}>
+              <tr
+                onClick={() => toggleRow(offer.id)}
+                className='cursor-pointer hover:bg-gray-50 transition'
+              >
+                <td className='px-4 py-2'>{offer.productName || "N/A"}</td>
+                <td className='px-4 py-2'>₹{offer.offerPrice || "N/A"}</td>
+                <td className='px-4 py-2'>{offer.status || "Pending"}</td>
+                <td className='px-4 py-2'>
+                  {expandedRow === offer.id ? "▲" : "▼"}
+                </td>
+              </tr>
+
+              <AnimatePresence>
+                {expandedRow === offer.id && (
+                  <motion.tr
+                    key='expanded'
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <td
+                      colSpan={4}
+                      className='px-4 py-3 bg-gray-50 text-sm text-gray-600'
+                    >
+                      <div>
+                        <strong>Quantity:</strong> {offer.quantity || "N/A"}
+                      </div>
+                      <div>
+                        <strong>Delivery Date:</strong>{" "}
+                        {offer.deliveryDate || "N/A"}
+                      </div>
+                      <div>
+                        <strong>Buyer Notes:</strong> {offer.notes || "None"}
+                      </div>
+                    </td>
+                  </motion.tr>
+                )}
+              </AnimatePresence>
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-export default FarmersOfferTable;
+export default FarmersOffersTable;
