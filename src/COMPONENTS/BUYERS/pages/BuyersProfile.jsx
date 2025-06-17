@@ -27,7 +27,8 @@ const BuyersProfile = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+  // const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+  const imgbbApiKey = "337c1b7d614d9e354d1aaaf93793d4a8";
 
   const getInitialsAvatar = () => {
     const initials = `${formData.firstName.charAt(0)}${formData.lastName.charAt(
