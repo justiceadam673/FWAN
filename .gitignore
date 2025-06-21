@@ -5,3 +5,4 @@ node_modules/
 FarmersProfile
 BuyersProfile
 VITE_PAYSTACK_PUBLIC_KEY=pk_test_f635f526efd6eec9028ffb64f9692db3a8189d89
+.env
