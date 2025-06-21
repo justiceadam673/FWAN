@@ -7,11 +7,12 @@ import {
   getDocs,
   doc,
   updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../FireBaseConfig";
 import BuyersCartTable from "../util/BuyersCartTable";
 import { useAuth } from "../../../context/AuthContext";
-import { PaystackButton } from "react-paystack";
+// import { loadScript } from "@paystack/inline-js"; // ✅ Correct import
 
 const BuyersCart = () => {
   const [offers, setOffers] = useState([]);
@@ -141,27 +142,15 @@ const BuyersCart = () => {
     setIsProcessingPayment(true);
     try {
       const offerRef = doc(db, "offers", offerId);
-
-      // First update only the required fields
       await updateDoc(offerRef, {
         paymentStatus: "Paid",
         status: "Paid",
-      });
-
-      // Then update additional fields in a separate operation
-      await updateDoc(offerRef, {
         deliveryStatus: "Processing",
         paymentDate: serverTimestamp(),
       });
-
       alert("Payment successful! Your order is now being processed.");
     } catch (error) {
-      console.error("Payment status update error:", {
-        code: error.code,
-        message: error.message,
-        offerId,
-        userId: currentUser?.uid,
-      });
+      console.error("Payment status update error:", error);
       alert(
         "Payment succeeded but we encountered an issue updating your order status. Please contact support."
       );
@@ -172,45 +161,60 @@ const BuyersCart = () => {
   };
 
   const PaymentOverlay = ({ email, amount, onClose, offerId }) => {
-    const publicKey = "pk_test_f635f526efd6eec9028ffb64f9692db3a8189d89";
+    const publicKey =
+      import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "pk_test_f6..."; // ✅ CORRECT
 
-    const componentProps = {
-      email,
-      amount: amount * 100,
-      metadata: {
-        custom_fields: [
-          {
-            display_name: "Buyer",
-            variable_name: "buyer_email",
-            value: email,
+    const handlePay = () => {
+      setIsProcessingPayment(true);
+      try {
+        const handler = window.PaystackPop.setup({
+          key: publicKey,
+          email,
+          amount: amount * 100, // amount in kobo
+          ref: `${Date.now()}`,
+          metadata: {
+            custom_fields: [
+              {
+                display_name: "Buyer",
+                variable_name: "buyer_email",
+                value: email,
+              },
+            ],
           },
-        ],
-      },
-      publicKey,
-      text: "Pay Now",
-      onSuccess: () => handlePaymentSuccess(offerId),
-      onClose: onClose,
-    };
+          callback: function (response) {
+            console.log("Payment success:", response);
+            handlePaymentSuccess(offerId);
+          },
+          onClose: function () {
+            console.log("Payment popup closed");
+            setIsProcessingPayment(false);
+            onClose();
+          },
+        });
 
-    // console.log("Current user UID:", currentUser?.uid);
-    // console.log("Offer data:", {
-    //   id: offerId,
-    //   buyerId: offer.buyerId,
-    //   currentStatus: offer.status,
-    // });
+        handler.openIframe();
+      } catch (error) {
+        console.error("Error initializing Paystack:", error);
+        alert("Payment failed. Please try again.");
+        setIsProcessingPayment(false);
+        onClose();
+      }
+    };
 
     return (
       <div className='fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50'>
         <div className='bg-white p-6 rounded-lg w-full max-w-md shadow-xl'>
           <h2 className='text-lg font-semibold mb-4'>Complete Your Payment</h2>
           <div className='flex flex-col gap-4'>
-            <PaystackButton
-              {...componentProps}
+            <button
+              onClick={handlePay}
               className={`bg-green-600 text-white px-4 py-2 rounded ${
                 isProcessingPayment ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={isProcessingPayment}
-            />
+            >
+              {isProcessingPayment ? "Processing..." : "Pay Now"}
+            </button>
             <button
               onClick={onClose}
               className='text-sm text-gray-500 underline'
