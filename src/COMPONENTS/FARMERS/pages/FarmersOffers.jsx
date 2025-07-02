@@ -48,7 +48,10 @@ const FarmersOffers = () => {
     const fetchListingImages = async () => {
       try {
         const listingsSnapshot = await getDocs(
-          collection(db, "farmers_listings")
+          query(
+            collection(db, "farmers_listings"),
+            where("userId", "==", user.uid)
+          )
         );
         const listings = listingsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -56,9 +59,17 @@ const FarmersOffers = () => {
         }));
 
         const updatedOffers = offers.map((offer) => {
+          // Try to find exact match first
+          // const matchedListing = listings.find(
+          //   (listing) =>
+          //     listing.id === offer.listingId || // if you have listingId reference
+          //     (listing.prod === offer.product &&
+          //       listing.price === offer.offerPrice && // add more matching criteria
+          //       listing.quantity === offer.quantity)
+          // );
+
           const matchedListing = listings.find(
-            (listing) =>
-              listing.prod === offer.product && listing.userId === user.uid
+            (listing) => listing.id === offer.listingId
           );
           return {
             ...offer,
@@ -133,7 +144,7 @@ const FarmersOffers = () => {
                 <td className='p-3'>{offer.product}</td>
                 <td className='p-3'>{offer.quantity}</td>
                 <td className='p-3'>{offer.buyerName || "N/A"}</td>
-                <td className='p-3'>₦{offer.offerPrice}</td>
+                <td className='p-3'>₦{offer.offerPrice * offer.quantity}</td>
                 <td className='p-3'>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-semibold ${

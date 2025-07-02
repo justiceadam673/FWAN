@@ -71,6 +71,36 @@ const BuyersCart = () => {
   useEffect(() => {
     if (!currentUser || offers.length === 0) return;
 
+    // const fetchImages = async () => {
+    //   try {
+    //     const listingsSnapshot = await getDocs(
+    //       collection(db, "farmers_listings")
+    //     );
+    //     const listings = listingsSnapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+
+    //     const offersWithImages = offers.map((offer) => {
+    //       const matchedListing = listings.find(
+    //         (listing) =>
+    //           listing.userId === offer.farmerId &&
+    //           listing.prod?.toLowerCase() === offer.product?.toLowerCase() &&
+    //           listing.price === offer.offerPrice &&
+    //           listing.quantity === offer.quantity
+    //       );
+    //       return {
+    //         ...offer,
+    //         image: matchedListing?.image || null,
+    //       };
+    //     });
+
+    //     setOffers(offersWithImages);
+    //   } catch (error) {
+    //     console.error("Error fetching listing images:", error);
+    //   }
+    // };
+
     const fetchImages = async () => {
       try {
         const listingsSnapshot = await getDocs(
@@ -82,10 +112,9 @@ const BuyersCart = () => {
         }));
 
         const offersWithImages = offers.map((offer) => {
+          // Match by listingId if available
           const matchedListing = listings.find(
-            (listing) =>
-              listing.userId === offer.farmerId &&
-              listing.prod?.toLowerCase() === offer.product?.toLowerCase()
+            (listing) => listing.id === offer.listingId
           );
           return {
             ...offer,

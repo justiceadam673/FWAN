@@ -10,6 +10,7 @@ import Pepper from "../../../assets/img/peppers.png";
 import { Icon } from "@iconify/react";
 import AddListingModal from "../modals/AddListingModal";
 import MakeOffer from "../modals/MakeOffer";
+import { query, where } from "firebase/firestore";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -28,6 +29,68 @@ const BuyersCollections = () => {
 
   const [activeFilter, setActiveFilter] = useState(""); // rating | harvested | notHarvested
 
+  // useEffect(() => {
+  //   const fetchListingsAndRatings = async () => {
+  //     try {
+  //       const listingsSnapshot = await getDocs(
+  //         collection(db, "farmers_listings")
+  //       );
+  //       const newListings = [];
+  //       const ratingsMap = {};
+
+  //       for (const doc of listingsSnapshot.docs) {
+  //         const listingData = doc.data();
+  //         const listingId = doc.id;
+  //         const farmer = listingData.farmer;
+
+  //         newListings.push({ id: listingId, ...listingData });
+
+  //         const reviewsSnapshot = await getDocs(
+  //           collection(db, "farmers_listings", listingId, "reviews")
+  //         );
+  //         const reviews = reviewsSnapshot.docs.map((r) => r.data());
+
+  //         if (!ratingsMap[farmer]) {
+  //           ratingsMap[farmer] = [];
+  //         }
+
+  //         reviews.forEach((review) => {
+  //           if (typeof review.rating === "number") {
+  //             ratingsMap[farmer].push(review.rating);
+  //           }
+  //         });
+  //       }
+
+  //       const farmerRatings = {};
+  //       for (const farmer in ratingsMap) {
+  //         const ratings = ratingsMap[farmer];
+  //         if (ratings.length === 0) {
+  //           farmerRatings[farmer] = 0;
+  //         } else {
+  //           const avgRating =
+  //             ratings.reduce((acc, r) => acc + r, 0) / ratings.length;
+  //           farmerRatings[farmer] = Math.min(Math.max(avgRating, 1), 5).toFixed(
+  //             1
+  //           );
+  //         }
+  //       }
+
+  //       const listingsWithRating = newListings.map((listing) => ({
+  //         ...listing,
+  //         rating: farmerRatings[listing.farmer] || 0,
+  //       }));
+
+  //       setListings(listingsWithRating);
+  //     } catch (error) {
+  //       console.error("Error fetching listings or reviews:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchListingsAndRatings();
+  // }, []);
+
   useEffect(() => {
     const fetchListingsAndRatings = async () => {
       try {
@@ -37,49 +100,74 @@ const BuyersCollections = () => {
         const newListings = [];
         const ratingsMap = {};
 
-        for (const doc of listingsSnapshot.docs) {
-          const listingData = doc.data();
-          const listingId = doc.id;
+        for (const docSnap of listingsSnapshot.docs) {
+          const listingData = docSnap.data();
+          const listingId = docSnap.id;
           const farmer = listingData.farmer;
 
-          newListings.push({ id: listingId, ...listingData });
+          // 🔢 Get total quantity from the listing (e.g., "20 kg")
+          let [originalQty, unit] = (listingData.quantity || "0").split(" ");
+          originalQty = parseFloat(originalQty) || 0;
 
+          // 🔁 Fetch accepted/completed offers to calculate sold quantity
+          let totalSold = 0;
+          try {
+            const offersSnapshot = await getDocs(
+              query(
+                collection(db, "offers"),
+                where("listingId", "==", listingId),
+                where("status", "in", ["Accepted", "Paid", "Completed"])
+              )
+            );
+            totalSold = offersSnapshot.docs.reduce((sum, offerDoc) => {
+              return sum + (parseFloat(offerDoc.data().quantity) || 0);
+            }, 0);
+          } catch (error) {
+            console.log("Couldn't calculate sold quantity:", error);
+          }
+
+          const remainingQty = Math.max(0, originalQty - totalSold);
+
+          // ⭐ Fetch average ratings
           const reviewsSnapshot = await getDocs(
             collection(db, "farmers_listings", listingId, "reviews")
           );
           const reviews = reviewsSnapshot.docs.map((r) => r.data());
-
-          if (!ratingsMap[farmer]) {
-            ratingsMap[farmer] = [];
-          }
-
+          if (!ratingsMap[farmer]) ratingsMap[farmer] = [];
           reviews.forEach((review) => {
             if (typeof review.rating === "number") {
               ratingsMap[farmer].push(review.rating);
             }
           });
+
+          newListings.push({
+            id: listingId,
+            ...listingData,
+            rating: 0, // temporary, will be added later
+            quantity: `${remainingQty} ${unit}`.trim(),
+            isSoldOut: remainingQty === 0,
+          });
         }
 
+        // 🌟 Compute average ratings
         const farmerRatings = {};
         for (const farmer in ratingsMap) {
           const ratings = ratingsMap[farmer];
-          if (ratings.length === 0) {
-            farmerRatings[farmer] = 0;
-          } else {
-            const avgRating =
-              ratings.reduce((acc, r) => acc + r, 0) / ratings.length;
-            farmerRatings[farmer] = Math.min(Math.max(avgRating, 1), 5).toFixed(
-              1
-            );
-          }
+          const avgRating =
+            ratings.length > 0
+              ? (
+                  ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+                ).toFixed(1)
+              : 0;
+          farmerRatings[farmer] = avgRating;
         }
 
-        const listingsWithRating = newListings.map((listing) => ({
+        const listingsWithRatings = newListings.map((listing) => ({
           ...listing,
           rating: farmerRatings[listing.farmer] || 0,
         }));
 
-        setListings(listingsWithRating);
+        setListings(listingsWithRatings);
       } catch (error) {
         console.error("Error fetching listings or reviews:", error);
       } finally {
@@ -206,7 +294,9 @@ const BuyersCollections = () => {
           {paginatedProducts.map((item) => (
             <div
               key={item.id}
-              className='bg-white border border-gray-300 rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col justify-between h-fit'
+              className={`bg-white border border-gray-300 rounded-xl shadow transition p-4 flex flex-col justify-between h-fit ${
+                item.isSoldOut ? "opacity-50" : ""
+              }`}
             >
               <img
                 src={
@@ -229,7 +319,13 @@ const BuyersCollections = () => {
                 <div className='flex justify-between text-sm text-gray-700'>
                   <div>
                     <p className='text-gray-500'>Quantity</p>
-                    <p className='font-medium'>{item.quantity || "N/A"}</p>
+                    <p
+                      className={`font-medium ${
+                        item.isSoldOut ? "text-red-600 font-semibold" : ""
+                      }`}
+                    >
+                      {item.isSoldOut ? "Sold Out" : item.quantity}
+                    </p>
                   </div>
                   <div>
                     <p className='text-gray-500'>Price</p>
@@ -244,12 +340,21 @@ const BuyersCollections = () => {
                 >
                   View Details
                 </button>
-                <button
-                  className='bg-[#3D8236] hover:bg-[#2c7125] text-white px-4 py-2 rounded-full'
-                  onClick={() => handleOpenModal(item)}
-                >
-                  Make an Offer
-                </button>
+                {item.isSoldOut ? (
+                  <button
+                    className='bg-gray-400 text-white px-4 py-2 rounded-full cursor-not-allowed'
+                    disabled
+                  >
+                    Sold Out
+                  </button>
+                ) : (
+                  <button
+                    className='bg-[#3D8236] hover:bg-[#2c7125] text-white px-4 py-2 rounded-full'
+                    onClick={() => handleOpenModal(item)}
+                  >
+                    Make an Offer
+                  </button>
+                )}
               </div>
             </div>
           ))}

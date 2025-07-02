@@ -5,7 +5,7 @@ export const productList = {
   "Yellow pepper": { quantity: "Per bag", price: "120,000 - 130,000" },
   Lettuce: { quantity: "per bunch", price: "3,500 - 4,500" },
   "Onion Bulb": { quantity: "per Bag", price: "40,000 - 75,000" },
-  "Chilli pepper": { quantity: "100kg", price: "100,000 - 120,000" },
+  "Chilli pepper": { quantity: "per Bag", price: "100,000 - 120,000" },
   "Bell pepper": { quantity: "per bag", price: "100,000 - 120,000" },
   Carrot: { quantity: "per bag", price: "38,000 - 40,000" },
   Pumpkin: { quantity: "per piece", price: "700 - 2,000" },
