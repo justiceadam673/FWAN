@@ -34,6 +34,8 @@ const BuyersHistory = () => {
           id: doc.id,
           ...doc.data(),
           displayDate: new Date().toLocaleDateString("en-GB"),
+          // Generate the formatted order ID here
+          formattedOrderId: `OID-${doc.id.substring(0, 2)}`,
         }));
         setOffers(fetchedOffers);
         setLoading(false);
@@ -76,7 +78,7 @@ const BuyersHistory = () => {
         </div>
         <div>
           <p className='text-gray-500'>Order ID</p>
-          <p>{"Pending"}</p>
+          <p>{offer.formattedOrderId}</p>
         </div>
       </div>
 
@@ -92,7 +94,7 @@ const BuyersHistory = () => {
       <h2 className='text-2xl font-semibold mb-6'>Order History</h2>
 
       {/* Mobile View (Cards) */}
-      <div className='md:hidden space-y-4'>
+      <div className='lg:hidden space-y-4'>
         {offers.length > 0 ? (
           offers.map((offer) => <MobileCard key={offer.id} offer={offer} />)
         ) : (
@@ -103,7 +105,7 @@ const BuyersHistory = () => {
       </div>
 
       {/* Desktop View (Table) */}
-      <div className='hidden md:block overflow-x-auto'>
+      <div className='hidden lg:block overflow-x-auto'>
         <table className='min-w-full text-left text-sm border rounded-lg'>
           <thead className='bg-gray-100'>
             <tr>
@@ -119,7 +121,11 @@ const BuyersHistory = () => {
             {offers.length > 0 ? (
               offers.map((offer) => (
                 <tr key={offer.id} className='border-t hover:bg-gray-50'>
-                  <td className='px-4 py-2'>{"Pending"}</td>
+                  <td className='px-4  py-2'>
+                    <span className='bg-green-200 px-2 py-1 text-green-900 rounded-[20px] '>
+                      {offer.formattedOrderId}
+                    </span>
+                  </td>
                   <td className='px-4 py-2'>{offer.product}</td>
                   <td className='px-4 py-2'>{offer.quantity}</td>
                   <td className='px-4 py-2'>
@@ -127,7 +133,9 @@ const BuyersHistory = () => {
                   </td>
                   <td className='px-4 py-2'>{offer.displayDate}</td>
                   <td className='px-4 py-2 font-medium text-blue-600'>
-                    In Transit
+                    <span className='bg-blue-200 py-1 px-2 rounded-[20px] '>
+                      In Transit
+                    </span>
                   </td>
                 </tr>
               ))

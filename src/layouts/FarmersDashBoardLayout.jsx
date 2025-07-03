@@ -72,7 +72,7 @@ const FarmersDashBoardLayout = () => {
         <div className='flex items-center gap-[20px]'>
           <img
             src={avatarUrl || null} // Use null instead of empty string
-            className='w-[90px] aspect-[1/1] rounded-full object-cover'
+            className='w-[90px] max-lg:w-[70px] aspect-[1/1] rounded-full object-cover'
             alt='User Avatar'
             onError={(e) => {
               const initials = getInitials(user);
@@ -80,10 +80,10 @@ const FarmersDashBoardLayout = () => {
             }}
           />
           <div className='font-[Kodchasan] font-medium leading-normal'>
-            <h1 className='flex items-center text-[#1E1E1E] text-[28px] gap-2'>
+            <h1 className='flex items-center max-lg:text-[18px] text-[#1E1E1E] text-[28px] gap-2'>
               Hello {getDisplayName()} <Icon icon='emojione:waving-hand' />
             </h1>
-            <p className='text-[20px] text-[#A19797]'>
+            <p className='text-[20px] max-lg:text-[16px] text-[#A19797]'>
               Welcome To Your Dashboard farmer
             </p>
           </div>
@@ -96,7 +96,7 @@ const FarmersDashBoardLayout = () => {
           <div className='relative w-full'>
             <button
               onClick={handleLogout}
-              className='flex gap-[5px] bg-white rounded-[12px] text-black/70 hover:text-[#3D8236] shadow-[4px_4px_2.5px_rgba(0,0,0,0.100)] transition duration-[.5s] px-[15px] py-[16px] justify-center items-center'
+              className='flex gap-[5px] bg-white rounded-[12px] max-lg:text-[10px] max-lg:px-[10px] max-lg:py-[11px] text-black/70 hover:text-[#3D8236] shadow-[4px_4px_2.5px_rgba(0,0,0,0.100)] transition duration-[.5s] px-[15px] py-[16px] justify-center items-center'
             >
               <span>Log Out</span>
               <Icon icon='ic:outline-logout' width='24' height='24' />

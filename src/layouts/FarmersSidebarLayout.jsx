@@ -158,11 +158,11 @@ const FarmersSidebarLayout = () => {
               {/* <span>Log Out</span> */}
               <Icon icon='ic:outline-logout' width='24' height='24' />
             </button>
-            <div className='flex items-center '>
+            {/* <div className='flex items-center '>
               <div className='p-[16px] bg-white text-black flex items-center rounded-[12px]  justify-center'>
                 <Icon icon='line-md:bell-loop' width='24' height='24' />
               </div>
-            </div>
+            </div> */}
           </div>
           <img src={logo} alt='FWAN Logo' className='lg:h-10 h-[24px] w-auto' />
           <button onClick={toggleSidebar} className='text-black'>

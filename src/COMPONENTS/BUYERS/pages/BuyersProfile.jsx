@@ -317,9 +317,9 @@ const BuyersProfile = () => {
       )}
 
       <div className='bg-white rounded-xl shadow-md'>
-        <div className='md:flex'>
+        <div className='lg:flex'>
           {/* Profile Photo Section */}
-          <div className='md:w-1/3 p-6 bg-gray-50 flex flex-col items-center'>
+          <div className='lg:w-1/3 p-6 bg-gray-50 flex flex-col items-center'>
             <div className='relative mb-4'>
               <div className='w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow-lg'>
                 {previewImage ? (
@@ -399,7 +399,7 @@ const BuyersProfile = () => {
           </div>
 
           {/* Profile Info Form */}
-          <div className='md:w-2/3 p-8'>
+          <div className='lg:w-2/3 p-8'>
             <h2 className='text-2xl font-bold mb-6 text-gray-800'>
               Profile Information
             </h2>

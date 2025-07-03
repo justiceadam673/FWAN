@@ -52,7 +52,7 @@ const FarmersListingCard = ({
           <strong className='text-green-900'>{offersHeader}:</strong> {offers}
         </div>
         <div className='text-green-900/70'>
-          <strong className='text-green-900'>{statusHeader}:</strong>{" "}
+          <strong className='text-green-900'>{statusHeader}:</strong>
           <span
             className={`px-2 py-1 rounded-full text-xs ${
               isSoldOut

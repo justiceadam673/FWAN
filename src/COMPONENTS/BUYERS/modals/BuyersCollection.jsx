@@ -334,12 +334,28 @@ const BuyersCollections = () => {
                 </div>
               </div>
               <div className='mt-4 flex flex-col gap-2'>
-                <button
+                {item.isSoldOut ? (
+                  <button
+                    className='border border-gray-400 text-gray-400 px-4 py-2 rounded-full cursor-not-allowed'
+                    disabled
+                  >
+                    View Details
+                  </button>
+                ) : (
+                  <button
+                    className='flex-1 border border-[#3D8236] text-[#3D8236] rounded-full py-2 text-sm hover:bg-[#3D8236] hover:cursor-pointer hover:text-white transition'
+                    onClick={() => handleViewDetails(item)}
+                  >
+                    View Details
+                  </button>
+                )}
+
+                {/* <button
                   className='flex-1 border border-[#3D8236] text-[#3D8236] rounded-full py-2 text-sm hover:bg-[#3D8236] hover:cursor-pointer hover:text-white transition'
                   onClick={() => handleViewDetails(item)}
                 >
                   View Details
-                </button>
+                </button> */}
                 {item.isSoldOut ? (
                   <button
                     className='bg-gray-400 text-white px-4 py-2 rounded-full cursor-not-allowed'

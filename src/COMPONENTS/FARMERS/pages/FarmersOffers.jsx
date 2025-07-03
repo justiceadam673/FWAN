@@ -13,6 +13,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "../components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
 const FarmersOffers = () => {
   const [user] = useAuthState(auth);
@@ -110,12 +111,124 @@ const FarmersOffers = () => {
     setShowPaymentOverlay(true);
   };
 
+  const MobileOfferCard = ({ offer }) => {
+    const statusColors = {
+      Pending: "bg-yellow-100 text-yellow-800",
+      Accepted: "bg-green-100 text-green-800",
+      Paid: "bg-blue-100 text-blue-800",
+      Rejected: "bg-red-100 text-red-800",
+    };
+
+    return (
+      <div className='bg-white rounded-lg shadow-md p-4 mb-4 border border-gray-100'>
+        <div className='flex items-start gap-3 mb-3'>
+          <img
+            src={offer.image || "https://via.placeholder.com/80?text=No+Image"}
+            alt={offer.product}
+            className='w-16 h-16 object-cover rounded-md border border-gray-200'
+          />
+          <div className='flex-1'>
+            <div className='flex justify-between items-start'>
+              <h3 className='font-semibold text-lg'>{offer.product}</h3>
+              <span
+                className={`px-2 py-1 rounded-full text-xs ${
+                  statusColors[offer.status] || "bg-gray-100"
+                }`}
+              >
+                {offer.status}
+              </span>
+            </div>
+            <p className='text-gray-600 text-sm'>{offer.formattedOrderId}</p>
+          </div>
+        </div>
+
+        <div className='grid grid-cols-2 gap-3 text-sm mb-4'>
+          <div>
+            <p className='text-gray-500'>Quantity</p>
+            <p>{offer.quantity} kg</p>
+          </div>
+          <div>
+            <p className='text-gray-500'>Buyer</p>
+            <p>{offer.buyerName || "N/A"}</p>
+          </div>
+          <div>
+            <p className='text-gray-500'>Price</p>
+            <p>₦{(offer.offerPrice * offer.quantity).toLocaleString()}</p>
+          </div>
+          <div>
+            <p className='text-gray-500'>Total</p>
+            <p>₦{(offer.offerPrice * offer.quantity).toLocaleString()}</p>
+          </div>
+        </div>
+
+        {offer.status === "Pending" ? (
+          <div className='flex gap-2'>
+            <Button
+              size='sm'
+              className='flex-1 bg-green-200 hover:bg-green-300  text-green-700 '
+              onClick={() => updateOfferStatus(offer.id, "Accepted")}
+            >
+              Accept
+            </Button>
+            <Button
+              size='sm'
+              variant='destructive'
+              className='flex-1 bg-red-200 hover:bg-red-300 text-red-700 '
+              onClick={() => updateOfferStatus(offer.id, "Rejected")}
+            >
+              Reject
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size='sm'
+            variant={
+              offer.status === "Accepted"
+                ? "default"
+                : offer.status === "Rejected"
+                ? "destructive"
+                : "outline"
+            }
+            className={`w-full flex ${
+              offer.status === "Accepted"
+                ? "bg-green-300 text-green-700 "
+                : offer.status === "Rejected"
+                ? "bg-red-300 text-red-700 "
+                : "bg-blue-300 text-blue-700 "
+            } items-center justify-center gap-2`}
+            onClick={() => {
+              if (offer.status === "Accepted") handleViewPayment(offer);
+              else if (offer.status === "Rejected") handleReviewOffer(offer);
+              else if (offer.status === "Paid") handleViewDelivery(offer);
+            }}
+          >
+            <Icon
+              icon={
+                offer.status === "Accepted"
+                  ? "mdi:wallet-outline"
+                  : offer.status === "Rejected"
+                  ? "mdi:eye-outline"
+                  : "mdi:truck-delivery-outline"
+              }
+              className='text-lg'
+            />
+            {offer.status === "Accepted"
+              ? "View Payment"
+              : offer.status === "Rejected"
+              ? "Review Offer"
+              : "View Delivery"}
+          </Button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className='p-4'>
       <h2 className='text-xl font-semibold mb-4'>Offers Received</h2>
 
       {/* Desktop Table */}
-      <div className='hidden md:block'>
+      <div className='hidden lg:block'>
         <table className='w-full border-collapse rounded-lg overflow-hidden shadow'>
           <thead className='bg-green-100'>
             <tr>
@@ -246,8 +359,20 @@ const FarmersOffers = () => {
       </div>
 
       {/* Mobile View remains unchanged */}
-      <div className='md:hidden space-y-4'>
-        {/* Your existing mobile view logic stays intact */}
+      <div className='lg:hidden space-y-4'>
+        {offers.length > 0 ? (
+          offers.map((offer) => (
+            <MobileOfferCard key={offer.id} offer={offer} />
+          ))
+        ) : (
+          <div className='text-center py-8 text-gray-500'>
+            {/* <Icon
+              icon='mdi:package-variant-closed'
+              className='text-4xl mx-auto text-gray-300 mb-2'
+            /> */}
+            <p>No offers received yet</p>
+          </div>
+        )}
       </div>
 
       {/* 🔹 Review Offer Overlay */}
